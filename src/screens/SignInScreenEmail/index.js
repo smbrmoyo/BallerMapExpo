@@ -13,57 +13,43 @@ import {
   Alert,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
+//import LinearGradient from "react-native-linear-gradient";
 import { LinearGradient } from "expo-linear-gradient";
 import { useHeaderHeight } from "@react-navigation/stack";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import styles from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useMutation, gql } from "@apollo/client";
 import { useTheme } from "react-native-paper";
 
-import { AuthContext } from "../../components/navigation/AuthProvider";
+import { useAuth } from "../../components/navigation/realmAuthProvider";
 
 const SignInScreenEmail = ({ navigation, props }) => {
   const headerHeight = useHeaderHeight();
-  const { login, user, setUser } = useContext(AuthContext);
+  const { signIn, user } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const SIGN_IN_MUTATION = gql`
-    mutation signIn($email: String!, $password: String!) {
-      signIn(input: { email: $email, password: $password }) {
-        token
-        user {
-          id
-          email
-        }
-      }
-    }
-  `;
-
-  const [signIn, { data, error, loading }] = useMutation(SIGN_IN_MUTATION);
-
-  useEffect(() => {
+  /*useEffect(() => {
     if (error) {
-      Alert.alert("Invalid credentials, try again");
+      Alert.alert('Invalid credentials, try again');
       console.log(error);
     }
   }, [error]);
 
   if (data) {
     // save token
-    AsyncStorage.setItem("token", data.signIn.token).then(() => {
+    AsyncStorage.setItem('token', data.signIn.token).then(() => {
       // redirect home
       //navigation.navigate("Home");
       setUser(data.signIn.user);
       //console.log(data.signIn.token);
     });
-  }
+  }*/
 
-  const onSubmit = () => {
-    signIn({ variables: { email, password } });
-  };
+  /*const onSubmit = () => {
+    signIn({variables: {email, password}});
+  };*/
 
   const [datalogin, setDataLogin] = useState({
     username: "",
@@ -156,7 +142,7 @@ const SignInScreenEmail = ({ navigation, props }) => {
   };
 
   return (
-    <LinearGradient colors={["#743cff", "#bb006e"]} style={styles.container}>
+    <View colors={["#743cff", "#bb006e"]} style={styles.container}>
       <StatusBar
         translucent
         backgroundColor="rgba(0,0,0,0.0)" /*transparent*/
@@ -262,8 +248,8 @@ const SignInScreenEmail = ({ navigation, props }) => {
               activeOpacity={0.7}
               style={styles.signIn}
               onPress={() => {
-                onSubmit();
-                //login(email, password);
+                //onSubmit();
+                signIn(email, password);
               }}
             >
               <LinearGradient
@@ -325,7 +311,7 @@ const SignInScreenEmail = ({ navigation, props }) => {
           </View>
         </Animatable.View>
       </KeyboardAvoidingView>
-    </LinearGradient>
+    </View>
   );
 };
 

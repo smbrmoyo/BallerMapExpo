@@ -27,9 +27,7 @@ const MapScreen = ({ navigation }) => {
         backgroundColor="rgba(0,0,0,0.0)" /*transparent*/
         barStyle="dark-content"
       />
-      <View style={styles.screen}>
-        <HomeMap />
-      </View>
+      <View style={styles.screen}>{/*<HomeMap />*/}</View>
     </>
   );
 };

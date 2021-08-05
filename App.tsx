@@ -14,6 +14,7 @@ import Providers from "./src/components/navigation";
 import AddScreen from "./src/screens/AddScreen";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./apollo";
+import Realm from "realm";
 import * as Font from "expo-font";
 
 export default function App() {

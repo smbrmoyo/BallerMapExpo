@@ -11,7 +11,6 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import * as firebase from "firebase";
 import { AppLoading } from "expo";
 import debounce from "lodash/debounce";
 import { useNavigation, useRoute, useTheme } from "@react-navigation/native";

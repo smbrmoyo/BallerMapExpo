@@ -25,7 +25,6 @@ import {
   cond,
   not,
 } from "react-native-reanimated";*/
-import * as firebase from "firebase";
 import BottomSheet from "reanimated-bottom-sheet";
 import ProfilePicture from "../../components/ProfilePicture";
 import FollowButton from "../../components/FollowButton";

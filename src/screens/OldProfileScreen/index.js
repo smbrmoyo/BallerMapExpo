@@ -18,7 +18,6 @@ import Animated, {
   cond,
   not,
 } from "react-native-reanimated";
-import * as firebase from "firebase";
 //import firestore from "@react-native-firebase/firestore";
 //import firebase from "@react-native-firebase/app";
 //import auth from "@react-native-firebase/auth";

@@ -13,12 +13,13 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.smbrmoyo.BallerMapExpo"
+      "bundleIdentifier": "com.smbrmoyo.BallerMapExpo",
+      "config": {
+        "googleMapsApiKey": "AIzaSyBP5yl3-4c4VkU_BABlAyiDx_8m-JOr1Tc"
+      }
     },
     "android": {
       "adaptiveIcon": {

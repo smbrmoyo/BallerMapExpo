@@ -22,28 +22,13 @@ import SocialButton from "../../components/SocialButton";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, gql } from "@apollo/client";
 import { useTheme } from "react-native-paper";
-
-import { AuthContext } from "../../components/navigation/AuthProvider";
+import { useAuth } from "../../components/navigation/realmAuthProvider";
 
 const SignUpScreenSocial = ({ navigation, props }) => {
   const headerHeight = useHeaderHeight();
-  const { login, user, setUser } = useContext(AuthContext);
+  const { signIn, user, setUser } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const SIGN_IN_MUTATION = gql`
-    mutation signIn($email: String!, $password: String!) {
-      signIn(input: { email: $email, password: $password }) {
-        token
-        user {
-          id
-          email
-        }
-      }
-    }
-  `;
-
-  const [signIn, { data, error, loading }] = useMutation(SIGN_IN_MUTATION);
 
   useEffect(() => {
     if (error) {

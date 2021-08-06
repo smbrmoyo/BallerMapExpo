@@ -21,26 +21,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext } from "../../components/navigation/AuthProvider";
+import { useAuth } from "../../components/navigation/realmAuthProvider";
 import styles from "./styles";
 
-import { useMutation, gql } from "@apollo/client";
-
 const SignUpScreenEmail = ({ navigation }) => {
-  const SIGN_UP_MUTATION = gql`
-    mutation signUp($email: String!, $password: String!, $name: String) {
-      signUp(input: { email: $email, password: $password, name: $name }) {
-        token
-        user {
-          id
-          email
-        }
-      }
-    }
-  `;
-
-  const { register, user, setUser } = useContext(AuthContext);
-  const [signUp, { data, error, loading }] = useMutation(SIGN_UP_MUTATION);
+  const { register, user, setUser, signUp } = useAuth();
+  //const [signUp, { data, error, loading }] = useMutation(SIGN_UP_MUTATION);
   const onSubmit = () => {
     signUp({ variables: { email, password } });
   };
@@ -229,8 +215,7 @@ const SignUpScreenEmail = ({ navigation }) => {
                 activeOpacity={0.7}
                 style={styles.signIn}
                 onPress={() => {
-                  //register(email, password);
-                  onSubmit();
+                  signUp(email, password);
                 }}
               >
                 <LinearGradient

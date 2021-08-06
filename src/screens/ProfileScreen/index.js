@@ -32,7 +32,7 @@ import ProfilePicture from "../../components/ProfilePicture";
 import LoadingScreen from "../../screens/LoadingScreen";
 import FollowButton from "../../components/FollowButton";
 import { useIsFocused } from "@react-navigation/native";
-import { AuthContext } from "../../components/navigation/AuthProvider";
+import { useAuth } from "../../components/navigation/realmAuthProvider";
 import { wsize, hsize } from "../../utils/Dimensions";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -266,7 +266,7 @@ const ProfileScreen = ({ navigation, route }) => {
   fall = useRef(new Animated.Value(1)).current;
   const [isFollowing, setIsFollowing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-  const { user, logout } = useContext(AuthContext);
+  const { user, signOut } = useAuth();
   const { posts, tags } = tabs;
   const [userExtraInfo, setUserExstraInfo] = useState(null);
   const [currentTab, setCurrentTab] = useState(posts);
@@ -371,7 +371,7 @@ const ProfileScreen = ({ navigation, route }) => {
           <Text style={styles.panelButtonTitle}>COVID-19 Information</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={logout}
+          onPress={() => signOut()}
           activeOpacity={0.7}
           style={styles.panelButton}
         >

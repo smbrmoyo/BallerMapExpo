@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { AuthContext } from "./AuthProvider";
+import { useAuth } from "./realmAuthProvider";
 
 import AppStack from "./AppStack";
 import AuthStack from "./AuthStack";
 
 const Routes = () => {
-  const { user, setUser } = useContext(AuthContext);
+  const { user, setUser } = useAuth();
   const [initializing, setInitializing] = useState(true);
 
   const onAuthStateChanged = (user) => {

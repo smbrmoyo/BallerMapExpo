@@ -1,13 +1,13 @@
-import React, {useContext, useState, useEffect, useRef} from 'react';
-const Realm = require('realm');
-import {getRealmApp} from '../../../realmServer';
+import React, { useContext, useState, useEffect, useRef } from "react";
+const Realm = require("realm");
+import { getRealmApp } from "../../../realmServer";
 
 // Access the Realm App.
 const app = getRealmApp();
 
 export const AuthContext = React.createContext(null);
 
-const AuthProvider = ({children}) => {
+const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(app.currentUser);
   const realmRef = useRef();
   const userRealmRef = useRef();
@@ -33,21 +33,21 @@ const AuthProvider = ({children}) => {
 
     // Open a realm with the logged in user's partition value in order
     // to get the cutpm user data
-    Realm.open(config).then(userRealm => {
+    Realm.open(config).then((userRealm) => {
       realmRef.current = userRealm;
-      const userDoc = userRealm.objects('UserData');
+      const userDoc = userRealm.objects("UserData");
 
       userDoc.addListener(() => {
         // The user custom data object may not have been loaded on
         // the server side yet when a user is first registered.
         if (userDoc.length === 0) {
           setProfilePartition([null]);
-          alert('pas de user doc');
+          alert("pas de user doc");
         } else {
           const uProfilePartition = userDoc[0].uProfilePartition;
           setProfilePartition(uProfilePartition);
           if (profilePartition !== undefined) {
-            console.log(' AUTHOPROVIDER!!!: profile partition trouvée');
+            console.log(" AUTHOPROVIDER!!!: profile partition trouvée");
           }
         }
       });
@@ -90,7 +90,10 @@ const AuthProvider = ({children}) => {
       return;
     }
     // TODO: Log out the current user and use the setUser() function to set the current user to null.
-    user.logOut().catch(error => console.log(error));
+    user
+      .logOut()
+      .then(setUser(null))
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -101,7 +104,8 @@ const AuthProvider = ({children}) => {
         signOut,
         user,
         profilePartition, // profle partition
-      }}>
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -113,9 +117,9 @@ const useAuth = () => {
   //Valeurs du AuthProvider
   const auth = useContext(AuthContext);
   if (auth == null) {
-    throw new Error('useAuth() called outside of a AuthProvider?');
+    throw new Error("useAuth() called outside of a AuthProvider?");
   }
   return auth;
 };
 
-export {AuthProvider, useAuth};
+export { AuthProvider, useAuth };

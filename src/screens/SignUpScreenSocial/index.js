@@ -30,14 +30,14 @@ const SignUpScreenSocial = ({ navigation, props }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (error) {
       Alert.alert("Invalid credentials, try again");
       console.log(error);
     }
-  }, [error]);
+  }, [error]);*/
 
-  if (data) {
+  /*if (data) {
     // save token
     AsyncStorage.setItem("token", data.signIn.token).then(() => {
       // redirect home
@@ -45,7 +45,7 @@ const SignUpScreenSocial = ({ navigation, props }) => {
       setUser(data.signIn.user);
       //console.log(data.signIn.token);
     });
-  }
+  }*/
 
   const onSubmit = () => {
     signIn({ variables: { email, password } });

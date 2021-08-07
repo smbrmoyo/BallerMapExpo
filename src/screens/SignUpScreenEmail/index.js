@@ -25,7 +25,7 @@ import { useAuth } from "../../components/navigation/realmAuthProvider";
 import styles from "./styles";
 
 const SignUpScreenEmail = ({ navigation }) => {
-  const { register, user, setUser, signUp } = useAuth();
+  const { user, setUser, signUp } = useAuth();
   //const [signUp, { data, error, loading }] = useMutation(SIGN_UP_MUTATION);
   const onSubmit = () => {
     signUp({ variables: { email, password } });
@@ -35,7 +35,7 @@ const SignUpScreenEmail = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  if (error) {
+  /*if (error) {
     Alert.alert("Error signing up. Try again");
   }
 
@@ -47,7 +47,7 @@ const SignUpScreenEmail = ({ navigation }) => {
       setUser(data.signUp.user);
       console.log(data);
     });
-  }
+  }*/
 
   const [datasignup, setDataSignup] = useState({
     username: "",

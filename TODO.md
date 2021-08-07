@@ -1,6 +1,3 @@
-Stories ln 59 when set to true gives a weird thing where animation bars are not well
-Implement logic of Trystory for nextItem in StoryScreen4
-
 - Start commenting!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 - PostDescription
@@ -37,3 +34,6 @@ Implement logic of Trystory for nextItem in StoryScreen4
 * Skeleton
 
 * Onboarding Screen and Hints (explain to users how to use the app)
+
+* Stories ln 59 when set to true gives a weird thing where animation bars are not well
+  Implement logic of Trystory for nextItem in StoryScreen4

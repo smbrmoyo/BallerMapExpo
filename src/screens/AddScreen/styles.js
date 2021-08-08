@@ -6,6 +6,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flex: 1,
   },
+  container: {
+    flex: 1,
+    //backgroundColor: "#743cff",
+  },
   locationContainer: {
     //alignItems: "center",
     justifyContent: "center",
@@ -16,6 +20,8 @@ const styles = StyleSheet.create({
   title: {
     flexDirection: "row",
     paddingHorizontal: 10,
+    alignContent: "center",
+    backgroundColor: "green",
     alignItems: "center",
   },
   titleLocation: {
@@ -50,7 +56,7 @@ const styles = StyleSheet.create({
   },
 
   iconContainer: {
-    backgroundColor: "#a2a2a2",
+    backgroundColor: "#eee",
     padding: 5,
     borderRadius: 50,
     marginRight: 15,

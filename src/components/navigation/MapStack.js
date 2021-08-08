@@ -49,6 +49,7 @@ const MapStack = () => {
             backgroundColor: "white",
             shadowColor: "#f9fafd",
             elevation: 0,
+            height: 80,
           },
           /*headerRight: () => (
             <View style={{ marginLeft: 10 }}>

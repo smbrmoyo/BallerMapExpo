@@ -241,7 +241,7 @@ const SignUpScreenSocial = ({ navigation, props }) => {
                 </Text>
               </View>
             </TouchableOpacity>
-            <View style={styles.textPrivate}>
+            {/*<View style={styles.textPrivate}>
               <Text style={styles.color_textPrivate}>
                 By signing up you agree to our
               </Text>
@@ -255,6 +255,7 @@ const SignUpScreenSocial = ({ navigation, props }) => {
                 Privacy policy
               </Text>
             </View>
+            */}
             {/*<LinearGradient
             colors={["#bb006e", "#743cff"]}
             style={[

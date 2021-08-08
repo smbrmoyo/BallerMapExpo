@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   Alert,
   View,
@@ -22,10 +22,11 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../../components/navigation/realmAuthProvider";
+import { useTheme } from "react-native-paper";
 import styles from "./styles";
 
 const SignUpScreenEmail = ({ navigation }) => {
-  const { user, setUser, signUp } = useAuth();
+  const { user, setUser, signUp, signUpTrigger } = useAuth();
   //const [signUp, { data, error, loading }] = useMutation(SIGN_UP_MUTATION);
   const onSubmit = () => {
     signUp({ variables: { email, password } });
@@ -34,6 +35,18 @@ const SignUpScreenEmail = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const { colors } = useTheme();
+
+  const isUserSignedUp = () => {
+    if (signUpTrigger) {
+      navigation.navigate("SignInEmail");
+    }
+  };
+
+  useEffect(() => {
+    isUserSignedUp();
+  }, [signUpTrigger]);
 
   /*if (error) {
     Alert.alert("Error signing up. Try again");
@@ -49,7 +62,7 @@ const SignUpScreenEmail = ({ navigation }) => {
     });
   }*/
 
-  const [datasignup, setDataSignup] = useState({
+  const [dataSignUp, setdataSignUp] = useState({
     username: "",
     password: "",
     confirm_password: "",
@@ -60,14 +73,14 @@ const SignUpScreenEmail = ({ navigation }) => {
 
   const textInputChange = (val) => {
     if (val.length !== 0) {
-      setDataSignup({
-        ...datasignup,
+      setdataSignUp({
+        ...dataSignUp,
         username: val,
         check_textInputChange: true,
       });
     } else {
-      setDataSignup({
-        ...datasignup,
+      setdataSignUp({
+        ...dataSignUp,
         username: val,
         check_textInputChange: false,
       });
@@ -75,29 +88,29 @@ const SignUpScreenEmail = ({ navigation }) => {
   };
 
   const handlePasswordChange = (val) => {
-    setDataSignup({
-      ...datasignup,
+    setdataSignUp({
+      ...dataSignUp,
       password: val,
     });
   };
 
   const handleConfirmPasswordChange = (val) => {
-    setDataSignup({
-      ...datasignup,
+    setdataSignUp({
+      ...dataSignUp,
       confirm_password: val,
     });
   };
 
   const updateSecureTextEntry = () => {
-    setDataSignup({
-      ...datasignup,
+    setdataSignUp({
+      ...dataSignUp,
       secureTextEntry: !data.secureTextEntry,
     });
   };
 
   const updateConfirmSecureTextEntry = () => {
-    setDataSignup({
-      ...datasignup,
+    setdataSignUp({
+      ...dataSignUp,
       confirm_secureTextEntry: !data.confirm_secureTextEntry,
     });
   };
@@ -123,7 +136,13 @@ const SignUpScreenEmail = ({ navigation }) => {
               <FontAwesome name="user-o" color="#05375a" size={20} />
               <TextInput
                 placeholder="Your Email"
-                style={styles.textInput}
+                placeholderTextColor="#666666"
+                style={[
+                  styles.textInput,
+                  {
+                    color: colors.text,
+                  },
+                ]}
                 autoCapitalize="none"
                 value={email}
                 onChangeText={(userEmail) => setEmail(userEmail)}
@@ -145,8 +164,9 @@ const SignUpScreenEmail = ({ navigation }) => {
               <Feather name="lock" color="#05375a" size={20} />
               <TextInput
                 placeholder="Your Password"
+                placeholderTextColor="#666666"
                 value={password}
-                //secureTextEntry={data.secureTextEntry ? true : false}
+                secureTextEntry={dataSignUp.secureTextEntry ? true : false}
                 style={styles.textInput}
                 autoCapitalize="none"
                 onChangeText={(userPassword) => setPassword(userPassword)}
@@ -155,7 +175,7 @@ const SignUpScreenEmail = ({ navigation }) => {
                 activeOpacity={0.7}
                 onPress={updateSecureTextEntry}
               >
-                {datasignup.secureTextEntry ? (
+                {dataSignUp.secureTextEntry ? (
                   <Feather name="eye-off" color="grey" size={20} />
                 ) : (
                   <Feather name="eye" color="grey" size={20} />
@@ -177,7 +197,10 @@ const SignUpScreenEmail = ({ navigation }) => {
               <Feather name="lock" color="#05375a" size={20} />
               <TextInput
                 placeholder="Confirm Your Password"
-                //secureTextEntry={data.confirm_secureTextEntry ? true : false}
+                placeholderTextColor="#666666"
+                secureTextEntry={
+                  dataSignUp.confirm_secureTextEntry ? true : false
+                }
                 style={styles.textInput}
                 autoCapitalize="none"
                 value={confirmPassword}
@@ -189,14 +212,14 @@ const SignUpScreenEmail = ({ navigation }) => {
                 activeOpacity={0.7}
                 onPress={updateConfirmSecureTextEntry}
               >
-                {datasignup.secureTextEntry ? (
+                {dataSignUp.secureTextEntry ? (
                   <Feather name="eye-off" color="grey" size={20} />
                 ) : (
                   <Feather name="eye" color="grey" size={20} />
                 )}
               </TouchableOpacity>
             </View>
-            <View style={styles.textPrivate}>
+            {/*<View style={styles.textPrivate}>
               <Text style={styles.color_textPrivate}>
                 By signing up you agree to our
               </Text>
@@ -209,7 +232,7 @@ const SignUpScreenEmail = ({ navigation }) => {
                 {" "}
                 Privacy policy
               </Text>
-            </View>
+                </View>*/}
             <View style={styles.button}>
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -237,7 +260,7 @@ const SignUpScreenEmail = ({ navigation }) => {
 
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => navigation.goBack()}
+                onPress={() => navigation.navigate("SignInSocial")}
                 style={[styles.signIn]}
               >
                 <View style={styles.textPrivate}>
@@ -248,7 +271,7 @@ const SignUpScreenEmail = ({ navigation }) => {
                     style={[styles.color_textPrivate, { fontWeight: "bold" }]}
                   >
                     {" "}
-                    Log In
+                    Sign In
                   </Text>
                 </View>
               </TouchableOpacity>

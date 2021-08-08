@@ -30,6 +30,8 @@ const SignInScreenEmail = ({ navigation, props }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  //console.log(headerHeight + " from Sign in");
+
   /*useEffect(() => {
     if (error) {
       Alert.alert('Invalid credentials, try again');

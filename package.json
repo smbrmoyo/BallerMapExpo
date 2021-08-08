@@ -67,7 +67,8 @@
     "reanimated-bottom-sheet": "^1.0.0-alpha.20",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
-    "react-native-maps": "0.28.0"
+    "react-native-maps": "0.28.0",
+    "@react-native-community/datetimepicker": "3.5.2"
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",

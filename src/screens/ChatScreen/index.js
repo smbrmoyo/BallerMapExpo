@@ -24,7 +24,7 @@ import { useHeaderHeight } from "@react-navigation/stack";
 //import firestore from "@react-native-firebase/firestore";
 //import firebase from "@react-native-firebase/app";
 //import auth from "@react-native-firebase/auth";
-import { AuthContext } from "../../components/navigation/AuthProvider";
+import { useAuth } from "../../components/navigation/realmAuthProvider";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -86,13 +86,14 @@ const ChatScreen = ({ data, size, navigation, route }) => {
   }, [navigation]);
 
   const [input, setInput] = useState("");
-  const { user } = useContext(AuthContext);
+  const { user } = useAuth();
+  console.log(user.email);
   const [messages, setMessages] = useState([
     {
       id: "6",
       data: {
         message: "Pourquoi tu es laid?",
-        email: "brianmoyou@gmail.com",
+        email: "brianmoyou",
       },
     },
     {
@@ -113,14 +114,14 @@ const ChatScreen = ({ data, size, navigation, route }) => {
       id: "9",
       data: {
         message: "Assia vraiment",
-        email: "brianmoyou@gmail.com",
+        email: "brianmoyou",
       },
     },
     {
       id: "10",
       data: {
         message: "Tout va s'arranger",
-        email: "brianmoyou@gmail.com",
+        email: "brianmoyou",
       },
     },
   ]);

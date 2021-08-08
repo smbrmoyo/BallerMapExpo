@@ -1,18 +1,21 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 const Realm = require("realm");
 import { getRealmApp } from "../../../realmServer";
+import { useNavigation } from "@react-navigation/native";
 
 // Access the Realm App.
 const app = getRealmApp();
 
 export const AuthContext = React.createContext(null);
 
-const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children, navigation }) => {
   const [user, setUser] = useState(app.currentUser);
   const realmRef = useRef();
   const userRealmRef = useRef();
   const [userRealm, setUserRealm] = useState(null);
   const [profilePartition, setProfilePartition] = useState(null);
+  const [signUpTrigger, setSignUpTrigger] = useState(false);
+  //const navigation = useNavigation();
 
   useEffect(() => {
     if (!user) {
@@ -79,7 +82,9 @@ const AuthProvider = ({ children }) => {
   const signUp = async (email, password) => {
     // TODO: Pass the email and password to Realm's email password provider to register the user.
     // Registering only registers and does not log in.
-    await app.emailPasswordAuth.registerUser(email, password);
+    await app.emailPasswordAuth
+      .registerUser(email, password)
+      .then(() => setSignUpTrigger(true));
   };
 
   // The signOut function calls the logOut function on the currently
@@ -102,6 +107,7 @@ const AuthProvider = ({ children }) => {
         signUp,
         signIn,
         signOut,
+        signUpTrigger,
         user,
         profilePartition, // profle partition
       }}

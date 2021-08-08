@@ -22,11 +22,10 @@ import Animated from "react-native-reanimated";
 import BottomSheet from "reanimated-bottom-sheet";
 import { useHeaderHeight } from "@react-navigation/stack";
 //import ImagePicker from "react-native-image-crop-picker";
-import { AuthContext } from "../../components/navigation/AuthProvider";
-//import { useAuth } from "../../components/navigation/realmAuthProvider";
+import { useAuth } from "../../components/navigation/realmAuthProvider";
 
 const EditProfileScreen = () => {
-  const { user, logout } = useContext(AuthContext);
+  const { user } = useAuth();
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);

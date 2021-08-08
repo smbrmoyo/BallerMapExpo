@@ -14,6 +14,7 @@ import CreatePost from "../../screens/src/SnapClone";
 import StoryScreen4 from "../../screens/StoryScreen4/App";
 
 import { createStackNavigator } from "@react-navigation/stack";
+import UserSearchScreen from "../../screens/UserSearchScreen";
 
 const Stack = createStackNavigator();
 
@@ -80,6 +81,19 @@ const ProfileStack = ({ navigation }) => {
       <Stack.Screen
         name="Followers"
         component={FollowersScreen}
+        options={({ navigation, route }) => ({
+          title: "",
+          headerStyle: {
+            backgroundColor: "white",
+            //shadowColor: "black",
+            //elevation: 5,
+            height: 80,
+          },
+        })}
+      />
+      <Stack.Screen
+        name="UserSearch"
+        component={UserSearchScreen}
         options={({ navigation, route }) => ({
           title: "",
           headerStyle: {

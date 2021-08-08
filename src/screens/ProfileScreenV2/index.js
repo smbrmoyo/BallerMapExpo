@@ -44,6 +44,221 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import UserModal from "./UserModal";
 
+//create a array of images
+const imgData = [
+  { id: "1", imgSource: require("../../assets/images/bitmoji-image.png") },
+  { id: "2", imgSource: require("../../assets/images/bitmoji-image.png") },
+  { id: "3", imgSource: require("../../assets/images/bitmoji-image.png") },
+  { id: "4", imgSource: require("../../assets/images/bitmoji-image.png") },
+  { id: "5", imgSource: require("../../assets/images/bitmoji-image.png") },
+  { id: "6", imgSource: require("../../assets/images/bitmoji-image.png") },
+  { id: "7", imgSource: require("../../assets/images/bitmoji-image.png") },
+  { id: "8", imgSource: require("../../assets/images/bitmoji-image.png") },
+];
+//create the center point of imgData
+const centerImgData = Math.floor(imgData.length / 2);
+
+const tabs = {
+  posts: "posts",
+  tags: "tags",
+};
+
+// Posts Tab
+const PostsTab = React.memo(({ navigation }) => {
+  const [data, setData] = useState(imgData);
+  const [loading, setLoading] = useState(false);
+  //const fetchData = () => lookAPI.getUserLooks();
+  /*useEffect(() => {
+    fetchData().then((allData) => {
+      setData(allData);
+      setLoading(false);
+    });
+  }, []);*/
+  if (loading) {
+    return <LoadingScreen />;
+  }
+  return (
+    <ScrollView horizontal style={{ height: "50%", backgroundColor: "white" }}>
+      <FlatList
+        numColumns={3}
+        data={data}
+        onRefresh={() => {
+          setLoading(false);
+          /*fetchData().then((res) => {
+            setData(res);
+            setLoading(false);
+          });*/
+        }}
+        refreshing={loading}
+        renderItem={({ item }) => {
+          return (
+            <TouchableWithoutFeedback
+              onPress={() => {
+                // navigation.navigate('AlternativeLook', item);
+                navigation.navigate("AlternativeLook", {
+                  //item: item,
+                  //items: item.images,
+                });
+              }}
+            >
+              {item.imgSource ? (
+                <Image
+                  style={{
+                    width: wsize(123),
+                    height: wsize(123),
+                    margin: wsize(1),
+                  }}
+                  source={item.imgSource}
+                />
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("AlternativeLook", {
+                      //item: item,
+                      //items: item.images,
+                    });
+                  }}
+                >
+                  <PhotoGrid
+                    items={item.images}
+                    clickEventListener={() => {
+                      navigation.navigate("AlternativeLook", {
+                        //item: item.data,
+                        //items: item.data.images,
+                      });
+                      // navigation.navigate('AlternativeLook', item);
+                    }}
+                    gridStyle={{
+                      width: wsize(123),
+                      height: wsize(123),
+                      overflow: "hidden",
+                    }}
+                    style={{ width: wsize(123), height: wsize(123) }}
+                    imageStyle={{ width: 50, height: 50 }}
+                    small
+                  />
+                </TouchableOpacity>
+              )}
+            </TouchableWithoutFeedback>
+          );
+        }}
+      />
+    </ScrollView>
+  );
+});
+
+// Tags Tab
+const TagsTab = React.memo(({ navigation }) => {
+  console.log("from Tags");
+  const [data, setData] = useState(imgData);
+  const [loading, setLoading] = useState(false);
+  //const fetchData = () => lookAPI.getUserLooks();
+  /*useEffect(() => {
+    fetchData().then((allData) => {
+      setData(allData);
+      setLoading(false);
+    });
+  }, []);*/
+  if (loading) {
+    return <LoadingScreen />;
+  }
+  return (
+    <ScrollView horizontal style={{ height: "50%", backgroundColor: "white" }}>
+      <FlatList
+        numColumns={3}
+        data={data}
+        onRefresh={() => {
+          setLoading(false);
+          /*fetchData().then((res) => {
+            setData(res);
+            setLoading(false);
+          });*/
+        }}
+        refreshing={loading}
+        renderItem={({ item }) => {
+          return (
+            <TouchableWithoutFeedback
+              onPress={() => {
+                // navigation.navigate('AlternativeLook', item);
+                navigation.navigate("AlternativeLook", {
+                  //item: item,
+                  //items: item.images,
+                });
+              }}
+            >
+              {item.imgSource ? (
+                <Image
+                  style={{
+                    width: wsize(123),
+                    height: wsize(123),
+                    margin: wsize(1),
+                  }}
+                  source={item.imgSource}
+                />
+              ) : (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("AlternativeLook", {
+                      //item: item,
+                      //items: item.images,
+                    });
+                  }}
+                >
+                  <PhotoGrid
+                    items={item.images}
+                    clickEventListener={() => {
+                      navigation.navigate("AlternativeLook", {
+                        //item: item.data,
+                        //items: item.data.images,
+                      });
+                      // navigation.navigate('AlternativeLook', item);
+                    }}
+                    gridStyle={{
+                      width: wsize(123),
+                      height: wsize(123),
+                      overflow: "hidden",
+                    }}
+                    style={{ width: wsize(123), height: wsize(123) }}
+                    imageStyle={{ width: 50, height: 50 }}
+                    small
+                  />
+                </TouchableOpacity>
+              )}
+            </TouchableWithoutFeedback>
+          );
+        }}
+      />
+    </ScrollView>
+  );
+});
+
+function TabContainer(props) {
+  return (
+    <View style={styles.tabContainer}>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => props.setCurrentTab(props.posts)}
+      >
+        <MaterialCommunityIcons
+          name="grid"
+          size={24}
+          color={props.currentTab === props.posts ? "black" : "grey"}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity
+        activeOpacity={0.7}
+        onPress={() => props.setCurrentTab(props.tags)}
+      >
+        <Feather
+          name="user"
+          size={24}
+          color={props.currentTab === props.tags ? "black" : "grey"}
+        />
+      </TouchableOpacity>
+    </View>
+  );
+}
+
 //render function
 
 const ProfileScreen = ({ navigation, route }) => {
@@ -52,7 +267,9 @@ const ProfileScreen = ({ navigation, route }) => {
   const [isFollowing, setIsFollowing] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const { user, signOut } = useAuth();
+  const { posts, tags } = tabs;
   const [userExtraInfo, setUserExstraInfo] = useState(null);
+  const [currentTab, setCurrentTab] = useState(posts);
   const isFocused = useIsFocused();
   useEffect(() => {
     //userAPI.getUserInfo(user.uid).then((doc) => setUserExstraInfo(doc.data()));
@@ -66,10 +283,10 @@ const ProfileScreen = ({ navigation, route }) => {
       headerLeft: () => (
         <TouchableOpacity
           activeOpacity={0.7}
-          onPress={() => navigation.navigate("UserSearch")}
+          onPress={() => navigation.navigate("CreatePost")}
         >
           <View style={styles.iconContainer}>
-            <Ionicons name="people-outline" size={24} color="black" />
+            <AntDesign name="plus" size={30} color="black" />
           </View>
         </TouchableOpacity>
       ),
@@ -244,6 +461,11 @@ const ProfileScreen = ({ navigation, route }) => {
               </TouchableOpacity>
 
               <View style={styles.userInfoWrapper}>
+                <View style={styles.userInfoItem}>
+                  <Text style={styles.userInfoTitle}>10</Text>
+                  <Text style={styles.userInfoSubTitle}>Posts</Text>
+                </View>
+
                 <TouchableOpacity activeOpacity={0.7} onPress={goToFollowers}>
                   <View style={styles.userInfoItem}>
                     <Text style={styles.userInfoTitle}>1000</Text>
@@ -282,7 +504,7 @@ const ProfileScreen = ({ navigation, route }) => {
                   style={{
                     //backgroundColor: "#D8D8D8",
                     marginBottom: 10,
-                    borderWidth: 2,
+                    borderWidth: 1,
                     borderColor: "#E9E8E8",
                     borderRadius: 5,
                     height: 30,
@@ -290,16 +512,25 @@ const ProfileScreen = ({ navigation, route }) => {
                     alignSelf: "center",
                     alignItems: "center",
                     justifyContent: "center",
-                    /*shadowColor: "grey",
-                    shadowOffset: { width: 0, height: 3 },
-                    shadowOpacity: 0.5,
-                    shadowRadius: 5,
-                    elevation: 10,*/
                   }}
                 >
                   <Text style={{ fontSize: 16 }}> Edit Info </Text>
                 </View>
               </TouchableOpacity>
+            </View>
+            <TabContainer
+              posts={posts}
+              tags={tags}
+              currentTab={currentTab}
+              setCurrentTab={setCurrentTab}
+            />
+            <View>
+              {currentTab === posts && (
+                <PostsTab navigation={navigation} user={user} />
+              )}
+              {currentTab === tags && (
+                <TagsTab navigation={navigation} user={user} />
+              )}
             </View>
           </View>
         </Animated.View>

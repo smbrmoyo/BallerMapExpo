@@ -20,6 +20,8 @@ const styles = StyleSheet.create({
   title: {
     flexDirection: "row",
     paddingHorizontal: 10,
+    alignContent: "center",
+    backgroundColor: "green",
     alignItems: "center",
   },
   titleLocation: {

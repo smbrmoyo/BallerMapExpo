@@ -42,7 +42,8 @@ const AddScreen = ({ props, navigation, route }) => {
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
   const [date, setDate] = useState(new Date(1598051730000));
-  const [mode, setMode] = useState("date");
+  const [time, setTime] = useState(new Date(1598051730000));
+  const [mode, setMode] = useState("time");
   const [show, setShow] = useState(false);
   //const [dateTime, setDateTime] = useState("");
   //const [listUsers, setListUsers] = useState(null)
@@ -180,21 +181,65 @@ const AddScreen = ({ props, navigation, route }) => {
                 </View>
                 <View
                   style={{
-                    height: 100,
+                    //height: 100,
                     width: "100%",
                     borderWidth: 1,
                     borderColor: "grey",
                     borderRadius: 10,
+                    alignContent: "center",
+                    padding: 5,
+                    //justifyContent: "center",
                   }}
                 >
+                  <Text>Pick a date</Text>
                   <DateTimePicker
-                    testID="dateTimePicker"
+                    testID="datePicker"
                     value={date}
-                    mode={mode}
+                    mode={"date"}
                     is24Hour={true}
-                    display="default"
+                    display="compact"
                     onChange={onChange}
+                    //style={{ alignContent: "center" }}
                   />
+
+                  <View
+                    style={{
+                      flex: 2,
+                      //alignItems: "center",
+                      height: "100%",
+                      width: "100%",
+                      //justifyContent: "center",
+                    }}
+                  >
+                    <DateTimePicker
+                      testID="timePickerOne"
+                      value={date}
+                      mode={"time"}
+                      style={{ flex: 1 }}
+                      is24Hour={true}
+                      display="inline"
+                      onChange={onChange}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flex: 2,
+                      //alignItems: "center",
+                      height: "100%",
+                      width: "100%",
+                      //justifyContent: "center",
+                    }}
+                  >
+                    <DateTimePicker
+                      testID="timePickerTwo"
+                      value={date}
+                      mode={"time"}
+                      style={{ flex: 1 }}
+                      is24Hour={true}
+                      display="inline"
+                      onChange={onChange}
+                    />
+                  </View>
                 </View>
               </View>
               <View style={styles.descriptionContainer}>

@@ -50,7 +50,7 @@ const AuthProvider = ({ children, navigation }) => {
           const uProfilePartition = userDoc[0].uProfilePartition;
           setProfilePartition(uProfilePartition);
           if (profilePartition !== undefined) {
-            console.log(" AUTHOPROVIDER!!!: profile partition trouvée");
+            console.log(" AUTHPROVIDER!!!: profile partition trouvée");
           }
         }
       });
@@ -59,6 +59,7 @@ const AuthProvider = ({ children, navigation }) => {
     return () => {
       // cleanup function
       const userRealm = realmRef.current;
+      console.log(userRealm);
       if (userRealm) {
         userRealm.close();
         realmRef.current = null;

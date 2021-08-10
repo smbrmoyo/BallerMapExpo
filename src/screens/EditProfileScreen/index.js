@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState, useRef } from "react";
-
+import Realm from "realm";
 import {
   View,
   Text,
@@ -21,18 +21,23 @@ import styles from "./styles";
 import Animated from "react-native-reanimated";
 import BottomSheet from "reanimated-bottom-sheet";
 import { useHeaderHeight } from "@react-navigation/stack";
+import { useProfile } from "../../components/navigation/Providers/profileProvider";
 //import ImagePicker from "react-native-image-crop-picker";
+import { AuthContext } from "../../components/navigation/AuthProvider";
 import { useAuth } from "../../components/navigation/realmAuthProvider";
+//import firestore from "@react-native-firebase/firestore";
+//import storage from "@react-native-firebase/storage";
 
 const EditProfileScreen = () => {
-  const { user } = useAuth();
+  const { user, profilePartition, logout } = useAuth();
+  const { username, setUsername } = useProfile();
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
   const [userData, setUserData] = useState(null);
-  const [username, setUsername] = useState(null); // In your code should somehow come from userInfo in DB
-  const [modifUsername, setModifUsername] = useState("");
   const headerHeight = useHeaderHeight();
+  const profileRealmRef = useRef();
+  const usernameRef = useRef(username);
 
   const getUser = async () => {
     /*const currentUser = await firestore()
@@ -48,30 +53,32 @@ const EditProfileScreen = () => {
   };
 
   const handleUpdate = async () => {
-    setUsername(modifUsername);
-    //let imgUrl = await uploadImage();
-    /*if (imgUrl == null && userData.userImg) {
-      imgUrl = userData.userImg;
-    }*/
-    /*firestore()
-      .collection("users")
-      .doc(user.uid)
-      .update({
-        fname: userData.fname,
-        lname: userData.lname,
-        about: userData.about,
-        phone: userData.phone,
-        country: userData.country,
-        city: userData.city,
-        userImg: imgUrl,
+    // Open a realm
+    const syncConfig = {
+      user: user,
+      partitionValue: profilePartition,
+    };
+
+    Realm.open(syncConfig)
+      .then((result) => {
+        profileRealmRef.current = result;
+        if (profileRealmRef) {
+          console.log("HANDLE UPDATE !!! : synced profile realm");
+          result.write(() => {
+            const uProfile = result.objects("uProfile")[0];
+            if (usernameRef !== undefined) {
+              // condition a executer plus haut / plus tot
+              uProfile.username = usernameRef;
+              setUsername(usernameRef);
+              console.log(`HANDLE UPDATE !!! : username set to '${username}'`);
+            }
+          });
+        }
       })
-      .then(() => {
-        console.log("User Updated!");
-        Alert.alert(
-          "Profile Updated!",
-          "Your profile has been updated successfully."
-        );
-      });*/
+      .catch((error) => console.log(error));
+    const profileRealm = profileRealmRef.current;
+    profileRealm.close();
+    profileRealmRef.current = null;
   };
 
   /*const uploadImage = async () => {
@@ -190,8 +197,8 @@ const EditProfileScreen = () => {
     </View>
   );
 
-  bsEditProf = useRef(null);
-  fallEditProf = useRef(new Animated.Value(1)).current;
+  var bsEditProf = useRef(null);
+  var fallEditProf = useRef(new Animated.Value(1)).current;
 
   return (
     <View style={styles.container}>
@@ -264,7 +271,7 @@ const EditProfileScreen = () => {
                 </View>
               </TouchableOpacity>
               <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
-                {username}
+                {usernameRef.current ? usernameRef.current : "Chien"}
               </Text>
               {/* <Text>{user.uid}</Text> */}
             </View>
@@ -275,21 +282,24 @@ const EditProfileScreen = () => {
                 placeholder="First Name"
                 placeholderTextColor="#666666"
                 autoCorrect={false}
-                value={modifUsername}
-                onChangeText={(txt) => setModifUsername(txt)}
+                value={usernameRef.current ? usernameRef.current : "Puto"}
+                onChangeText={(txt) => {
+                  usernameRef.current = txt;
+                  //this.value = txt;
+                }}
                 style={styles.textInput}
               />
             </View>
             <View style={styles.action}>
               <FontAwesome name="user-o" color="#333333" size={20} />
-              <TextInput
+              {/*<TextInput
                 placeholder="Last Name"
                 placeholderTextColor="#666666"
-                value={userData ? userData.lname : ""}
-                onChangeText={(txt) => setUserData({ ...userData, lname: txt })}
+                value={userData ? userData.lname : ''}
+                onChangeText={txt => setUserData({...userData, lname: txt})}
                 autoCorrect={false}
                 style={styles.textInput}
-              />
+              />*/}
             </View>
             <View style={styles.action}>
               <Ionicons

@@ -6,6 +6,7 @@ import MessageScreen from "../../screens/MessageScreen";
 import ChatScreen from "../../screens/ChatScreen";
 import StoryScreen from "../../screens/StoryScreen";
 import AddChatScreen from "../../screens/AddChatScreen";
+import FindScreen from "../../screens/FindScreen";
 import OtherProfileScreen from "../../screens/OtherProfileScreen";
 import MessageSearchScreen from "../../screens/MessageSearchScreen";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -72,10 +73,10 @@ const Stack = createStackNavigator();
 
 const MessageStack = ({ navigation, route }) => {
   return (
-    <Stack.Navigator initialRouteName="MessageHome">
+    <Stack.Navigator initialRouteName="Find">
       <Stack.Screen
-        name="MessageHome"
-        component={MessageScreen}
+        name="Find"
+        component={FindScreen}
         options={({ navigation, route }) => ({
           title: "",
           headerStyle: {

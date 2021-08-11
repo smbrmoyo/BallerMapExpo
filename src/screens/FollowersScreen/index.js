@@ -16,6 +16,7 @@ import ProfilePicture from "../../components/ProfilePicture";
 import { wsize, hsize } from "../../utils/Dimensions";
 import debounce from "lodash/debounce";
 import { useTheme } from "@react-navigation/native";
+import { useProfile } from "../../components/navigation/Providers/profileProvider";
 import LoadingScreen from "../LoadingScreen";
 import {
   MaterialIcons,
@@ -152,7 +153,9 @@ const FollowersScreen = ({ navigation }) => {
   const { colors, dark } = useTheme();
   const [text, setText] = useState("");
   const [isFollowing, setIsFollowing] = useState(isFollowing);
+  const { followers, following } = useProfile();
 
+  const empty = [];
   {
     /* Should receive isFollowing as route.params from previous screen
     Would check if user follows the other one and would update the 
@@ -233,8 +236,9 @@ const FollowersScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <FlatList
-          data={data}
+        <Text>{followers}</Text>
+        {/*<FlatList
+          data={followers}
           refreshing={loading}
           ListHeaderComponent={
             <SearchBarFollowers
@@ -245,17 +249,24 @@ const FollowersScreen = ({ navigation }) => {
             />
           }
           renderItem={({ item }) => (
-            <FollowRow
-              isFollowing={isFollowing}
-              onFollowPress={onFollowPress}
-              item={item}
-              navigate={navigation.navigate}
-            />
+            console.log(item),
+            (
+              <View>
+                <Text>{item}</Text>
+              </View>
+            )
           )}
-        />
+            />*/}
       </View>
     </SafeAreaView>
   );
 };
 
 export default FollowersScreen;
+
+/* <FollowRow
+              isFollowing={isFollowing}
+              onFollowPress={onFollowPress}
+              item={item}
+              navigate={navigation.navigate}
+            /> */

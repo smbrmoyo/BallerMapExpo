@@ -66,6 +66,31 @@ const MapStack = () => {
         })}
       />
       <Stack.Screen
+        name="Find"
+        component={FindScreen}
+        options={({ navigation }) => ({
+          title: "",
+          headerStyle: {
+            backgroundColor: "white",
+            shadowColor: "#f9fafd",
+            elevation: 0,
+            height: 80,
+          },
+          /*headerRight: () => (
+            <View style={{ marginLeft: 10 }}>
+              <Entypo name="cross" size={24} color="black" />
+              <Ionicons.Button
+                name="chevron-back"
+                size={25}
+                backgroundColor="white"
+                color="#333"
+                onPress={() => navigation.goBack()}
+              />
+            </View>
+          ),*/
+        })}
+      />
+      <Stack.Screen
         name="Description"
         component={DescriptionScreen}
         options={({ navigation }) => ({

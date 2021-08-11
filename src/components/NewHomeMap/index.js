@@ -216,6 +216,10 @@ const NewHomeMap = ({ props }) => {
     navigation.navigate("Add");
   };
 
+  const goToFind = () => {
+    navigation.navigate("Find");
+  };
+
   const goToStory = () => {
     navigation.navigate("Story");
     //userId
@@ -391,6 +395,13 @@ const NewHomeMap = ({ props }) => {
           >
             <View style={styles.buttonAdd}>
               <Feather name="plus" size={40} color="#743cff" />
+            </View>
+          </TouchableOpacity>
+        </View>
+        <View style={[styles.buttonContainer, { left: 10, bottom: 140 }]}>
+          <TouchableOpacity activeOpacity={0.5} onPress={goToFind}>
+            <View style={styles.buttonFind}>
+              <SimpleLineIcons name="location-pin" size={40} color="#743cff" />
             </View>
           </TouchableOpacity>
         </View>

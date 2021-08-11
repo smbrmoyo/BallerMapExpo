@@ -9,6 +9,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TextInput,
+  ScrollView,
   StyleSheet,
   Alert,
 } from "react-native";

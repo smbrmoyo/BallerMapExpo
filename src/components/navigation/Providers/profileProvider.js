@@ -7,6 +7,8 @@ export const ProfileContext = React.createContext();
 const ProfileProvider = ({ children }) => {
   const { user, profilePartition } = useAuth();
   const [username, setUsername] = useState();
+  const [followers, setFollowers] = useState();
+  const [following, setFollowing] = useState();
   const profileRealmRef = useRef();
 
   // User profile realm config
@@ -25,11 +27,14 @@ const ProfileProvider = ({ children }) => {
         profileRealmRef.current = profileRealm;
         const syncProfile = profileRealm.objects("uProfile")[0];
         const syncUsername = syncProfile.username;
-        console.log(syncUsername);
-        if (syncUsername !== undefined) {
+        const syncFollowers = syncProfile.followers;
+        const syncFollowing = syncProfile.following;
+        if (syncUsername !== undefined && syncFollowers !== undefined) {
           setUsername(syncUsername);
+          setFollowers(syncFollowers);
+          setFollowing(syncFollowing);
           console.log(`PROFILEPROVIDER!!!! : 
-         username: ${username}`);
+         username: ${username}, followers: ${followers}`);
         } else {
           console.log("PROFILEPROVIDER!!!! : No profile found");
         }
@@ -49,6 +54,7 @@ const ProfileProvider = ({ children }) => {
     <ProfileContext.Provider
       value={{
         username,
+        followers,
         setUsername,
       }}
     >

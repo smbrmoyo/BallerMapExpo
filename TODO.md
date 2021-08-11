@@ -1,5 +1,7 @@
 - Start commenting!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+- Delay rendering until profile partition found
+
 - PostDescription
 
 - Modify createPost with version in SnapClone

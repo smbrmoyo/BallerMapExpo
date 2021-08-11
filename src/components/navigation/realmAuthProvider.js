@@ -15,7 +15,8 @@ const AuthProvider = ({ children, navigation }) => {
   const [userRealm, setUserRealm] = useState(null);
   const [profilePartition, setProfilePartition] = useState(null);
   const [signUpTrigger, setSignUpTrigger] = useState(false);
-  //const navigation = useNavigation();
+  // const navigation = useNavigation();
+  // app.currentUser.follow("letch");
 
   useEffect(() => {
     if (!user) {

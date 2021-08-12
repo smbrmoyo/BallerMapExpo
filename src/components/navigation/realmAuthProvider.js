@@ -15,6 +15,7 @@ const AuthProvider = ({ children, navigation }) => {
   const [userRealm, setUserRealm] = useState(null);
   const [profilePartition, setProfilePartition] = useState(null);
   const [signUpTrigger, setSignUpTrigger] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(true);
   // const navigation = useNavigation();
   // app.currentUser.follow("letch");
 
@@ -51,6 +52,7 @@ const AuthProvider = ({ children, navigation }) => {
           const uProfilePartition = userDoc[0].uProfilePartition;
           setProfilePartition(uProfilePartition);
           if (profilePartition !== undefined) {
+            setLoadingUser(false);
             console.log(" AUTHPROVIDER!!!: profile partition trouvée");
           }
         }
@@ -111,7 +113,8 @@ const AuthProvider = ({ children, navigation }) => {
         signOut,
         signUpTrigger,
         user,
-        profilePartition, // profle partition
+        profilePartition,
+        loadingUser, // profle partition
       }}
     >
       {children}

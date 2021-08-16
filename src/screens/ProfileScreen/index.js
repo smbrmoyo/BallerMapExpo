@@ -33,6 +33,7 @@ import LoadingScreen from "../../screens/LoadingScreen";
 import FollowButton from "../../components/FollowButton";
 import { useIsFocused } from "@react-navigation/native";
 import { useAuth } from "../../components/navigation/realmAuthProvider";
+import { useProfile } from "../../components/navigation/Providers/profileProvider";
 import { wsize, hsize } from "../../utils/Dimensions";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -53,16 +54,17 @@ const ProfileScreen = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { user, signOut } = useAuth();
   const [userExtraInfo, setUserExstraInfo] = useState(null);
+  const { username } = useProfile();
   const isFocused = useIsFocused();
-  useEffect(() => {
-    //userAPI.getUserInfo(user.uid).then((doc) => setUserExstraInfo(doc.data()));
-  }, [isFocused]);
+  /*useEffect(() => {
+    userAPI.getUserInfo(user.uid).then((doc) => setUserExstraInfo(doc.data()));
+  }, [isFocused]);*/
+
+  //console.log(user);
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "",
-      //headerTitleAlign: 'left',
-      //headerBackTitleVisible: false,
+      //title: "",
       headerLeft: () => (
         <TouchableOpacity
           activeOpacity={0.7}
@@ -76,10 +78,7 @@ const ProfileScreen = ({ navigation, route }) => {
       headerTitle: () => (
         <View style={styles.headerTitle}>
           <TouchableOpacity activeOpacity={0.7} style={styles.iconHeaderTitle}>
-            <Text style={styles.textHeader}>
-              {/*firebase.auth().currentUser.email*/}
-              email
-            </Text>
+            <Text style={styles.textHeader}>{username}</Text>
           </TouchableOpacity>
         </View>
       ),
@@ -96,7 +95,7 @@ const ProfileScreen = ({ navigation, route }) => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [username]);
 
   renderHeader = () => (
     <View style={styles.header}>
@@ -221,7 +220,7 @@ const ProfileScreen = ({ navigation, route }) => {
                 <ProfilePicture size={70} />
               </TouchableOpacity>
               <View style={styles.profileNameContainer}>
-                <Text style={styles.profileName}>{/*user.email*/}</Text>
+                <Text style={styles.profileName}>{username}</Text>
                 <Text style={styles.profileType}>userExtraInfo.status</Text>
               </View>
             </View>

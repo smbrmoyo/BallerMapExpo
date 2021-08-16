@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     borderRadius: 35,
     borderWidth: 0.5,
     borderColor: "white",
-    backgroundColor: "rgba(0,0,0,0.2)",
+    backgroundColor: "#F4F4F4",
     shadowColor: "grey",
     shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.5,

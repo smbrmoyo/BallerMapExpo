@@ -20,7 +20,7 @@ import * as Font from "expo-font";
 export default function App() {
   const [loaded] = Font.useFonts({
     Comfortaa: require("./src/assets/fonts/Comfortaa-VariableFont_wght.ttf"),
-    ComfortaaBold: require("./src/assets/fonts/Comfortaa-VariableFont_wght.ttf"),
+    ComfortaaBold: require("./src/assets/fonts/Comfortaa/static/Comfortaa-Bold.ttf"),
     TimeBurner: require("./src/assets/fonts/timeburner.regular.ttf"),
     TimeBurnerBold: require("./src/assets/fonts/timeburner.bold.ttf"),
     VaguelyFatal: require("./src/assets/fonts/Vaguely_Fatal.ttf"),

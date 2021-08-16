@@ -1,10 +1,15 @@
 import { StyleSheet } from "react-native";
+import { hsize, wsize } from "../../utils/Dimensions";
 
 const styles = StyleSheet.create({
   screen: {
-    paddingHorizontal: 10,
+    paddingHorizontal: wsize(20),
     backgroundColor: "white",
     flex: 1,
+  },
+  textHeader: {
+    fontSize: 20,
+    fontFamily: "ComfortaaBold",
   },
   container: {
     flex: 1,
@@ -13,37 +18,42 @@ const styles = StyleSheet.create({
   locationContainer: {
     //alignItems: "center",
     justifyContent: "center",
-    marginVertical: 10,
+    marginVertical: hsize(10),
     //marginBottom: 50,
     zIndex: 1,
   },
   title: {
     flexDirection: "row",
-    paddingHorizontal: 10,
+    paddingHorizontal: wsize(10),
+    marginVertical: hsize(5),
     alignContent: "center",
-    backgroundColor: "green",
+    //backgroundColor: "green",
     alignItems: "center",
   },
-  titleLocation: {
-    fontSize: 20,
-    fontWeight: "300",
+  titleText: {
+    fontSize: hsize(20),
+    fontWeight: "400",
+    fontFamily: "ComfortaaBold",
   },
   addressContainer: {
-    padding: 10,
+    padding: hsize(10),
     height: "100%",
   },
   dateContainer: {
     justifyContent: "center",
-    marginBottom: 20,
+    marginVertical: hsize(20),
   },
   descriptionContainer: {
     justifyContent: "center",
-    marginBottom: 20,
+    marginVertical: hsize(20),
   },
-  usersContainer: {},
+  usersContainer: {
+    justifyContent: "center",
+    marginVertical: hsize(20),
+  },
   TagsContainer: {
     justifyContent: "center",
-    marginBottom: 20,
+    marginVertical: hsize(20),
   },
   iconTitleContainer: {
     //backgroundColor: "#a2a2a2",
@@ -63,10 +73,18 @@ const styles = StyleSheet.create({
   },
   locationText: {},
   textInput: {
-    padding: 10,
+    padding: hsize(10),
     backgroundColor: "#eee",
-    marginVertical: 5,
-    borderRadius: 5,
+    marginVertical: hsize(5),
+    borderRadius: hsize(5),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
   },
   separator: {
     backgroundColor: "#efefef",
@@ -87,7 +105,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
-    marginVertical: 10,
+    marginVertical: hsize(10),
   },
 });
 

@@ -307,7 +307,7 @@ const HomeMap = ({ props }) => {
           })*/}
             {state.people.map((location, index) => (
               <Marker key={index} coordinate={location.coordinate}>
-                <Bitmoji />
+                <Bitmoji avatarId={"99397600010_1-s5"} />
               </Marker>
             ))}
           </MapView>

@@ -7,6 +7,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     flex: 1,
   },
+  textHeader: {
+    fontSize: 20,
+    fontFamily: "ComfortaaBold",
+  },
   container: {
     flex: 1,
     //backgroundColor: "#743cff",
@@ -37,16 +41,19 @@ const styles = StyleSheet.create({
   },
   dateContainer: {
     justifyContent: "center",
-    marginBottom: hsize(20),
+    marginVertical: hsize(20),
   },
   descriptionContainer: {
     justifyContent: "center",
-    marginBottom: hsize(20),
+    marginVertical: hsize(20),
   },
-  usersContainer: {},
+  usersContainer: {
+    justifyContent: "center",
+    marginVertical: hsize(20),
+  },
   TagsContainer: {
     justifyContent: "center",
-    marginBottom: hsize(20),
+    marginVertical: hsize(20),
   },
   iconTitleContainer: {
     //backgroundColor: "#a2a2a2",
@@ -70,6 +77,14 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     marginVertical: hsize(5),
     borderRadius: hsize(5),
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 1.41,
+    elevation: 2,
   },
   separator: {
     backgroundColor: "#efefef",

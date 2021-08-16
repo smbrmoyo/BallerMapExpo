@@ -17,11 +17,11 @@ import styles from "./styles";
   );
 }*/
 
-console.log(
+/*console.log(
   libmoji.getAvatarId(
     "https://render.bitstrips.com/v2/cpanel/8968038-99397600010_1-s5-v1.png?transparent=1&palette=1"
   )
-);
+);*/
 
 const Bitmoji = ({ avatarId }) => {
   const comicId = libmoji.getComicId(libmoji.randTemplate(libmoji.templates));
@@ -41,7 +41,7 @@ const Bitmoji = ({ avatarId }) => {
         resizeMode: "contain",
       }}
       source={{
-        uri: libmoji.buildRenderUrl("10102514", avatarId, 1, 1, outfit),
+        uri: libmoji.buildRenderUrl("10102514", avatarId, 1, 2, outfit),
       }}
     />
   );

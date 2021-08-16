@@ -1,14 +1,17 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import Realm from "realm";
-import { AuthContext, useAuth } from "../realmAuthProvider";
+import {  useAuth, getUprofile } from "../realmAuthProvider";
 
 export const ProfileContext = React.createContext();
 
 const ProfileProvider = ({ children }) => {
+  const profileDoc = getUprofile().then(result => {
+      const [profileDoc, setProfileDoc] = useState(result);
+  })
   const { user, profilePartition } = useAuth();
-  const [username, setUsername] = useState();
-  const [followers, setFollowers] = useState();
-  const [following, setFollowing] = useState();
+  const [username, setUsername] = useState(profileDoc.username);
+  const [followers, setFollowers] = useState(profileDoc.followers);
+  const [following, setFollowing] = useState(profileDoc.following);
   const profileRealmRef = useRef();
 
   // User profile realm config

@@ -32,6 +32,7 @@ import { useAuth } from "../../components/navigation/realmAuthProvider";
 const EditProfileScreen = () => {
   const { user, profilePartition, logout } = useAuth();
   const { username, setUsername } = useProfile();
+  const [modifUsername, setModifUsername] = useState("");
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
   const [transferred, setTransferred] = useState(0);
@@ -54,6 +55,8 @@ const EditProfileScreen = () => {
   };
 
   const handleUpdate = async () => {
+    //setUsername(modifUsername);
+
     // Open a realm
     const syncConfig = {
       user: user,
@@ -70,7 +73,7 @@ const EditProfileScreen = () => {
             if (usernameRef !== undefined) {
               // condition a executer plus haut / plus tot
               uProfile.username = usernameRef;
-              setUsername(usernameRef);
+              setUsername(modifUsername);
               console.log(`HANDLE UPDATE !!! : username set to '${username}'`);
             }
           });
@@ -280,14 +283,17 @@ const EditProfileScreen = () => {
             <View style={styles.action}>
               <FontAwesome name="user-o" color="#333333" size={20} />
               <TextInput
-                placeholder="First Name"
-                placeholderTextColor="#666666"
+                placeholder={usernameRef.current}
+                placeholderTextColor="#CDCDCD"
                 autoCorrect={false}
-                value={usernameRef.current ? usernameRef.current : "Puto"}
+                autoCapitalize="none"
+                /*value={usernameRef.current ? usernameRef.current : "Puto"}
                 onChangeText={(txt) => {
                   usernameRef.current = txt;
                   //this.value = txt;
-                }}
+                }}*/
+                value={modifUsername}
+                onChangeText={(txt) => setModifUsername(txt)}
                 style={styles.textInput}
               />
             </View>

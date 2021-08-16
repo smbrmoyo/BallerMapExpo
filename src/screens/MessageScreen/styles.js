@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
   userNameText: {
     fontSize: 14,
     fontWeight: "bold",
-    //font-family: 'Lato-Regular',
+    fontFamily: "ComfortaaBold",
   },
   postTimeText: {
     fontSize: 12,

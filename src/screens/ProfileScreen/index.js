@@ -64,9 +64,7 @@ const ProfileScreen = ({ navigation, route }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "",
-      //headerTitleAlign: 'left',
-      //headerBackTitleVisible: false,
+      //title: "",
       headerLeft: () => (
         <TouchableOpacity
           activeOpacity={0.7}
@@ -97,7 +95,7 @@ const ProfileScreen = ({ navigation, route }) => {
         </TouchableOpacity>
       ),
     });
-  }, []);
+  }, [username]);
 
   renderHeader = () => (
     <View style={styles.header}>

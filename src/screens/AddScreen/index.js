@@ -20,10 +20,12 @@ import {
   KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
+import * as Animatable from "react-native-animatable";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import { useHeaderHeight } from "@react-navigation/stack";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import DatePicker from "react-native-date-picker";
 
 import PlaceRow from "./PlaceRow";
 import ProfilePicture from "../../components/ProfilePicture";
@@ -41,7 +43,7 @@ const AddScreen = ({ props, navigation, route }) => {
   const [address, setAddress] = useState(null);
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
-  const [date, setDate] = useState(new Date(1598051730000));
+  const [date, setDate] = useState(new Date());
   const [time, setTime] = useState(new Date(1598051730000));
   const [mode, setMode] = useState("time");
   const [show, setShow] = useState(false);
@@ -126,173 +128,163 @@ const AddScreen = ({ props, navigation, route }) => {
         backgroundColor="rgba(0,0,0,0.0)" /*transparent*/
         barStyle="dark-content"
       />
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.container}
-        keyboardVerticalOffset={headerHeight}
-      >
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <>
-            <ScrollView style={styles.screen}>
-              <View style={styles.locationContainer}>
-                <View style={styles.title}>
-                  <View style={styles.iconTitleContainer}>
-                    <Entypo name="location-pin" size={25} color={"#743cff"} />
-                  </View>
 
-                  <Text style={styles.titleLocation}>Location</Text>
-                </View>
-                <View style={styles.adressContainer}>
-                  <GooglePlacesAutocomplete
-                    placeholder="Address"
-                    onPress={(data, details = null) => {
-                      // 'details' is provided when fetchDetails = true
-                      setAddress(details.geometry.location);
-                      //console.log(details);
-                    }}
-                    enablePoweredByContainer={false}
-                    suppressDefaultStyles
-                    currentLocation={true}
-                    currentLocationLabel="Current location"
-                    styles={{
-                      textInput: styles.textInput,
-                      container: styles.autocompleteContainer,
-                      listView: styles.listView,
-                      separator: styles.separator,
-                    }}
-                    fetchDetails
-                    query={{
-                      key: "AIzaSyCL4evs3-ff9p7pd_KhW9fO-lcAybk6Lhk",
-                      language: "en",
-                    }}
-                    renderRow={(data) => <PlaceRow data={data} />}
-                    renderDescription={(data) =>
-                      data.description || data.vicinity
-                    }
-                  />
-                </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView style={styles.screen}>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.container}
+            keyboardVerticalOffset={headerHeight}
+          >
+            <View style={styles.locationContainer}>
+              <View style={styles.title}>
+                <Text style={styles.titleText}>Address</Text>
               </View>
-              <View style={styles.dateContainer}>
-                <View style={styles.title}>
-                  <View style={styles.iconTitleContainer}>
-                    <Entypo name="calendar" size={24} color="#743cff" />
-                  </View>
-                  <Text style={styles.titleLocation}>Date & Time</Text>
-                </View>
+              <View style={styles.adressContainer}>
+                <GooglePlacesAutocomplete
+                  placeholder="Address"
+                  placeholderTextColor="#CDCDCD"
+                  onPress={(data, details = null) => {
+                    // 'details' is provided when fetchDetails = true
+                    setAddress(details.geometry.location);
+                    //console.log(details);
+                  }}
+                  enablePoweredByContainer={false}
+                  suppressDefaultStyles
+                  currentLocation={true}
+                  currentLocationLabel="Current location"
+                  styles={{
+                    textInput: styles.textInput,
+                    container: styles.autocompleteContainer,
+                    listView: styles.listView,
+                    separator: styles.separator,
+                  }}
+                  fetchDetails
+                  query={{
+                    key: "AIzaSyCL4evs3-ff9p7pd_KhW9fO-lcAybk6Lhk",
+                    language: "en",
+                  }}
+                  renderRow={(data) => <PlaceRow data={data} />}
+                  renderDescription={(data) =>
+                    data.description || data.vicinity
+                  }
+                />
+              </View>
+            </View>
+            <View style={styles.dateContainer}>
+              <View style={styles.title}>
+                <Text style={styles.titleText}>Date & Time</Text>
+              </View>
+              <View
+                style={{
+                  //height: 100,
+                  width: "100%",
+                  borderWidth: 1,
+                  borderColor: "grey",
+                  borderRadius: 10,
+                  alignContent: "center",
+                  padding: 5,
+                  //justifyContent: "center",
+                }}
+              >
+                <Text>Pick a date</Text>
+                {/*<DateTimePicker
+                  testID="datePicker"
+                  value={date}
+                  mode={"date"}
+                  is24Hour={true}
+                  display="compact"
+                  onChange={onChange}
+                  //style={{ alignContent: "center" }}
+                />
+
                 <View
                   style={{
-                    //height: 100,
+                    flex: 2,
+                    //alignItems: "center",
+                    height: "100%",
                     width: "100%",
-                    borderWidth: 1,
-                    borderColor: "grey",
-                    borderRadius: 10,
-                    alignContent: "center",
-                    padding: 5,
                     //justifyContent: "center",
                   }}
                 >
-                  <Text>Pick a date</Text>
-                  <DateTimePicker
-                    testID="datePicker"
+                  <DatePicker
+                    testID="timePickerOne"
                     value={date}
-                    mode={"date"}
+                    mode={"time"}
+                    style={{ flex: 1 }}
                     is24Hour={true}
-                    display="compact"
+                    display="inline"
                     onChange={onChange}
-                    //style={{ alignContent: "center" }}
                   />
-
-                  <View
-                    style={{
-                      flex: 2,
-                      //alignItems: "center",
-                      height: "100%",
-                      width: "100%",
-                      //justifyContent: "center",
-                    }}
-                  >
-                    <DateTimePicker
-                      testID="timePickerOne"
-                      value={date}
-                      mode={"time"}
-                      style={{ flex: 1 }}
-                      is24Hour={true}
-                      display="inline"
-                      onChange={onChange}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flex: 2,
-                      //alignItems: "center",
-                      height: "100%",
-                      width: "100%",
-                      //justifyContent: "center",
-                    }}
-                  >
-                    <DateTimePicker
-                      testID="timePickerTwo"
-                      value={date}
-                      mode={"time"}
-                      style={{ flex: 1 }}
-                      is24Hour={true}
-                      display="inline"
-                      onChange={onChange}
-                    />
-                  </View>
                 </View>
+                <View
+                  style={{
+                    flex: 2,
+                    //alignItems: "center",
+                    height: "100%",
+                    width: "100%",
+                    //justifyContent: "center",
+                  }}
+                >
+                  <DateTimePicker
+                    testID="timePickerTwo"
+                    value={date}
+                    mode={"time"}
+                    style={{ flex: 1 }}
+                    is24Hour={true}
+                    display="inline"
+                    onChange={onChange}
+                  />
+                </View>*/}
+                <DatePicker date={date} onDateChange={setDate} />
               </View>
-              <View style={styles.descriptionContainer}>
-                <View style={styles.title}>
-                  <View style={styles.iconTitleContainer}>
-                    <Ionicons name="pencil-outline" size={24} color="#743cff" />
-                  </View>
-                  <Text style={styles.titleLocation}>Description</Text>
-                </View>
-
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="In a few words"
-                  value={description}
-                  //OnSubmitEditing={(text) => setDescription(text)}
-                  //onEndEditing={(text) => setDescription(text)}
-                  onChangeText={(text) => setDescription(text)}
-                />
+            </View>
+            <View style={styles.descriptionContainer}>
+              <View style={styles.title}>
+                <Text style={styles.titleText}>Description</Text>
               </View>
 
-              <View style={styles.TagsContainer}>
-                <View style={styles.title}>
-                  <View style={styles.iconTitleContainer}>
-                    <Fontisto name="hashtag" size={24} color="#743cff" />
-                  </View>
-                  <Text style={styles.titleLocation}>Hashtags</Text>
-                </View>
+              <TextInput
+                style={styles.textInput}
+                placeholder="In a few words"
+                placeholderTextColor="#CDCDCD"
+                value={description}
+                //OnSubmitEditing={(text) => setDescription(text)}
+                //onEndEditing={(text) => setDescription(text)}
+                onChangeText={(text) => setDescription(text)}
+              />
+            </View>
 
-                <TextInput
-                  style={styles.textInput}
-                  placeholder="#"
-                  value={tags}
-                  //OnSubmitEditing={(textTag) => setTags(textTag)}
-                  //onEndEditing={(textTag) => setTags(textTag)}
-                  onChangeText={(textTag) => setTags(textTag)}
-                />
+            <View style={styles.TagsContainer}>
+              <View style={styles.title}>
+                <Text style={styles.titleText}>Hashtags</Text>
               </View>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={{ justifyContent: "center", alignItems: "center" }}
-                onPress={checkNavigation}
-              >
-                <Text style={{ fontWeight: "bold", color: "#743cff" }}>
-                  Confirm
-                </Text>
-              </TouchableOpacity>
-              <View style={styles.usersContainer}></View>
-              {/*<Text style={{ fontWeight: "bold" }}>{route.params.address.lat}</Text>
+
+              <TextInput
+                style={styles.textInput}
+                placeholder="#"
+                placeholderTextColor="#CDCDCD"
+                value={tags}
+                //OnSubmitEditing={(textTag) => setTags(textTag)}
+                //onEndEditing={(textTag) => setTags(textTag)}
+                onChangeText={(textTag) => setTags(textTag)}
+              />
+            </View>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              style={{ justifyContent: "center", alignItems: "center" }}
+              onPress={checkNavigation}
+            >
+              <Text style={{ fontWeight: "bold", color: "#743cff" }}>
+                Confirm
+              </Text>
+            </TouchableOpacity>
+            <View style={styles.usersContainer}></View>
+            {/*<Text style={{ fontWeight: "bold" }}>{route.params.address.lat}</Text>
         <Text style={{ fontWeight: "bold" }}>{route.params.address.lng}</Text>*/}
-            </ScrollView>
-          </>
-        </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+        </ScrollView>
+      </TouchableWithoutFeedback>
     </>
   );
 };

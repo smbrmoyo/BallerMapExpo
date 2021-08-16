@@ -73,10 +73,10 @@ const Stack = createStackNavigator();
 
 const MessageStack = ({ navigation, route }) => {
   return (
-    <Stack.Navigator initialRouteName="Find">
+    <Stack.Navigator initialRouteName="MessageHome">
       <Stack.Screen
-        name="Find"
-        component={FindScreen}
+        name="MessageHome"
+        component={MessageScreen}
         options={({ navigation, route }) => ({
           title: "",
           headerStyle: {

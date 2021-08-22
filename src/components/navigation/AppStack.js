@@ -66,18 +66,6 @@ const AppStack = (route) => {
       }}
     >
       <Tab.Screen
-        name="MessageStack"
-        component={MessageStack}
-        options={({ route }) => ({
-          tabBarLabel: "Message",
-          tabBarVisible: getTabBarVisibility(route),
-          tabBarIcon: ({ color, size }) => (
-            <Feather name="message-square" size={26} color={color} />
-          ),
-          //tabBarBadge: 3,
-        })}
-      />
-      <Tab.Screen
         name="Map"
         component={MapStack}
         options={({ route }) => ({
@@ -107,7 +95,21 @@ const AppStack = (route) => {
 export default AppStack;
 
 {
-  /*<Tab.Screen
+  /*
+  <Tab.Screen
+        name="MessageStack"
+        component={MessageStack}
+        options={({ route }) => ({
+          tabBarLabel: "Message",
+          tabBarVisible: getTabBarVisibility(route),
+          tabBarIcon: ({ color, size }) => (
+            <Feather name="message-square" size={26} color={color} />
+          ),
+          //tabBarBadge: 3,
+        })}
+      />
+  
+  <Tab.Screen
         name="Home"
         component={HomeStack}
         options={({ route }) => ({

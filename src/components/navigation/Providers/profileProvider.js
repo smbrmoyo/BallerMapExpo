@@ -1,15 +1,14 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import Realm from "realm";
-import {  useAuth, getUprofile } from "../realmAuthProvider";
+import { useAuth, getUprofile } from "../realmAuthProvider";
 
 export const ProfileContext = React.createContext();
 
 const ProfileProvider = ({ children }) => {
-  const profileDoc = getUprofile().then(result => {
-      const [profileDoc, setProfileDoc] = useState(result);
-  })
+  const profileDocRef = getUprofile();
+  const [profileDoc, setProfileDoc] = useState(profileDocRef);
   const { user, profilePartition } = useAuth();
-  const [username, setUsername] = useState(profileDoc.username);
+  const [username, setUsername] = useState(getUprofile().username);
   const [followers, setFollowers] = useState(profileDoc.followers);
   const [following, setFollowing] = useState(profileDoc.following);
   const profileRealmRef = useRef();
@@ -37,7 +36,7 @@ const ProfileProvider = ({ children }) => {
           setFollowers(syncFollowers);
           setFollowing(syncFollowing);
           console.log(`PROFILEPROVIDER!!!! : 
-         username: ${username}, followers: ${followers}`);
+         username: ${username}, followers: ${syncFollowers}`);
         } else {
           console.log("PROFILEPROVIDER!!!! : No profile found");
         }

@@ -7,6 +7,7 @@ import FindScreen from "../../screens/FindScreen";
 import StoryScreen from "../../screens/StoryScreen";
 import StoryScreen4 from "../../screens/StoryScreen4/App";
 import AddScreen from "../../screens/AddScreen";
+import Probe from "../../screens/Probe";
 import UserSearchScreen from "../../screens/UserSearchScreen";
 import DescriptionScreen from "../../screens/DescriptionScreen";
 import OtherProfileScreen from "../../screens/OtherProfileScreen";
@@ -51,6 +52,7 @@ const MapStack = () => {
             elevation: 0,
             height: 80,
           },
+
           /*headerRight: () => (
             <View style={{ marginLeft: 10 }}>
               <Entypo name="cross" size={24} color="black" />

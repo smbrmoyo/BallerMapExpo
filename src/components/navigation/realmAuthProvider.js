@@ -101,7 +101,7 @@ const AuthProvider = ({ children, navigation }) => {
     // TODO: Log out the current user and use the setUser() function to set the current user to null.
     user
       .logOut()
-      .then(setUser(null))
+      .then(() => setUser(null))
       .catch((error) => console.log(error));
   };
 
@@ -133,4 +133,15 @@ const useAuth = () => {
   return auth;
 };
 
-export { AuthProvider, useAuth };
+
+const getUprofile = async (profilePartition) => {
+  // get le profile Doc
+
+  const mongodb = app.currentUser.mongoClient("mongodb-atlas");
+  const userData = mongodb.db("AYTO_Dev").collection("uProfile");
+  const uProfileDoc = await userData.findOne({partition: profilePartition});
+  return uProfileDoc;
+}
+
+
+export { AuthProvider, useAuth, getUprofile };

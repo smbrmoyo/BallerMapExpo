@@ -92,10 +92,30 @@ async function signIn(cred) {
 
 //console.log(Realm.defaultPath)
 
-//app = getRealmApp();
+app = getRealmApp();
 
-const creds = Realm.Credentials.emailPassword('briantest', 'briantest');
-const u = signIn(creds).then(result => console.log(result));
+const creds = Realm.Credentials.emailPassword('brianmoyou', 'brianmoyou');
+
+
+const user = app.logIn(creds)
+    .then(() => {
+      console.log(`le username est ${getUprofile("jjj")}`)}).
+    catch(error => console.log(error));
+
+const getUprofile = async (profilePartition) => {
+  // get le user Doc
+  const mongodb = app.currentUser.mongoClient("mongodb-atlas");
+  const userData = mongodb.db("AYTO_Dev").collection("UserData");
+  const {uProfilePartition} = await userData.findOne({"partition": app.currentUser.id});
+  const uProfileCollection = mongodb.db("AYTO_Dev").collection("uProfile");
+  var res = null ;
+  const userDoc = await uProfileCollection.findOne({"partition":uProfilePartition})
+
+  return userDoc
+}
+
+const result = getUprofile().then(result => {console.log(result.partition) });
+
 /*app = getRealmApp();
 const realmPath = Realm.defaultPath;
 Realm.App.Sync.initiateClientReset(app, realmPath).catch(error =>

@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     // marginTop: 5,
     fontWeight: "bold",
+    //fontFamily: "ComfortaaBold",
   },
   textSign: {
     fontSize: 14,

@@ -41,10 +41,12 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import Feather from "react-native-vector-icons/Feather";
+navigator.geolocation = require("@react-native-community/geolocation");
 
 const AddScreen = ({ props, navigation, route }) => {
   const [address, setAddress] = useState(null); // Put all this in one state and use ... operator
   const [description, setDescription] = useState("");
+  const [name, setName] = useState("");
   const [tags, setTags] = useState(""); // Should be list of strings. Will see with Max
   const [dateTime, setDateTime] = useState(new Date());
   const [visible, setVisible] = useState(false);
@@ -69,7 +71,6 @@ const AddScreen = ({ props, navigation, route }) => {
         backgroundColor: "white",
         //shadowColor: "black",
         //elevation: 5,
-        height: 80,
       },
       //headerTitleAlign: 'left',
       headerBackTitleVisible: true,
@@ -133,7 +134,7 @@ const AddScreen = ({ props, navigation, route }) => {
   }
 
   return (
-    <>
+    <View style={{ flex: 1 }}>
       <StatusBar
         translucent
         backgroundColor="rgba(0,0,0,0.0)" /*transparent*/
@@ -150,15 +151,47 @@ const AddScreen = ({ props, navigation, route }) => {
         onCancel={() => setVisible(false)}
       />
 
-      <TouchableWithoutFeedback
-        onPress={() => (Keyboard.dismiss, setVisible(false))}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+        //keyboardVerticalOffset={headerHeight}
       >
-        <ScrollView style={styles.screen}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.container}
-            keyboardVerticalOffset={headerHeight}
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Animatable.View
+            //animation="fadeInUpBig"
+            style={{
+              padding: 10,
+              flex: 1,
+              justifyContent: "space-around",
+            }}
           >
+            <View style={styles.descriptionContainer}>
+              <View style={styles.title}>
+                <Text style={styles.titleText}>Name</Text>
+              </View>
+
+              <TextInput
+                style={{
+                  padding: hsize(10),
+                  backgroundColor: "#eee",
+                  marginVertical: hsize(5),
+                  borderRadius: hsize(5),
+                  shadowColor: "#000",
+                  shadowOffset: {
+                    width: 0,
+                    height: 1,
+                  },
+                  shadowOpacity: 0.2,
+                  shadowRadius: 1.41,
+                  elevation: 2,
+                }}
+                placeholder="Give your run a name"
+                placeholderTextColor="#CDCDCD"
+                value={name}
+                onChangeText={(text) => setName(text)}
+              />
+            </View>
+
             <View style={styles.locationContainer}>
               <View style={styles.title}>
                 <Text style={styles.titleText}>Address</Text>
@@ -166,9 +199,11 @@ const AddScreen = ({ props, navigation, route }) => {
               <View style={styles.adressContainer}>
                 <GooglePlacesAutocomplete
                   placeholder="Address"
+                  getDefaultValue={() => {
+                    return "Address"; // text input default value
+                  }}
                   placeholderTextColor="#CDCDCD"
                   onPress={(data, details = null) => {
-                    // 'details' is provided when fetchDetails = true
                     setAddress(details.geometry.location);
                     //console.log(details);
                   }}
@@ -191,6 +226,7 @@ const AddScreen = ({ props, navigation, route }) => {
                   renderDescription={(data) =>
                     data.description || data.vicinity
                   }
+                  debounce={200}
                 />
               </View>
             </View>
@@ -339,10 +375,10 @@ const AddScreen = ({ props, navigation, route }) => {
                 </View>
               </TouchableOpacity>
             </View>
-          </KeyboardAvoidingView>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </>
+          </Animatable.View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </View>
   );
 };
 

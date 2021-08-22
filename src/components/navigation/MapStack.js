@@ -7,7 +7,7 @@ import FindScreen from "../../screens/FindScreen";
 import StoryScreen from "../../screens/StoryScreen";
 import StoryScreen4 from "../../screens/StoryScreen4/App";
 import AddScreen from "../../screens/AddScreen";
-import Probe from "../../screens/Probe";
+import AttendanceScreen from "../../screens/AttendanceScreen";
 import UserSearchScreen from "../../screens/UserSearchScreen";
 import DescriptionScreen from "../../screens/DescriptionScreen";
 import OtherProfileScreen from "../../screens/OtherProfileScreen";
@@ -95,6 +95,19 @@ const MapStack = () => {
       <Stack.Screen
         name="UserSearch"
         component={UserSearchScreen}
+        options={({ navigation, route }) => ({
+          title: "",
+          headerStyle: {
+            backgroundColor: "white",
+            //shadowColor: "black",
+            //elevation: 5,
+            height: 80,
+          },
+        })}
+      />
+      <Stack.Screen
+        name="Attendance"
+        component={AttendanceScreen}
         options={({ navigation, route }) => ({
           title: "",
           headerStyle: {

@@ -71,22 +71,32 @@ const OtherProfileScreen = ({ navigation }) => {
     //userAPI.getUserInfo(user.uid).then((doc) => setUserExstraInfo(doc.data()));
   }, [isFocused]);
 
-  /*navigation.setOptions({
-    headerRight: () => (
-      <TouchableOpacity activeOpacity={0.7}
-        onPress={() => {
-          setModalVisible(true);
-        }}
-      >
-        <Entypo
-          name="dots-three-horizontal"
-          size={24}
-          color="black"
-          style={{ marginRight: 15 }}
-        />
-      </TouchableOpacity>
-    ),
-  });*/
+  function TabContainer(props) {
+    return (
+      <View style={styles.tabContainer}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => props.setCurrentTab(props.posts)}
+        >
+          <MaterialCommunityIcons
+            name="grid"
+            size={24}
+            color={props.currentTab === props.posts ? "black" : "grey"}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => props.setCurrentTab(props.tags)}
+        >
+          <Feather
+            name="user"
+            size={24}
+            color={props.currentTab === props.tags ? "black" : "grey"}
+          />
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   useLayoutEffect(() => {
     navigation.setOptions({

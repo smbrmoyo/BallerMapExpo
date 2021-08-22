@@ -1,6 +1,14 @@
 import React from "react";
 import BottomSheet from "reanimated-bottom-sheet";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  Alert,
+} from "react-native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 import { wsize, hsize } from "../../utils/Dimensions";
 import ProfilePicture from "../ProfilePicture";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -12,8 +20,11 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import people from "../../assets/data/people";
 
-const BottomSheetMap = ({ navigation, route }) => {
+const BottomSheetMap = (props) => {
+  navigation = useNavigation();
+
   renderHeader = () => (
     <View style={styles.header}>
       <View style={styles.panelHeader}>
@@ -56,9 +67,10 @@ const BottomSheetMap = ({ navigation, route }) => {
               flexDirection: "row",
               borderWidth: 1,
               borderColor: "#E9E8E8",
+
               borderRadius: 15,
-              height: 30,
-              width: 150,
+              height: hsize(40),
+              width: wsize(150),
               alignItems: "center",
               justifyContent: "center",
             }}
@@ -76,8 +88,8 @@ const BottomSheetMap = ({ navigation, route }) => {
                 borderWidth: 1,
                 borderColor: "#E9E8E8",
                 borderRadius: 15,
-                height: 30,
-                width: 150,
+                height: hsize(40),
+                width: wsize(150),
                 alignItems: "center",
                 justifyContent: "center",
               }}
@@ -108,6 +120,7 @@ const BottomSheetMap = ({ navigation, route }) => {
           >
             Attendance List
           </Text>
+
           <View
             style={{
               flexDirection: "column",
@@ -124,9 +137,19 @@ const BottomSheetMap = ({ navigation, route }) => {
               justifyContent: "center",
             }}
           >
-            <View>
-              <Text> All confirmed users</Text>
-            </View>
+            <TouchableOpacity onPress={() => navigation.navigate("Attendance")}>
+              <FlatList
+                data={people}
+                keyExtractor={(item) => item.id}
+                scrollEnabled={false}
+                numColumns={6}
+                renderItem={(item) => (
+                  <View style={{ margin: 5 }}>
+                    <ProfilePicture size={hsize(40)} />
+                  </View>
+                )}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>

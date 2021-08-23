@@ -25,8 +25,8 @@ import Spinner from "./Spinner";
 import places from "../../assets/data/places";
 
 const searchClient = algoliasearch(
-  "latency",
-  "6be0576ff61c053d5f9a3225e2a90f76"
+  "8ME2TD4ATH",
+  "43c16f5cb5ad21820b506a7f9c74ded0"
 );
 
 const styles = StyleSheet.create({
@@ -86,19 +86,17 @@ class Filters extends Component {
       <View style={styles.mainContainer}>
         <InstantSearch
           searchClient={searchClient}
-          indexName="instant_search"
+          indexName="places_BallerMap"
           onSearchStateChange={this.onSearchStateChange}
           searchState={this.state.searchState}
         >
-          <ConnectedMenu attribute="categories" />
+          <ConnectedMenu attribute="name" />
           <Stats
             searchState={this.state.searchState}
             onSearchStateChange={this.onSearchStateChange}
           />
           <VirtualSearchBox />
-          <VirtualRefinementList attribute="type" />
-          <VirtualRange attribute="price" />
-          <VirtualRange attribute="rating" />
+          <VirtualRefinementList attribute="name" />
         </InstantSearch>
       </View>
     );
@@ -130,7 +128,7 @@ class Menu extends Component {
     const facets = this ? (
       <FlatList
         data={items}
-        keyExtractor={(item) => item.label}
+        keyExtractor={(item) => item.name}
         renderItem={this._renderRow}
       />
     ) : null;
@@ -169,12 +167,12 @@ class Menu extends Component {
 
     const label = this.props.isFromSearch ? (
       <Highlight
-        attribute="label"
+        attribute="name"
         hit={refinement}
         highlightProperty="_highlightResult"
       />
     ) : (
-      refinement.label
+      refinement.name
     );
 
     return (

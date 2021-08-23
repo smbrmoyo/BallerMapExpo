@@ -52,7 +52,7 @@ function SearchBarFollowers(props) {
   );
 }
 
-function FollowRow(props) {
+function FollowRow(item, isFollowing, onFollowPress) {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -60,9 +60,9 @@ function FollowRow(props) {
       onPress={() => {
         props.navigate("OtherProfile", {
           user: {
-            id: props.item.key,
+            id: item.key,
             //photo: item.photoURL,
-            userName: props.item.name,
+            userName: item.name,
           },
         });
       }}
@@ -89,7 +89,7 @@ function FollowRow(props) {
                 fontSize: 18,
               }}
             >
-              __letch
+              {item.username}
             </Text>
             <Text
               style={{
@@ -97,7 +97,7 @@ function FollowRow(props) {
                 color: "grey",
               }}
             >
-              Maxime Tchagou
+              {item.username}
             </Text>
           </View>
         </View>
@@ -119,7 +119,7 @@ function FollowRow(props) {
     });
     }}*/
           style={{
-            backgroundColor: props.isFollowing ? "#D8D8D8" : "#743cff",
+            backgroundColor: isFollowing === true ? "#D8D8D8" : "#743cff",
             marginBottom: 10,
             borderWidth: 1,
             borderColor: "#E9E8E8",
@@ -131,14 +131,14 @@ function FollowRow(props) {
             justifyContent: "center",
           }}
         >
-          <TouchableOpacity activeOpacity={0.7} onPress={props.onFollowPress}>
+          <TouchableOpacity activeOpacity={0.7} onPress={onFollowPress}>
             <Text
               style={{
                 fontSize: 16,
-                color: props.isFollowing ? "black" : "white",
+                color: isFollowing ? "black" : "white",
               }}
             >
-              {props.isFollowing ? "Remove" : "Follow"}
+              {isFollowing ? "Remove" : "Follow"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -155,7 +155,7 @@ const FollowersScreen = ({ navigation }) => {
   const [isFollowing, setIsFollowing] = useState(isFollowing);
   const { followers, following } = useProfile();
 
-  const empty = [];
+  const empty = [{ id: "0" }];
   {
     /* Should receive isFollowing as route.params from previous screen
     Would check if user follows the other one and would update the 
@@ -233,13 +233,18 @@ const FollowersScreen = ({ navigation }) => {
   if (loading) {
     return <LoadingScreen />;
   }
+
+  // console.log(JSON.parse(JSON.stringify(followers)));
+
+  console.log(followers);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <Text>{followers}</Text>
-        {/*<FlatList
+        <FlatList
           data={followers}
           refreshing={loading}
+          keyExtractor={(item) => JSON.stringify(item.username)}
           ListHeaderComponent={
             <SearchBarFollowers
               colors={colors}
@@ -248,15 +253,10 @@ const FollowersScreen = ({ navigation }) => {
               onChangeTextDebounced={onChangeTextDebounced}
             />
           }
-          renderItem={({ item }) => (
-            console.log(item),
-            (
-              <View>
-                <Text>{item}</Text>
-              </View>
-            )
-          )}
-            />*/}
+          renderItem={({ item }) =>
+            console.log("from FlatList" + JSON.stringify(item.username))
+          }
+        />
       </View>
     </SafeAreaView>
   );

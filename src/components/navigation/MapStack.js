@@ -5,6 +5,7 @@ import { PermissionsAndroid, StatusBar, View } from "react-native";
 import MapScreen from "../../screens/MapScreen";
 import FindScreen from "../../screens/FindScreen";
 import StoryScreen from "../../screens/StoryScreen";
+import PlaceSearchScreen from "../../screens/PlaceSearchScreen";
 import StoryScreen4 from "../../screens/StoryScreen4/App";
 import AddScreen from "../../screens/AddScreen";
 import AttendanceScreen from "../../screens/AttendanceScreen";
@@ -95,6 +96,19 @@ const MapStack = () => {
       <Stack.Screen
         name="UserSearch"
         component={UserSearchScreen}
+        options={({ navigation, route }) => ({
+          title: "",
+          headerStyle: {
+            backgroundColor: "white",
+            //shadowColor: "black",
+            //elevation: 5,
+            height: 80,
+          },
+        })}
+      />
+      <Stack.Screen
+        name="PlaceSearch"
+        component={PlaceSearchScreen}
         options={({ navigation, route }) => ({
           title: "",
           headerStyle: {

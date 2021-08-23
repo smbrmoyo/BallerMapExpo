@@ -41,6 +41,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import Feather from "react-native-vector-icons/Feather";
+
 navigator.geolocation = require("@react-native-community/geolocation");
 
 const AddScreen = ({ props, navigation, route }) => {
@@ -49,6 +50,7 @@ const AddScreen = ({ props, navigation, route }) => {
   const [name, setName] = useState("");
   const [tags, setTags] = useState(""); // Should be list of strings. Will see with Max
   const [dateTime, setDateTime] = useState(new Date());
+
   const [visible, setVisible] = useState(false);
   const [color, setColor] = useState("#CDCDCD");
 
@@ -197,37 +199,28 @@ const AddScreen = ({ props, navigation, route }) => {
                 <Text style={styles.titleText}>Address</Text>
               </View>
               <View style={styles.adressContainer}>
-                <GooglePlacesAutocomplete
-                  placeholder="Address"
-                  getDefaultValue={() => {
-                    return "Address"; // text input default value
-                  }}
-                  placeholderTextColor="#CDCDCD"
-                  onPress={(data, details = null) => {
-                    setAddress(details.geometry.location);
-                    //console.log(details);
-                  }}
-                  enablePoweredByContainer={false}
-                  suppressDefaultStyles
-                  currentLocation={true}
-                  currentLocationLabel="Current location"
-                  styles={{
-                    textInput: styles.textInput,
-                    container: styles.autocompleteContainer,
-                    listView: styles.listView,
-                    separator: styles.separator,
-                  }}
-                  fetchDetails
-                  query={{
-                    key: "AIzaSyCL4evs3-ff9p7pd_KhW9fO-lcAybk6Lhk",
-                    language: "en",
-                  }}
-                  renderRow={(data) => <PlaceRow data={data} />}
-                  renderDescription={(data) =>
-                    data.description || data.vicinity
-                  }
-                  debounce={200}
-                />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate("PlaceSearch")}
+                >
+                  <View
+                    style={{
+                      padding: hsize(10),
+                      backgroundColor: "#eee",
+                      marginVertical: hsize(5),
+                      borderRadius: hsize(5),
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 0.2,
+                      shadowRadius: 1.41,
+                      elevation: 2,
+                    }}
+                  >
+                    <Text style={{ color: "#CDCDCD" }}>Find an Address</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
             </View>
 

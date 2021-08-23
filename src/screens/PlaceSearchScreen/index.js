@@ -114,7 +114,7 @@ const PlaceSearchScreen = ({ navigation, route }) => {
           onChangeText={updateQuery}
           value={query}
           placeholder="Search"
-          placeholderTextColor={props.colors.text}
+          placeholderTextColor="#CDCDCD"
           style={[
             styles.inputBox,
             {

@@ -43,7 +43,9 @@ import AntDesign from "react-native-vector-icons/AntDesign";
 import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import EvilIcons from "react-native-vector-icons/EvilIcons";
+
 import UserModal from "./UserModal";
+import people from "../../assets/data/people";
 
 //render function
 
@@ -56,11 +58,16 @@ const ProfileScreen = ({ navigation, route }) => {
   const [userExtraInfo, setUserExstraInfo] = useState(null);
   const { username } = useProfile();
   const isFocused = useIsFocused();
-  /*useEffect(() => {
-    userAPI.getUserInfo(user.uid).then((doc) => setUserExstraInfo(doc.data()));
-  }, [isFocused]);*/
 
-  //console.log(user);
+  function TabContainer(props) {
+    return (
+      <View style={styles.tabContainer}>
+        <TouchableOpacity>
+          <Feather name="list" size={24} color="black" />
+        </TouchableOpacity>
+      </View>
+    );
+  }
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -300,6 +307,7 @@ const ProfileScreen = ({ navigation, route }) => {
                 </View>
               </TouchableOpacity>
             </View>
+            <TabContainer />
           </View>
         </Animated.View>
       </TouchableWithoutFeedback>

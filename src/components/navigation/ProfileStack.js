@@ -24,7 +24,7 @@ const ProfileStack = ({ navigation }) => {
 
   return (
     <ProfileProvider>
-      <Stack.Navigator initialRouteName={"ProfileScreen"}>
+      <Stack.Navigator initialRouteName={"Profile"}>
         <Stack.Screen
           name="Profile"
           component={ProfileScreen}

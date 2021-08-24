@@ -22,16 +22,9 @@ import {
   Fontisto,
   Feather,
 } from "@expo/vector-icons";
-/*import Fontisto from "react-native-vector-icons/Fontisto";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Feather from "react-native-vector-icons/Feather";
-import AntDesign from "react-native-vector-icons/AntDesign";
-import SimpleLineIcons from "react-native-vector-icons/SimpleLineIcons";*/
-import EvilIcons from "react-native-vector-icons/EvilIcons";
+import { LinearGradient } from "expo-linear-gradient";
 import { useRoute, useNavigation } from "@react-navigation/native";
-import * as Location from "expo-location";
-//import Geolocation from "@react-native-community/geolocation";
-//navigator.geolocation = require('@react-native-community/geolocation');
+import Geolocation from "@react-native-community/geolocation";
 
 import { mapBlueGreyStyle } from "../../styles/MapStyles";
 import ProfilePicture from "../ProfilePicture";
@@ -42,33 +35,39 @@ import Stories from "../Stories";
 import styles from "./styles";
 import BottomSheetMap from "./BottomSheet";
 import { wsize, hsize } from "../../utils/Dimensions";
-//Location.getBackgroundPermissionsAsync();
 
 const { width, height } = Dimensions.get("window");
-const CARD_HEIGHT = 100;
+const CARD_HEIGHT = hsize(100);
 const CARD_WIDTH = width * 0.8;
-const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
+const SPACING_FOR_CARD_INSET = width * 0.1 - wsize(10);
 
 const HomeMap = ({ props }) => {
   bsMap = useRef(null);
   fallMap = useRef(new Animated.Value(1)).current;
   const route = useRoute();
   const navigation = useNavigation();
-  //console.log(Location.getCurrentPositionAsync({}));
-  const [location, setLocation] = useState(null);
+  const [camera, setCamera] = useState({
+    latitude: 48.872008,
+    longitude: 2.3120161,
+    pitch: 90,
+    heading: 90,
+    zoom: 18,
+    altitude: 18,
+  });
 
-  /*useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
+  useEffect(() => {
+    _onMapReady();
+  }, []);
 
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
-  }, []);*/
+  const _onMapReady = async () => {
+    Geolocation.getCurrentPosition((info) =>
+      setCamera({
+        ...camera,
+        latitude: info.coords.latitude,
+        longitude: info.coords.longitude,
+      })
+    );
+  };
 
   const initialMapState = {
     categories: [
@@ -113,19 +112,12 @@ const HomeMap = ({ props }) => {
     events: [],
     places,
     region: {
-      latitude: 48.872007,
+      latitude: 48.872008,
       longitude: 2.3120161,
       latitudeDelta: 0.003,
       longitudeDelta: 0.0021,
     },
-    camera: {
-      latitude: 48.873001,
-      longitude: 2.3121201,
-      pitch: 90,
-      heading: 90,
-      zoom: 18,
-      altitude: 18,
-    },
+    camera,
   };
 
   const [state, setState] = useState(initialMapState);
@@ -238,10 +230,6 @@ const HomeMap = ({ props }) => {
     //userId
   };
 
-  const goToDescription = () => {
-    navigation.navigate("Description");
-  };
-
   return (
     <>
       <BottomSheetMap />
@@ -262,13 +250,14 @@ const HomeMap = ({ props }) => {
             isFromMockProvider={false}
             customMapStyle={mapBlueGreyStyle}
             loadingEnabled={true}
+            onMapReady={_onMapReady}
             onLayout={() => {
               route.params
                 ? addEvent()
                 : _map.current.animateCamera({
                     center: {
-                      latitude: state.camera.latitude,
-                      longitude: state.camera.longitude,
+                      latitude: camera.latitude,
+                      longitude: camera.longitude,
                     },
                     heading: 90,
                     pitch: 90,
@@ -276,7 +265,7 @@ const HomeMap = ({ props }) => {
                     altitude: 18,
                   });
             }}
-            initialCamera={state.camera}
+            initialCamera={camera}
           >
             {state.places.map((person, index) => {
               const scaleStyle = {

@@ -16,7 +16,6 @@ import ProfilePicture from "../../components/ProfilePicture";
 import { wsize, hsize } from "../../utils/Dimensions";
 import debounce from "lodash/debounce";
 import { useTheme } from "@react-navigation/native";
-import { useProfile } from "../../components/navigation/Providers/profileProvider";
 import LoadingScreen from "../LoadingScreen";
 import {
   MaterialIcons,
@@ -52,7 +51,7 @@ function SearchBarFollowers(props) {
   );
 }
 
-function FollowRow(item, isFollowing, onFollowPress) {
+function FollowRow(props) {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -60,9 +59,9 @@ function FollowRow(item, isFollowing, onFollowPress) {
       onPress={() => {
         props.navigate("OtherProfile", {
           user: {
-            id: item.key,
+            id: props.item.key,
             //photo: item.photoURL,
-            userName: item.name,
+            userName: props.item.name,
           },
         });
       }}
@@ -89,7 +88,7 @@ function FollowRow(item, isFollowing, onFollowPress) {
                 fontSize: 18,
               }}
             >
-              {item.username}
+              __letch
             </Text>
             <Text
               style={{
@@ -97,7 +96,7 @@ function FollowRow(item, isFollowing, onFollowPress) {
                 color: "grey",
               }}
             >
-              {item.username}
+              Maxime Tchagou
             </Text>
           </View>
         </View>
@@ -119,7 +118,7 @@ function FollowRow(item, isFollowing, onFollowPress) {
     });
     }}*/
           style={{
-            backgroundColor: isFollowing === true ? "#D8D8D8" : "#743cff",
+            backgroundColor: props.isFollowing ? "#D8D8D8" : "#743cff",
             marginBottom: 10,
             borderWidth: 1,
             borderColor: "#E9E8E8",
@@ -131,14 +130,14 @@ function FollowRow(item, isFollowing, onFollowPress) {
             justifyContent: "center",
           }}
         >
-          <TouchableOpacity activeOpacity={0.7} onPress={onFollowPress}>
+          <TouchableOpacity activeOpacity={0.7} onPress={props.onFollowPress}>
             <Text
               style={{
                 fontSize: 16,
-                color: isFollowing ? "black" : "white",
+                color: props.isFollowing ? "black" : "white",
               }}
             >
-              {isFollowing ? "Remove" : "Follow"}
+              {props.isFollowing ? "Remove" : "Follow"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -147,15 +146,13 @@ function FollowRow(item, isFollowing, onFollowPress) {
   );
 }
 
-const FollowersScreen = ({ navigation }) => {
+const AttendanceScreen = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { colors, dark } = useTheme();
   const [text, setText] = useState("");
   const [isFollowing, setIsFollowing] = useState(isFollowing);
-  const { followers, following } = useProfile();
 
-  const empty = [{ id: "0" }];
   {
     /* Should receive isFollowing as route.params from previous screen
     Would check if user follows the other one and would update the 
@@ -233,18 +230,12 @@ const FollowersScreen = ({ navigation }) => {
   if (loading) {
     return <LoadingScreen />;
   }
-
-  // console.log(JSON.parse(JSON.stringify(followers)));
-
-  console.log(followers);
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <FlatList
-          data={followers}
+          data={data}
           refreshing={loading}
-          keyExtractor={(item) => JSON.stringify(item.username)}
           ListHeaderComponent={
             <SearchBarFollowers
               colors={colors}
@@ -253,20 +244,18 @@ const FollowersScreen = ({ navigation }) => {
               onChangeTextDebounced={onChangeTextDebounced}
             />
           }
-          renderItem={({ item }) =>
-            console.log("from FlatList" + JSON.stringify(item.username))
-          }
+          renderItem={({ item }) => (
+            <FollowRow
+              isFollowing={isFollowing}
+              onFollowPress={onFollowPress}
+              item={item}
+              navigate={navigation.navigate}
+            />
+          )}
         />
       </View>
     </SafeAreaView>
   );
 };
 
-export default FollowersScreen;
-
-/* <FollowRow
-              isFollowing={isFollowing}
-              onFollowPress={onFollowPress}
-              item={item}
-              navigate={navigation.navigate}
-            /> */
+export default AttendanceScreen;

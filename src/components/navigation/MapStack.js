@@ -5,8 +5,10 @@ import { PermissionsAndroid, StatusBar, View } from "react-native";
 import MapScreen from "../../screens/MapScreen";
 import FindScreen from "../../screens/FindScreen";
 import StoryScreen from "../../screens/StoryScreen";
+import PlaceSearchScreen from "../../screens/PlaceSearchScreen";
 import StoryScreen4 from "../../screens/StoryScreen4/App";
 import AddScreen from "../../screens/AddScreen";
+import AttendanceScreen from "../../screens/AttendanceScreen";
 import UserSearchScreen from "../../screens/UserSearchScreen";
 import DescriptionScreen from "../../screens/DescriptionScreen";
 import OtherProfileScreen from "../../screens/OtherProfileScreen";
@@ -51,6 +53,7 @@ const MapStack = () => {
             elevation: 0,
             height: 80,
           },
+
           /*headerRight: () => (
             <View style={{ marginLeft: 10 }}>
               <Entypo name="cross" size={24} color="black" />
@@ -93,6 +96,32 @@ const MapStack = () => {
       <Stack.Screen
         name="UserSearch"
         component={UserSearchScreen}
+        options={({ navigation, route }) => ({
+          title: "",
+          headerStyle: {
+            backgroundColor: "white",
+            //shadowColor: "black",
+            //elevation: 5,
+            height: 80,
+          },
+        })}
+      />
+      <Stack.Screen
+        name="PlaceSearch"
+        component={PlaceSearchScreen}
+        options={({ navigation, route }) => ({
+          title: "",
+          headerStyle: {
+            backgroundColor: "white",
+            //shadowColor: "black",
+            //elevation: 5,
+            height: 80,
+          },
+        })}
+      />
+      <Stack.Screen
+        name="Attendance"
+        component={AttendanceScreen}
         options={({ navigation, route }) => ({
           title: "",
           headerStyle: {

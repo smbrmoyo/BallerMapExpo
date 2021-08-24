@@ -1,0 +1,98 @@
+Index: src/components/navigation/realmAuthProvider.js
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React, { useContext, useState, useEffect, useRef } from \"react\";\nconst Realm = require(\"realm\");\nimport { getRealmApp } from \"../../../realmServer\";\n\n// Access the Realm App.\nconst app = getRealmApp();\n\nexport const AuthContext = React.createContext(null);\n\nconst AuthProvider = ({ children }) => {\n  const [user, setUser] = useState(app.currentUser);\n  const realmRef = useRef();\n  const userRealmRef = useRef();\n  const [userRealm, setUserRealm] = useState(null);\n  const [profilePartition, setProfilePartition] = useState(null);\n\n  useEffect(() => {\n    if (!user) {\n      return;\n    }\n\n    // The current user always has their own project, so we don't need\n    // to wait for the user object to load before displaying that project.\n    /*const myProject = {name: 'My Project', partition: `project=${user.id}`};\n    setProjectData([myProject]);*/\n\n    const config = {\n      sync: {\n        user,\n        partitionValue: user.id,\n      },\n    };\n\n    // Open a realm with the logged in user's partition value in order\n    // to get the cutpm user data\n    Realm.open(config).then((userRealm) => {\n      realmRef.current = userRealm;\n      const userDoc = userRealm.objects(\"UserData\");\n\n      userDoc.addListener(() => {\n        // The user custom data object may not have been loaded on\n        // the server side yet when a user is first registered.\n        if (userDoc.length === 0) {\n          setProfilePartition([null]);\n          alert(\"pas de user doc\");\n        } else {\n          const uProfilePartition = userDoc[0].uProfilePartition;\n          setProfilePartition(uProfilePartition);\n          if (profilePartition !== undefined) {\n            console.log(\" AUTHOPROVIDER!!!: profile partition trouvée\");\n          }\n        }\n      });\n    });\n\n    return () => {\n      // cleanup function\n      const userRealm = realmRef.current;\n      if (userRealm) {\n        userRealm.close();\n        realmRef.current = null;\n        setProfilePartition([]); // set project data to an empty array (this prevents the array from staying in state on logout)\n      }\n    };\n  }, [user]);\n\n  // The signIn function takes an email and password and uses the\n  // emailPassword authentication provider to log in.\n  const signIn = async (email, password) => {\n    // TODO: Pass the email and password to Realm's email password provider to log in.\n    // Use the setUser() function to set the logged-in user.\n    const creds = Realm.Credentials.emailPassword(email, password);\n    const newUser = await app.logIn(creds);\n    setUser(newUser);\n  };\n\n  // The signUp function takes an email and password and uses the\n  // emailPassword authentication provider to register the user.\n  const signUp = async (email, password) => {\n    // TODO: Pass the email and password to Realm's email password provider to register the user.\n    // Registering only registers and does not log in.\n    await app.emailPasswordAuth.registerUser(email, password);\n  };\n\n  // The signOut function calls the logOut function on the currently\n  // logged in user\n  const signOut = () => {\n    if (user == null) {\n      console.warn(\"Not logged in, can't log out!\");\n      return;\n    }\n    // TODO: Log out the current user and use the setUser() function to set the current user to null.\n    user\n      .logOut()\n      .then(setUser(null))\n      .catch((error) => console.log(error));\n  };\n\n  return (\n    <AuthContext.Provider\n      value={{\n        signUp,\n        signIn,\n        signOut,\n        user,\n        profilePartition, // profle partition\n      }}\n    >\n      {children}\n    </AuthContext.Provider>\n  );\n};\n\n// The useAuth hook can be used by components under an AuthProvider to\n// access the auth context value.\nconst useAuth = () => {\n  //Valeurs du AuthProvider\n  const auth = useContext(AuthContext);\n  if (auth == null) {\n    throw new Error(\"useAuth() called outside of a AuthProvider?\");\n  }\n  return auth;\n};\n\nexport { AuthProvider, useAuth };\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/components/navigation/realmAuthProvider.js b/src/components/navigation/realmAuthProvider.js
+--- a/src/components/navigation/realmAuthProvider.js	
++++ b/src/components/navigation/realmAuthProvider.js	
+@@ -1,18 +1,21 @@
+ import React, { useContext, useState, useEffect, useRef } from "react";
+ const Realm = require("realm");
+ import { getRealmApp } from "../../../realmServer";
++import { useNavigation } from "@react-navigation/native";
+ 
+ // Access the Realm App.
+ const app = getRealmApp();
+ 
+ export const AuthContext = React.createContext(null);
+ 
+-const AuthProvider = ({ children }) => {
++const AuthProvider = ({ children, navigation }) => {
+   const [user, setUser] = useState(app.currentUser);
+   const realmRef = useRef();
+   const userRealmRef = useRef();
+   const [userRealm, setUserRealm] = useState(null);
+   const [profilePartition, setProfilePartition] = useState(null);
++  const [signUpTrigger, setSignUpTrigger] = useState(false);
++  //const navigation = useNavigation();
+ 
+   useEffect(() => {
+     if (!user) {
+@@ -47,7 +50,7 @@
+           const uProfilePartition = userDoc[0].uProfilePartition;
+           setProfilePartition(uProfilePartition);
+           if (profilePartition !== undefined) {
+-            console.log(" AUTHOPROVIDER!!!: profile partition trouvée");
++            console.log("AUTHPROVIDER!!!: profile partition trouvée");
+           }
+         }
+       });
+@@ -56,6 +59,7 @@
+     return () => {
+       // cleanup function
+       const userRealm = realmRef.current;
++      console.log(userRealm);
+       if (userRealm) {
+         userRealm.close();
+         realmRef.current = null;
+@@ -79,7 +83,9 @@
+   const signUp = async (email, password) => {
+     // TODO: Pass the email and password to Realm's email password provider to register the user.
+     // Registering only registers and does not log in.
+-    await app.emailPasswordAuth.registerUser(email, password);
++    await app.emailPasswordAuth
++      .registerUser(email, password)
++      .then(() => setSignUpTrigger(true));
+   };
+ 
+   // The signOut function calls the logOut function on the currently
+@@ -90,18 +96,20 @@
+       return;
+     }
+     // TODO: Log out the current user and use the setUser() function to set the current user to null.
+-    user
+-      .logOut()
+-      .then(setUser(null))
++    user.logOut()
++      .then(result => setUser(null))
+       .catch((error) => console.log(error));
+   };
+ 
++
++
+   return (
+     <AuthContext.Provider
+       value={{
+         signUp,
+         signIn,
+         signOut,
++        signUpTrigger,
+         user,
+         profilePartition, // profle partition
+       }}
+@@ -122,4 +130,12 @@
+   return auth;
+ };
+ 
++const getUserData = () => {
++
++
++
++
++
++}
++
+ export { AuthProvider, useAuth };

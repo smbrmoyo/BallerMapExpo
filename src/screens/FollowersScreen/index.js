@@ -230,14 +230,18 @@ const FollowersScreen = ({ navigation }) => {
     setData(users);
     setLoading(false);
   }, []);
+
+
   if (loading) {
     return <LoadingScreen />;
   }
+
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <Text>{followers}</Text>
-        {/*<FlatList
+        {<FlatList
           data={followers}
           refreshing={loading}
           ListHeaderComponent={
@@ -249,14 +253,14 @@ const FollowersScreen = ({ navigation }) => {
             />
           }
           renderItem={({ item }) => (
-            console.log(item),
+            //console.log(item);
             (
               <View>
-                <Text>{item}</Text>
+                <Text>{item.username}</Text>
               </View>
             )
           )}
-            />*/}
+            />}
       </View>
     </SafeAreaView>
   );

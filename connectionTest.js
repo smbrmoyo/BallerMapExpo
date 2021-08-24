@@ -96,64 +96,16 @@ app = getRealmApp();
 
 const creds = Realm.Credentials.emailPassword('brianmoyou', 'brianmoyou');
 
+let mongodb;
 
-const user = app.logIn(creds)
+const user = async () => await app.logIn(creds)
     .then(user => {
+      mongodb = user.mongoClient('mongodb-atlas');
+      collectioin = mongodb.db("AYTO_Dev").collection("uProfile").find().then(res => console.
+      log(JSON.parse(JSON.stringify(res)))).catch(err => console.log(err))
       console.log(`le username est)`);
-      user.callFunction("gettPlaces").then(result => console.log(result))
+      //user.callFunction("gettPlaces").then(result => console.log(result))
     }).
     catch(error => console.log(error));
 
-
-
-const getUprofile = async (profilePartition) => {
-  // get le user Doc
-  const mongodb = app.currentUser.mongoClient("mongodb-atlas");
-  const userData = mongodb.db("AYTO_Dev").collection("UserData");
-  const {uProfilePartition} = await userData.findOne({"partition": app.currentUser.id});
-  const uProfileCollection = mongodb.db("AYTO_Dev").collection("uProfile");
-  var res = null ;
-  const userDoc = await uProfileCollection.findOne({"partition":uProfilePartition})
-
-  return userDoc
-}
-
-//const result = getUprofile().then(result => {console.log(result.partition) });
-
-/*const places = user.callFunction("gettPlaces").then(result => {
-  console.log(result)
-})*/
-
-/*app = getRealmApp();
-const realmPath = Realm.defaultPath;
-Realm.App.Sync.initiateClientReset(app, realmPath).catch(error =>
-  console.log(error),
-);*/
-
-//console.log(u);
-
-//const id = user.id;
-//console.log(user.id);
-
-/*if (user) {
-  Realm.open(syncConfig).then(userRealm => {
-    const userDoc = userRealm.objects('UserData');
-    const {profilePartition} = userDoc[0];
-    console.log(profilePartition);
-  });
-}*/
-
-/* userRealm = Realm.open(syncConfig)
-
-const userDoc = userRealm.objects('UserData');
-
-const {profilePartition} = userDoc[0];
-console.log(profilePartition);
-
-/*if (profilePartition == 'uProfile=60de038c6e5f50b891046c3b') {
-  console.log('Ca marche');
-} else {
-  console.log(profilePartition);
-}
-
-app.logout();*/
+user()

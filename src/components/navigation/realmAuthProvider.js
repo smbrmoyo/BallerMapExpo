@@ -10,6 +10,7 @@ export const AuthContext = React.createContext(null);
 
 const AuthProvider = ({ children, navigation }) => {
   const [user, setUser] = useState(app.currentUser);
+  const [profileDoc, setProfileDoc] = useState();
   const realmRef = useRef();
   const userRealmRef = useRef();
   const [userRealm, setUserRealm] = useState(null);
@@ -37,10 +38,14 @@ const AuthProvider = ({ children, navigation }) => {
     };
 
     // Open a realm with the logged in user's partition value in order
-    // to get the cutpm user data
+    // to get the custom user data
     Realm.open(config).then((userRealm) => {
       realmRef.current = userRealm;
       const userDoc = userRealm.objects("UserData");
+      if(userDoc.length != 0){
+        const uProfilePartition = userDoc[0].uProfilePartition;
+        setProfileDoc(getUprofile(uProfilePartition))
+      }
 
       userDoc.addListener(() => {
         // The user custom data object may not have been loaded on
@@ -53,16 +58,17 @@ const AuthProvider = ({ children, navigation }) => {
           setProfilePartition(uProfilePartition);
           if (profilePartition !== undefined) {
             setLoadingUser(false);
+            setProfileDoc(getUprofile(uProfilePartition))
             console.log(" AUTHPROVIDER!!!: profile partition trouvée");
           }
         }
       });
-    });
+    }).catch(error => console.log(error));
 
     return () => {
       // cleanup function
       const userRealm = realmRef.current;
-      console.log(userRealm);
+      //console.log(userRealm);
       if (userRealm) {
         userRealm.close();
         realmRef.current = null;
@@ -114,6 +120,8 @@ const AuthProvider = ({ children, navigation }) => {
         signUpTrigger,
         user,
         profilePartition,
+        profileDoc,
+        setProfileDoc,
         loadingUser, // profle partition
       }}
     >

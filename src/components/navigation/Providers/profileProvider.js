@@ -4,13 +4,17 @@ import {  useAuth, getUprofile } from "../realmAuthProvider";
 
 export const ProfileContext = React.createContext();
 
+let result;
+
 const ProfileProvider = ({ children }) => {
-  const profileDoc = getUprofile().then(result => {
-      const [profileDoc, setProfileDoc] = useState(result);
-  })
-  const { user, profilePartition } = useAuth();
+  const tprofileDoc =  async () => {
+      await getUprofile().then(res => result = res );
+      return result;
+  }
+
+  const { user, profilePartition, profileDoc, setProfileDoc} = useAuth();
   const [username, setUsername] = useState(profileDoc.username);
-  const [followers, setFollowers] = useState(profileDoc.followers);
+  const [followers, setFollowers] = useState([{username:"yyy"}, {username:"iiii"}]);
   const [following, setFollowing] = useState(profileDoc.following);
   const profileRealmRef = useRef();
 
@@ -34,7 +38,10 @@ const ProfileProvider = ({ children }) => {
         const syncFollowing = syncProfile.following;
         if (syncUsername !== undefined && syncFollowers !== undefined) {
           setUsername(syncUsername);
-          setFollowers(syncFollowers);
+          for (let i = 0; i < syncFollowers.length; i++){
+              followers.push({username: syncFollowers[i]});
+          }
+          setFollowers(followers)
           setFollowing(syncFollowing);
           console.log(`PROFILEPROVIDER!!!! : 
          username: ${username}, followers: ${followers}`);

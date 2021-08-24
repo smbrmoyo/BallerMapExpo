@@ -24,7 +24,7 @@ import { hsize, wsize } from "../../utils/Dimensions";
 const PlaceSearchScreen = ({ navigation, route }) => {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState("");
-  const [heroes, setHeroes] = useState([]);
+  const [hits, setHits] = useState([]);
   const [loading, setLoading] = useState(false);
   const { colors, dark } = useTheme();
 
@@ -79,30 +79,30 @@ const PlaceSearchScreen = ({ navigation, route }) => {
   const fetchData = async () => {
     const res = places;
     setData(res);
-    setHeroes(res.slice());
+    setHits(res.slice());
   };
 
-  const filterNames = (hero) => {
-    //console.log(hero);
+  const filterNames = (hit) => {
+    //console.log(hit);
     let search = query.toLowerCase();
-    let heroName = hero.name.toLowerCase();
+    let hitName = hit.name.toLowerCase();
 
-    if (heroName.startsWith(search)) {
-      return hero.address;
+    if (hitName.startsWith(search)) {
+      return hit.address;
     } else {
-      heroes.splice(heroes.indexOf(hero), 1);
+      hits.splice(hits.indexOf(hit), 1);
       return null;
     }
   };
 
-  const formatNames = (hero) => {
-    let heroName = hero.name.charAt(14).toUpperCase() + hero.name.slice(15);
-    heroName = heroName.replace(/_/g, " ");
-    return heroName;
+  const formatNames = (hit) => {
+    let hitName = hit.name.charAt(14).toUpperCase() + hit.name.slice(15);
+    hitName = hitName.replace(/_/g, " ");
+    return hitName;
   };
 
   const updateQuery = (input) => {
-    setHeroes(data.slice());
+    setHits(data.slice());
     setQuery(input);
   };
 
@@ -144,7 +144,7 @@ const PlaceSearchScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={heroes}
+        data={hits}
         keyExtractor={(i) => i.name.toString()}
         refreshing={loading}
         ListHeaderComponent={

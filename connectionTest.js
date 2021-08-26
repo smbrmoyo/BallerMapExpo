@@ -100,11 +100,7 @@ let mongodb;
 
 const user = async () => await app.logIn(creds)
     .then(user => {
-      mongodb = user.mongoClient('mongodb-atlas');
-      collectioin = mongodb.db("AYTO_Dev").collection("uProfile").find().then(res => console.
-      log(JSON.parse(JSON.stringify(res)))).catch(err => console.log(err))
-      console.log(`le username est)`);
-      //user.callFunction("gettPlaces").then(result => console.log(result))
+      user.callFunction("gettPlaces").then(result => console.log(result))
     }).
     catch(error => console.log(error));
 

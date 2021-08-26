@@ -8,9 +8,9 @@ const ProfileProvider = ({ children }) => {
   const profileDocRef = getUprofile();
   const [profileDoc, setProfileDoc] = useState(profileDocRef);
   const { user, profilePartition } = useAuth();
-  const [username, setUsername] = useState();
-  const [followers, setFollowers] = useState([]);
-  const [following, setFollowing] = useState(profileDoc.following);
+  const [username, setUsername] = useState(getUprofile().username);
+  const [followers, setFollowers] = useState(getUprofile().followers);
+  const [following, setFollowing] = useState(getUprofile().following);
   const profileRealmRef = useRef();
 
   // User profile realm config
@@ -34,13 +34,17 @@ const ProfileProvider = ({ children }) => {
         const syncFollowing = syncProfile.following;
         if (syncUsername !== undefined && syncFollowers !== undefined) {
           setUsername(syncUsername);
-          for (let i = 0; i < syncFollowers.length; i++) {
-            followers.push({ username: syncFollowers[i] });
-          }
-          setFollowers(followers);
+          syncFollowers = JSON.parse(JSON.stringify(syncFollowers));
           setFollowing(syncFollowing);
+          var followersData = [];
+          syncFollowers.forEach(follower => {
+              var dataObject = {}
+              dataObject.username = follower;
+              followersData.push(dataObject);
+          });
+          setFollowers(followersData);
           console.log(`PROFILEPROVIDER!!!! : 
-         username: ${username}, followers: ${followers}`);
+         username: ${username}, followers: ${JSON.stringify(syncFollowers)}`);
         } else {
           console.log("PROFILEPROVIDER!!!! : No profile found");
         }

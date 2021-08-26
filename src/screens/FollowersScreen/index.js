@@ -148,12 +148,12 @@ function FollowRow(item, isFollowing, onFollowPress) {
 }
 
 const FollowersScreen = ({ navigation }) => {
-  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { colors, dark } = useTheme();
   const [text, setText] = useState("");
   const [isFollowing, setIsFollowing] = useState(isFollowing);
   const { followers, following } = useProfile();
+  const [data, setData] = useState(followers);
 
   const empty = [{ id: "0" }];
   {
@@ -167,13 +167,26 @@ const FollowersScreen = ({ navigation }) => {
     setIsFollowing(!isFollowing);
   };
 
-  const onChangeText = async (text) => {
-    setText(text);
+  const searchFilter = async (text) => {
+    if(text){
+       var newData = followers.filter(item => {
+           var name = item.username.toLowerCase();
+           const filter = text.toLowerCase();
+           return (name.search(filter) !== -1);
+       });
+       setData(newData);
+       console.log(newData);
+       setText(text);
+    }
+    else{
+        setData(followers);
+        setText("");
+    }
   };
-  const onChangeTextDebounced = debounce(onChangeText, 1000, {
+  /*const onChangeTextDebounced = debounce(onChangeText, 1000, {
     leading: true,
     trailing: true,
-  });
+  });*/
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -227,7 +240,7 @@ const FollowersScreen = ({ navigation }) => {
       setData(allData);
       setLoading(false);
     });*/
-    setData(users);
+    setData(followers);
     setLoading(false);
   }, []);
   if (loading) {
@@ -236,25 +249,32 @@ const FollowersScreen = ({ navigation }) => {
 
   // console.log(JSON.parse(JSON.stringify(followers)));
 
-  console.log(followers);
+  //console.log(followers);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <FlatList
-          data={followers}
+          data={data}
           refreshing={loading}
-          keyExtractor={(item) => JSON.stringify(item.username)}
+          keyExtractor={(item) => {return item.name}}
           ListHeaderComponent={
             <SearchBarFollowers
               colors={colors}
               dark={dark}
               text={text}
-              onChangeTextDebounced={onChangeTextDebounced}
+              //onChangeTextDebounced={onChangeTextDebounced}
+              onChangeTextDebounced = {text => searchFilter(text)}
             />
           }
-          renderItem={({ item }) =>
-            console.log("from FlatList" + JSON.stringify(item.username))
+          renderItem={({ item }) => {
+              console.log("from FlatList" + JSON.stringify(item));
+              return(
+                  <View>
+                      <Text>{item.username}</Text>
+                  </View>
+              )
+             }
           }
         />
       </View>

@@ -330,12 +330,14 @@ const AddScreen = ({ props, navigation, route }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => (
+                /*onPress={() => (
                   checkNavigation(),
                   Haptics.notificationAsync(
                     Haptics.NotificationFeedbackType.Success
                   )
-                )}
+                )}*/
+                onPress={app.currentUser.callFunction("createEvent", event)
+                    .then()}
               >
                 <View
                   style={{

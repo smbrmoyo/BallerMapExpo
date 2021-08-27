@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="fd39e616-5a0b-4bc7-b3be-d1301a756ee1" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/lodashTest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/connectionTest.js" beforeDir="false" afterPath="$PROJECT_DIR$/connectionTest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm" beforeDir="false" afterPath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm.lock" beforeDir="false" afterPath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/searchTest.js" beforeDir="false" afterPath="$PROJECT_DIR$/searchTest.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/navigation/Providers/profileProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/Providers/profileProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/AddScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/AddScreen/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/FollowersScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/FollowersScreen/index.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/Brian" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Brian" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/screens/ProfileScreen/index.js" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="ProjectId" id="1wP13zaJtI2IE9WOroRlTAmRRa1" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
+    <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="fd39e616-5a0b-4bc7-b3be-d1301a756ee1" name="Default Changelist" comment="" />
+      <created>1628345215547</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1628345215547</updated>
+      <workItem from="1628345217354" duration="4390000" />
+      <workItem from="1628351784129" duration="3914000" />
+      <workItem from="1628452916576" duration="2210000" />
+      <workItem from="1628609346659" duration="5958000" />
+      <workItem from="1629119014334" duration="42974000" />
+      <workItem from="1629950002652" duration="14221000" />
+    </task>
+    <task id="LOCAL-00001" summary="GetProfilDoc function">
+      <created>1629127408529</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1629127408529</updated>
+    </task>
+    <task id="LOCAL-00002" summary="connectionTest implemented">
+      <created>1629778903139</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1629778903140</updated>
+    </task>
+    <task id="LOCAL-00003" summary="connectionTest implemented">
+      <created>1629778944062</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1629778944062</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="GetProfilDoc function" />
+    <MESSAGE value="connectionTest implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="connectionTest implemented" />
+  </component>
+</project>

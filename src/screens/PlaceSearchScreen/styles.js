@@ -37,10 +37,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
   inputBox: {
-    flex: 1,
-    margin: 3,
-    padding: 10,
-    borderWidth: 0.5,
+    padding: hsize(10),
+    backgroundColor: "#eee",
+    marginVertical: hsize(5),
+    width: "100%",
+    borderRadius: hsize(5),
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -49,7 +50,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 1.41,
     elevation: 2,
-    borderRadius: 20,
   },
   flatList: {
     paddingLeft: 15,

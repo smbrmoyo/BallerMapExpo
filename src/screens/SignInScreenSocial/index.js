@@ -245,7 +245,7 @@ const SignInScreenSocial = ({ navigation, props }) => {
               style={[styles.signIn]}
             >
               <View style={styles.textPrivate}>
-                <Text style={styles.color_textPrivate}>New to Around?</Text>
+                <Text style={styles.color_textPrivate}>New to BallerMap?</Text>
                 <Text
                   style={[styles.color_textPrivate, { fontWeight: "bold" }]}
                 >

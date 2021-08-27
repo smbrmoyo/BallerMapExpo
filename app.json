@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./logoballermap.png",
     "splash": {
-      "image": "./logoballermap.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },

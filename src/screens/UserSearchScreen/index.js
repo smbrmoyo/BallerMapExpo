@@ -16,6 +16,7 @@ import ProfilePicture from "../../components/ProfilePicture";
 import { wsize, hsize } from "../../utils/Dimensions";
 import debounce from "lodash/debounce";
 import { useTheme } from "@react-navigation/native";
+import { useProfile } from "../../components/navigation/Providers/profileProvider";
 import LoadingScreen from "../LoadingScreen";
 import {
   MaterialIcons,
@@ -51,7 +52,7 @@ function SearchBarFollowers(props) {
   );
 }
 
-function FollowRow(props) {
+function FollowRow(item, isFollowing, onFollowPress) {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
@@ -59,9 +60,9 @@ function FollowRow(props) {
       onPress={() => {
         props.navigate("OtherProfile", {
           user: {
-            id: props.item.key,
+            id: item.key,
             //photo: item.photoURL,
-            userName: props.item.name,
+            userName: item.name,
           },
         });
       }}
@@ -86,17 +87,18 @@ function FollowRow(props) {
             <Text
               style={{
                 fontSize: 18,
+                color: "black",
               }}
             >
-              __letch
+              {item.username}
             </Text>
             <Text
               style={{
                 fontSize: 12,
-                color: "grey",
+                color: "black",
               }}
             >
-              Maxime Tchagou
+              {item.username}
             </Text>
           </View>
         </View>
@@ -118,7 +120,7 @@ function FollowRow(props) {
     });
     }}*/
           style={{
-            backgroundColor: props.isFollowing ? "#D8D8D8" : "#743cff",
+            backgroundColor: isFollowing === true ? "#D8D8D8" : "#743cff",
             marginBottom: 10,
             borderWidth: 1,
             borderColor: "#E9E8E8",
@@ -130,14 +132,14 @@ function FollowRow(props) {
             justifyContent: "center",
           }}
         >
-          <TouchableOpacity activeOpacity={0.7} onPress={props.onFollowPress}>
+          <TouchableOpacity activeOpacity={0.7} onPress={onFollowPress}>
             <Text
               style={{
                 fontSize: 16,
-                color: props.isFollowing ? "black" : "white",
+                color: isFollowing ? "black" : "white",
               }}
             >
-              {props.isFollowing ? "Remove" : "Follow"}
+              {isFollowing ? "Remove" : "Follow"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -147,12 +149,14 @@ function FollowRow(props) {
 }
 
 const UserSearchScreen = ({ navigation }) => {
-  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const { colors, dark } = useTheme();
   const [text, setText] = useState("");
   const [isFollowing, setIsFollowing] = useState(isFollowing);
+  const { followers, following } = useProfile();
+  const [data, setData] = useState(followers);
 
+  const empty = [{ id: "0" }];
   {
     /* Should receive isFollowing as route.params from previous screen
     Would check if user follows the other one and would update the 
@@ -164,13 +168,25 @@ const UserSearchScreen = ({ navigation }) => {
     setIsFollowing(!isFollowing);
   };
 
-  const onChangeText = async (text) => {
-    setText(text);
+  const searchFilter = async (text) => {
+    if (text) {
+      var newData = followers.filter((item) => {
+        var name = item.username.toLowerCase();
+        const filter = text.toLowerCase();
+        return name.search(filter) !== -1;
+      });
+      setData(newData);
+      console.log(newData);
+      setText(text);
+    } else {
+      setData(followers);
+      setText("");
+    }
   };
-  const onChangeTextDebounced = debounce(onChangeText, 1000, {
+  /*const onChangeTextDebounced = debounce(onChangeText, 1000, {
     leading: true,
     trailing: true,
-  });
+  });*/
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -190,9 +206,7 @@ const UserSearchScreen = ({ navigation }) => {
       headerTitle: () => (
         <View style={styles.headerTitle}>
           <TouchableOpacity activeOpacity={0.7} style={styles.iconHeaderTitle}>
-            <Text style={styles.textHeader}>
-              {/*firebase.auth().currentUser.email*/}
-            </Text>
+            <Text style={styles.textHeader}>Invite a friend</Text>
           </TouchableOpacity>
         </View>
       ),
@@ -224,33 +238,30 @@ const UserSearchScreen = ({ navigation }) => {
       setData(allData);
       setLoading(false);
     });*/
-    setData(users);
+    setData(followers);
     setLoading(false);
   }, []);
   if (loading) {
     return <LoadingScreen />;
   }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <FlatList
           data={data}
           refreshing={loading}
+          keyExtractor={(item) => item.username}
           ListHeaderComponent={
             <SearchBarFollowers
               colors={colors}
               dark={dark}
               text={text}
-              onChangeTextDebounced={onChangeTextDebounced}
+              onChangeTextDebounced={(text) => searchFilter(text)}
             />
           }
           renderItem={({ item }) => (
-            <FollowRow
-              isFollowing={isFollowing}
-              onFollowPress={onFollowPress}
-              item={item}
-              navigate={navigation.navigate}
-            />
+            <FollowRow item isFollowing onFollowPress />
           )}
         />
       </View>
@@ -259,3 +270,10 @@ const UserSearchScreen = ({ navigation }) => {
 };
 
 export default UserSearchScreen;
+
+/* <FollowRow
+              isFollowing={isFollowing}
+              onFollowPress={onFollowPress}
+              item={item}
+              navigate={navigation.navigate}
+            /> */

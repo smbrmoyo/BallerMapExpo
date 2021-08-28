@@ -118,7 +118,7 @@ const BottomSheetMap = (props) => {
               marginBottom: 5,
             }}
           >
-            Attendance List
+            Who's coming?
           </Text>
 
           <View

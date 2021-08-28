@@ -16,6 +16,7 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Dimensions,
+  Alert,
   //Animated,
 } from "react-native";
 import Animated, {
@@ -50,6 +51,21 @@ import people from "../../assets/data/people";
 //render function
 
 const ProfileScreen = ({ navigation, route }) => {
+  // Alert for logout
+
+  const LogoutAlert = () =>
+    Alert.alert(
+      `${username}`,
+      "Are you sure you want to log out of BallerMap?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        { text: "Logout", onPress: () => signOut(), style: "destructive" },
+      ]
+    );
+
   bsProf = useRef(null);
   fall = useRef(new Animated.Value(1)).current;
   const [isFollowing, setIsFollowing] = useState(false);
@@ -160,7 +176,7 @@ const ProfileScreen = ({ navigation, route }) => {
           <Text style={styles.panelButtonTitle}>COVID-19 Information</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => signOut()}
+          onPress={LogoutAlert}
           activeOpacity={0.7}
           style={styles.panelButton}
         >

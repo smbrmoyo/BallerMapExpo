@@ -34,6 +34,7 @@ import PlaceRow from "./PlaceRow";
 import ProfilePicture from "../../components/ProfilePicture";
 import Bitmoji from "../../components/Bitmoji";
 import styles from "./styles";
+import { useAuth } from "../../components/navigation/realmAuthProvider";
 import { wsize, hsize } from "../../utils/Dimensions";
 import places from "../../assets/data/places";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -45,6 +46,7 @@ import Feather from "react-native-vector-icons/Feather";
 navigator.geolocation = require("@react-native-community/geolocation");
 
 const AddScreen = ({ props, navigation, route }) => {
+  const { user } = useAuth();
   const [address, setAddress] = useState(null); // Put all this in one state and use ... operator
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
@@ -159,12 +161,12 @@ const AddScreen = ({ props, navigation, route }) => {
         //keyboardVerticalOffset={headerHeight}
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <Animatable.View
+          <ScrollView
             //animation="fadeInUpBig"
-            style={{
+            contentContainerStyle={{
               padding: 10,
               flex: 1,
-              justifyContent: "space-around",
+              justifyContent: "center",
             }}
           >
             <View style={styles.descriptionContainer}>
@@ -330,14 +332,10 @@ const AddScreen = ({ props, navigation, route }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.7}
-                /*onPress={() => (
-                  checkNavigation(),
-                  Haptics.notificationAsync(
+
+                /*onPress={user.callFunction("createEvent", event).then(Haptics.notificationAsync(
                     Haptics.NotificationFeedbackType.Success
-                  )
-                )}*/
-                onPress={app.currentUser.callFunction("createEvent", event)
-                    .then()}
+                  ))}*/
               >
                 <View
                   style={{
@@ -370,7 +368,7 @@ const AddScreen = ({ props, navigation, route }) => {
                 </View>
               </TouchableOpacity>
             </View>
-          </Animatable.View>
+          </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
     </View>

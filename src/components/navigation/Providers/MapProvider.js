@@ -10,8 +10,9 @@ const MapProvider = ({ children }) => {
 
   const getPlaces = async () => {
     const placesRealm = await user.callFunction("getPlaces");
+    let temp = [];
     placesRealm.map((place) => {
-      places.push({
+      temp.push({
         _id: place._id,
         name: place.name,
         address: place.address,
@@ -22,20 +23,22 @@ const MapProvider = ({ children }) => {
         },
       });
     });
-    return places;
+    return temp;
   };
 
   // Charge les données sur les places
   useEffect(() => {
     getPlaces().then((result) => setPlaces(result));
+
     const placesUpdate = setInterval(() => {
       getPlaces().then((result) => setPlaces(result));
-    }, 60000);
+      console.log("from provider");
+    }, 1800000);
     return () => {
       clearInterval(placesUpdate);
       setPlaces(null);
     };
-  }, [places]);
+  }, []);
 
   return (
     <MapContext.Provider

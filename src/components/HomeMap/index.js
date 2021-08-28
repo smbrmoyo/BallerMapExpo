@@ -157,6 +157,13 @@ const HomeMap = ({ props }) => {
     });
   });
 
+  useEffect(() => {
+    setState({
+      ...state,
+      places: places,
+    });
+  }, [places]);
+
   const interpolations = state.places.map((person, index) => {
     const inputRange = [
       (index - 1) * CARD_WIDTH,
@@ -230,6 +237,8 @@ const HomeMap = ({ props }) => {
     navigation.navigate("Story");
     //userId
   };
+
+  console.log(places.length);
 
   return (
     <>

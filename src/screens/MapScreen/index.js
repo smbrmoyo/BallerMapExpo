@@ -10,7 +10,7 @@ import {
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 import HomeMap from "../../components/HomeMap";
-import { useAuth } from "../../components/navigation/realmAuthProvider";
+import { useAuth } from "../../components/navigation/Providers/AuthProvider";
 import NewHomeMap from "../../components/NewHomeMap";
 import Bitmoji from "../../components/Bitmoji";
 import Stories from "../../components/Stories";

@@ -23,7 +23,7 @@ import Feather from "react-native-vector-icons/Feather";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { hsize, wsize } from "../../utils/Dimensions";
-import { useAuth } from "../../components/navigation/realmAuthProvider";
+import { useAuth } from "../../components/navigation/Providers/AuthProvider";
 import { useTheme } from "react-native-paper";
 import styles from "./styles";
 

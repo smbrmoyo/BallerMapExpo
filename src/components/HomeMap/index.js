@@ -30,11 +30,11 @@ import { mapBlueGreyStyle } from "../../styles/MapStyles";
 import ProfilePicture from "../ProfilePicture";
 import Bitmoji from "../Bitmoji";
 import people from "../../assets/data/people";
-import places from "../../assets/data/places";
 import Stories from "../Stories";
 import styles from "./styles";
 import BottomSheetMap from "./BottomSheet";
 import { wsize, hsize } from "../../utils/Dimensions";
+import { useMap } from "../navigation/Providers/MapProvider";
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = hsize(100);
@@ -44,6 +44,7 @@ const SPACING_FOR_CARD_INSET = width * 0.1 - wsize(10);
 const HomeMap = ({ props }) => {
   bsMap = useRef(null);
   fallMap = useRef(new Animated.Value(1)).current;
+  const { places } = useMap();
   const route = useRoute();
   const navigation = useNavigation();
   const [camera, setCamera] = useState({
@@ -267,7 +268,7 @@ const HomeMap = ({ props }) => {
             }}
             initialCamera={camera}
           >
-            {state.places.map((person, index) => {
+            {state.places.map((place, index) => {
               const scaleStyle = {
                 transform: [
                   {
@@ -277,8 +278,8 @@ const HomeMap = ({ props }) => {
               };
               return (
                 <Marker
-                  key={index}
-                  coordinate={person.coordinate}
+                  key={place._id}
+                  coordinate={place.coordinate}
                   onPress={(e) => onMarkerPress(e)}
                 >
                   <Animated.View style={[styles.markerWrap]}>
@@ -343,7 +344,7 @@ const HomeMap = ({ props }) => {
                 (index + 1) * CARD_WIDTH,
               ];
 
-              const translateY = _mapAnimation.interpolate({
+              const opacity = _mapAnimation.interpolate({
                 inputRange,
                 outputRange: [50, 0, 50],
                 extrapolate: "clamp",
@@ -356,9 +357,7 @@ const HomeMap = ({ props }) => {
                     bsMap.current.snapTo(0);
                   }}
                 >
-                  <Animated.View
-                    style={[styles.card, { transform: [{ translateY }] }]}
-                  >
+                  <Animated.View style={[styles.card]} /*opacity: opacity */>
                     <TouchableOpacity activeOpacity={0.7} onPress={goToStory}>
                       <ProfilePicture />
                     </TouchableOpacity>

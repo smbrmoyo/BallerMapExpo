@@ -22,7 +22,7 @@ import styles from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "react-native-paper";
 
-import { useAuth } from "../../components/navigation/realmAuthProvider";
+import { useAuth } from "../../components/navigation/Providers/AuthProvider";
 
 const SignInScreenEmail = ({ navigation, props }) => {
   const headerHeight = useHeaderHeight();

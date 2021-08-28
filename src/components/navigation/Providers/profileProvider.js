@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import Realm from "realm";
-import { useAuth, getUprofile } from "../realmAuthProvider";
+import { useAuth, getUprofile } from "./AuthProvider";
 
 export const ProfileContext = React.createContext();
 
@@ -37,10 +37,10 @@ const ProfileProvider = ({ children }) => {
           syncFollowers = JSON.parse(JSON.stringify(syncFollowers));
           setFollowing(syncFollowing);
           var followersData = [];
-          syncFollowers.forEach(follower => {
-              var dataObject = {}
-              dataObject.username = follower;
-              followersData.push(dataObject);
+          syncFollowers.forEach((follower) => {
+            var dataObject = {};
+            dataObject.username = follower;
+            followersData.push(dataObject);
           });
           setFollowers(followersData);
           console.log(`PROFILEPROVIDER!!!! : 

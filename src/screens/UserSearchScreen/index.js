@@ -16,7 +16,7 @@ import ProfilePicture from "../../components/ProfilePicture";
 import { wsize, hsize } from "../../utils/Dimensions";
 import debounce from "lodash/debounce";
 import { useTheme } from "@react-navigation/native";
-import { useProfile } from "../../components/navigation/Providers/profileProvider";
+import { useProfile } from "../../components/navigation/Providers/ProfileProvider";
 import LoadingScreen from "../LoadingScreen";
 import {
   MaterialIcons,

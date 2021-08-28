@@ -34,7 +34,7 @@ import PlaceRow from "./PlaceRow";
 import ProfilePicture from "../../components/ProfilePicture";
 import Bitmoji from "../../components/Bitmoji";
 import styles from "./styles";
-import { useAuth } from "../../components/navigation/realmAuthProvider";
+import { useAuth } from "../../components/navigation/Providers/AuthProvider";
 import { wsize, hsize } from "../../utils/Dimensions";
 import places from "../../assets/data/places";
 import Entypo from "react-native-vector-icons/Entypo";

@@ -5,12 +5,16 @@ import { useAuth, getUprofile } from "./AuthProvider";
 export const ProfileContext = React.createContext();
 
 const ProfileProvider = ({ children }) => {
-  const profileDocRef = getUprofile();
-  const [profileDoc, setProfileDoc] = useState(profileDocRef);
   const { user, profilePartition } = useAuth();
-  const [username, setUsername] = useState(getUprofile().username);
-  const [followers, setFollowers] = useState(getUprofile().followers);
-  const [following, setFollowing] = useState(getUprofile().following);
+  const profileDocRef = getUprofile(profilePartition).then((res) => {
+    console.log(`profileDoc est: ${res}`);
+    return res;
+  });
+
+  const [profileDoc, setProfileDoc] = useState(profileDocRef);
+  const [username, setUsername] = useState(profileDocRef.username);
+  const [followers, setFollowers] = useState(profileDocRef.followers);
+  const [following, setFollowing] = useState(profileDocRef.following);
   const profileRealmRef = useRef();
 
   // User profile realm config
@@ -45,6 +49,10 @@ const ProfileProvider = ({ children }) => {
           setFollowers(followersData);
           console.log(`PROFILEPROVIDER!!!! : 
          username: ${username}, followers: ${JSON.stringify(syncFollowers)}`);
+
+          profileRealm.addListener("change", () => {
+            console.log("listener triggered");
+          });
         } else {
           console.log("PROFILEPROVIDER!!!! : No profile found");
         }
@@ -54,11 +62,12 @@ const ProfileProvider = ({ children }) => {
     return () => {
       const profileRealm = profileRealmRef.current;
       if (profileRealm) {
+        profileRealm.removeAllListeners();
         profileRealm.close();
         profileRealmRef.current = null;
       }
     };
-  }, [username]);
+  }, []);
 
   return (
     <ProfileContext.Provider

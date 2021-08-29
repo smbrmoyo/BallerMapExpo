@@ -6,10 +6,8 @@ import haversine from "haversine";
 export const MapContext = React.createContext();
 
 const MapProvider = ({ children }) => {
-  const { user } = useAuth();
+  const { user, profilePartition } = useAuth();
   const [places, setPlaces] = useState([]);
-  const MaxCoords = { latitude: 46.779, longitude: -71.2755 };
-
   const getPlaces = async () => {
     const placesRealm = await user.callFunction("getPlaces");
     let temp = [];
@@ -53,6 +51,7 @@ const MapProvider = ({ children }) => {
   return (
     <MapContext.Provider
       value={{
+        user,
         places,
       }}
     >

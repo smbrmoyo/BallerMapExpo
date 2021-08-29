@@ -34,7 +34,11 @@ import PlaceRow from "./PlaceRow";
 import ProfilePicture from "../../components/ProfilePicture";
 import Bitmoji from "../../components/Bitmoji";
 import styles from "./styles";
-import { useAuth } from "../../components/navigation/Providers/AuthProvider";
+import {
+  useAuth,
+  getUprofile,
+} from "../../components/navigation/Providers/AuthProvider";
+import { useMap } from "../../components/navigation/Providers/MapProvider";
 import { wsize, hsize } from "../../utils/Dimensions";
 import places from "../../assets/data/places";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -46,34 +50,70 @@ import Feather from "react-native-vector-icons/Feather";
 navigator.geolocation = require("@react-native-community/geolocation");
 
 const AddScreen = ({ props, navigation, route }) => {
-  const { user } = useAuth();
+  //const { username } = useMap();
+  const { username } = getUprofile(profilePartition);
+  const { user, profilePartition } = useAuth();
   /*import username from useProfile() */
+  let placeNameParams = "";
+  placeNameParams = route.params?.item.name;
   const [event, setEvent] = useState({
     name: "",
     placeName: "",
+    creator: "",
     tags: [],
     description: "",
-    dateTime: new Date(),
+    attendants: [],
+    date: {
+      day: new Date().getDay(),
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+    },
+    time: {
+      hour: new Date().getHours(),
+      min: new Date().getMinutes(),
+    },
+    endingTime: {
+      hour: new Date().getHours(),
+      min: new Date().getMinutes(),
+    },
   });
-  /*const [address, setAddress] = useState(null); // Put all this in one state and use ... operator
-  const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
-  const [tags, setTags] = useState(""); // Should be list of strings. Will see with Max
-  const [dateTime, setDateTime] = useState(new Date());*/
 
-  const [visible, setVisible] = useState(false);
+  console.log(event);
+
+  useEffect(() => {
+    if (route.params !== undefined) {
+      setEvent({
+        ...event,
+        placeName: placeNameParams,
+      });
+    }
+  }, [route]);
+
+  const createEvent = async () => {
+    /*setEvent({
+      ...event,
+      creator: username,
+    });*/
+    const creation = user
+      .callFunction("Create_Event", event)
+      .then()
+      .catch((err) => console.log(err));
+  };
+
+  const [visibleStart, setVisibleStart] = useState(false);
+  const [visibleEnd, setVisibleEnd] = useState(false);
   const [color, setColor] = useState("#CDCDCD");
 
   const headerHeight = useHeaderHeight();
 
   const checkNavigation = () => {
-    if (address && description && tags) {
+    /*if (address && description && tags) {
       navigation.navigate("Map", {
         address,
         description,
         tags,
       });
-    }
+    }*/
   };
 
   useLayoutEffect(() => {
@@ -81,6 +121,7 @@ const AddScreen = ({ props, navigation, route }) => {
       title: "",
       headerStyle: {
         backgroundColor: "white",
+        height: 80,
         //shadowColor: "black",
         //elevation: 5,
       },
@@ -146,7 +187,7 @@ const AddScreen = ({ props, navigation, route }) => {
   }
 
   return (
-    <View style={{ flex: 1 }}>
+    <>
       <StatusBar
         translucent
         backgroundColor="rgba(0,0,0,0.0)" /*transparent*/
@@ -154,18 +195,44 @@ const AddScreen = ({ props, navigation, route }) => {
       />
 
       <DateTimePickerModal
-        isVisible={visible}
+        isVisible={visibleStart} /*Should have second component for end date */
         mode="datetime"
         display="spinner"
         onConfirm={(datum) => (
           setEvent({
             ...event,
-            datetime: datum,
+            date: {
+              day: datum.getDay(),
+              month: datum.getMonth(),
+              year: datum.getFullYear(),
+            },
+            time: {
+              hour: datum.getHours(),
+              min: datum.getMinutes(),
+            },
           }),
-          setVisible(false),
+          setVisibleStart(false),
           setColor("#743cff")
         )}
-        onCancel={() => setVisible(false)}
+        onCancel={() => setVisibleStart(false)}
+      />
+
+      <DateTimePickerModal
+        isVisible={visibleEnd} /*Should have second component for end date */
+        mode="datetime"
+        display="spinner"
+        onConfirm={(datum) => (
+          setEvent({
+            ...event,
+            endingTime: {
+              hour: datum.getHours(),
+              min: datum.getMinutes(),
+            },
+          }),
+          setVisibleEnd(false),
+          setColor("#743cff")
+        )}
+        onCancel={() => setVisibleEnd(false)}
       />
 
       <KeyboardAvoidingView
@@ -178,13 +245,13 @@ const AddScreen = ({ props, navigation, route }) => {
             //animation="fadeInUpBig"
             contentContainerStyle={{
               padding: 10,
-              flex: 1,
+              //flex: 1,
               justifyContent: "center",
             }}
           >
             <View style={styles.descriptionContainer}>
               <View style={styles.title}>
-                <Text style={styles.titleText}>Name</Text>
+                <Text style={styles.titleText}>{username}</Text>
               </View>
 
               <TextInput
@@ -243,7 +310,11 @@ const AddScreen = ({ props, navigation, route }) => {
                       elevation: 2,
                     }}
                   >
-                    <Text style={{ color: "#CDCDCD" }}>Find an Address</Text>
+                    {event.placeName === "" ? (
+                      <Text style={{ color: "#CDCDCD" }}>Find an Address</Text>
+                    ) : (
+                      <Text style={{ color: "black" }}>{event.placeName}</Text>
+                    )}
                   </View>
                 </TouchableOpacity>
               </View>
@@ -272,7 +343,6 @@ const AddScreen = ({ props, navigation, route }) => {
                 placeholder="In a few words"
                 multiline
                 placeholderTextColor="#CDCDCD"
-                value={description}
                 //OnSubmitEditing={(text) => setDescription(text)}
                 //onEndEditing={(text) => setDescription(text)}
                 onChangeText={(text) =>
@@ -293,7 +363,6 @@ const AddScreen = ({ props, navigation, route }) => {
                 style={styles.textInput}
                 placeholder="#"
                 placeholderTextColor="#CDCDCD"
-                value={tags}
                 //OnSubmitEditing={(textTag) => setTags(textTag)}
                 //onEndEditing={(textTag) => setTags(textTag)}
                 onChangeText={(textTag) =>
@@ -307,16 +376,32 @@ const AddScreen = ({ props, navigation, route }) => {
 
             <View style={styles.dateContainer}>
               <View style={styles.title}>
-                <Text style={styles.titleText}>Date & Time</Text>
+                <Text style={styles.titleText}>Start</Text>
               </View>
 
               <TouchableOpacity
                 activeOpacity={0.7}
-                onPress={() => setVisible(true)}
+                onPress={() => setVisibleStart(true)}
               >
                 <View style={styles.textInput}>
                   <Text style={{ color: color, fontSize: 16 }}>
-                    {readableDate(dateTime)}
+                    {readableDate(event.startDateTime)}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.dateContainer}>
+              <View style={styles.title}>
+                <Text style={styles.titleText}>End</Text>
+              </View>
+
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={() => setVisibleEnd(true)}
+              >
+                <View style={styles.textInput}>
+                  <Text style={{ color: color, fontSize: 16 }}>
+                    {readableDate(event.endDateTime)}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -365,10 +450,12 @@ const AddScreen = ({ props, navigation, route }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 activeOpacity={0.7}
-
-                /*onPress={user.callFunction("createEvent", event).then(Haptics.notificationAsync(
-                    Haptics.NotificationFeedbackType.Success
-                  ))}*/
+                onPress={() => {
+                  createEvent(); /*.then(
+                    Haptics.notificationAsync(
+                      Haptics.NotificationFeedbackType.Success
+                    ) */
+                }}
               >
                 <View
                   style={{
@@ -404,7 +491,7 @@ const AddScreen = ({ props, navigation, route }) => {
           </ScrollView>
         </TouchableWithoutFeedback>
       </KeyboardAvoidingView>
-    </View>
+    </>
   );
 };
 

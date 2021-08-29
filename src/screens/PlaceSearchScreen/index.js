@@ -173,12 +173,17 @@ const PlaceSearchScreen = ({ navigation, route }) => {
         }
         extraData={query}
         renderItem={({ item }) => (
-          <View style={styles.row}>
-            <View style={styles.iconContainer}>
-              <Entypo name="location-pin" size={25} color={"#743cff"} />
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate("Add", { item })}
+          >
+            <View style={styles.row}>
+              <View style={styles.iconContainer}>
+                <Entypo name="location-pin" size={25} color={"#743cff"} />
+              </View>
+              <Text style={styles.locationText}>{item.name}</Text>
             </View>
-            <Text style={styles.locationText}>{item.address}</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

@@ -82,6 +82,22 @@ const PlaceSearchScreen = ({ navigation, route }) => {
     setHits(res.slice());
   };
 
+  const searchFilter = async (text) => {
+    if (text) {
+      var newData = followers.filter((item) => {
+        var name = item.username.toLowerCase();
+        const filter = text.toLowerCase();
+        return name.search(filter) !== -1;
+      });
+      setData(newData);
+      console.log(newData);
+      setText(text);
+    } else {
+      setData(followers);
+      setText("");
+    }
+  };
+
   const filterNames = (hit) => {
     //console.log(hit);
     let search = query.toLowerCase();

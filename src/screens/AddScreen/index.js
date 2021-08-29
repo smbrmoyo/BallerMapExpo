@@ -47,11 +47,19 @@ navigator.geolocation = require("@react-native-community/geolocation");
 
 const AddScreen = ({ props, navigation, route }) => {
   const { user } = useAuth();
-  const [address, setAddress] = useState(null); // Put all this in one state and use ... operator
+  /*import username from useProfile() */
+  const [event, setEvent] = useState({
+    name: "",
+    placeName: "",
+    tags: [],
+    description: "",
+    dateTime: new Date(),
+  });
+  /*const [address, setAddress] = useState(null); // Put all this in one state and use ... operator
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [tags, setTags] = useState(""); // Should be list of strings. Will see with Max
-  const [dateTime, setDateTime] = useState(new Date());
+  const [dateTime, setDateTime] = useState(new Date());*/
 
   const [visible, setVisible] = useState(false);
   const [color, setColor] = useState("#CDCDCD");
@@ -150,7 +158,12 @@ const AddScreen = ({ props, navigation, route }) => {
         mode="datetime"
         display="spinner"
         onConfirm={(datum) => (
-          setDateTime(datum), setVisible(false), setColor("#743cff")
+          setEvent({
+            ...event,
+            datetime: datum,
+          }),
+          setVisible(false),
+          setColor("#743cff")
         )}
         onCancel={() => setVisible(false)}
       />
@@ -191,8 +204,12 @@ const AddScreen = ({ props, navigation, route }) => {
                 }}
                 placeholder="Give your run a name"
                 placeholderTextColor="#CDCDCD"
-                value={name}
-                onChangeText={(text) => setName(text)}
+                onChangeText={(text) =>
+                  setEvent({
+                    ...event,
+                    name: text,
+                  })
+                }
               />
             </View>
 
@@ -203,6 +220,12 @@ const AddScreen = ({ props, navigation, route }) => {
               <View style={styles.adressContainer}>
                 <TouchableOpacity
                   onPress={() => navigation.navigate("PlaceSearch")}
+                  /*if (route.params) {
+    setEvent({
+      ...event,
+      placeName: route.params.placeName,
+    })
+  }*/
                 >
                   <View
                     style={{
@@ -252,7 +275,12 @@ const AddScreen = ({ props, navigation, route }) => {
                 value={description}
                 //OnSubmitEditing={(text) => setDescription(text)}
                 //onEndEditing={(text) => setDescription(text)}
-                onChangeText={(text) => setDescription(text)}
+                onChangeText={(text) =>
+                  setEvent({
+                    ...event,
+                    description: text,
+                  })
+                }
               />
             </View>
 
@@ -268,7 +296,12 @@ const AddScreen = ({ props, navigation, route }) => {
                 value={tags}
                 //OnSubmitEditing={(textTag) => setTags(textTag)}
                 //onEndEditing={(textTag) => setTags(textTag)}
-                onChangeText={(textTag) => setTags(textTag)}
+                onChangeText={(textTag) =>
+                  setEvent({
+                    ...event,
+                    //name: text,
+                  })
+                }
               />
             </View>
 

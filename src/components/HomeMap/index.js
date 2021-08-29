@@ -13,7 +13,6 @@ import {
   Animated,
   Alert,
 } from "react-native";
-import { AsyncStorage } from "react-native";
 //import Animated from "react-native-reanimated";
 import MapView, { PROVIDER_GOOGLE, Marker, Circle } from "react-native-maps";
 import {
@@ -25,6 +24,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { useRoute, useNavigation } from "@react-navigation/native";
 import Geolocation from "@react-native-community/geolocation";
+import haversine from "haversine";
 
 import { mapBlueGreyStyle } from "../../styles/MapStyles";
 import ProfilePicture from "../ProfilePicture";
@@ -47,6 +47,7 @@ const HomeMap = ({ props }) => {
   const { places } = useMap();
   const route = useRoute();
   const navigation = useNavigation();
+  const RADIUS = 20;
   const [camera, setCamera] = useState({
     latitude: 48.872008,
     longitude: 2.3120161,
@@ -55,6 +56,19 @@ const HomeMap = ({ props }) => {
     zoom: 18,
     altitude: 18,
   });
+
+  const initialMapState = {
+    people,
+    events: [],
+    places,
+    region: {
+      latitude: 48.872008,
+      longitude: 2.3120161,
+      latitudeDelta: 0.003,
+      longitudeDelta: 0.0021,
+    },
+    camera,
+  };
 
   useEffect(() => {
     _onMapReady();
@@ -70,62 +84,20 @@ const HomeMap = ({ props }) => {
     );
   };
 
-  const initialMapState = {
-    categories: [
-      {
-        id: "0",
-        name: "Ball Court",
-        icon: (
-          <MaterialCommunityIcons
-            style={styles.chipsIcon}
-            name="food-fork-drink"
-            size={18}
-          />
-        ),
-      },
-      {
-        id: "1",
-        name: "Park",
-        icon: (
-          <Ionicons name="ios-restaurant" style={styles.chipsIcon} size={18} />
-        ),
-      },
-      {
-        id: "2",
-        name: "Resto",
-        icon: (
-          <Ionicons name="md-restaurant" style={styles.chipsIcon} size={18} />
-        ),
-      },
-      {
-        id: "3",
-        name: "Park 2",
-        icon: (
-          <MaterialCommunityIcons
-            name="food"
-            style={styles.chipsIcon}
-            size={18}
-          />
-        ),
-      },
-    ],
-    people,
-    events: [],
-    places,
-    region: {
-      latitude: 48.872008,
-      longitude: 2.3120161,
-      latitudeDelta: 0.003,
-      longitudeDelta: 0.0021,
-    },
-    camera,
-  };
-
   const [state, setState] = useState(initialMapState);
   const [addPressed, setAddPressed] = useState(false);
 
   let mapIndex = 0;
   const _mapAnimation = useRef(new Animated.Value(0)).current;
+
+  /*for (let i = 0; i < places.length; i++) {
+    let coords = {
+      latitude: places[i].coordinate.latitude,
+      longitude: places[i].coordinate.longitude,
+    };
+    console.log(haversine(MaxCoords, coords, { unit: "mile" }));
+    console.log(i);
+  }*/
 
   useEffect(() => {
     _mapAnimation.addListener(({ value }) => {
@@ -238,8 +210,6 @@ const HomeMap = ({ props }) => {
     //userId
   };
 
-  console.log(places.length);
-
   return (
     <>
       <BottomSheetMap />
@@ -285,6 +255,7 @@ const HomeMap = ({ props }) => {
                   },
                 ],
               };
+
               return (
                 <Marker
                   key={place._id}
@@ -314,7 +285,7 @@ const HomeMap = ({ props }) => {
           <Animated.FlatList
             ref={_scrollView}
             data={state.places}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item) => JSON.stringify(item._id)}
             horizontal
             pagingEnabled
             scrollEventThrottle={1}

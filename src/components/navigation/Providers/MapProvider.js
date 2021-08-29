@@ -1,12 +1,14 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 import Realm from "realm";
 import { useAuth, getUprofile } from "./AuthProvider";
+import haversine from "haversine";
 
 export const MapContext = React.createContext();
 
 const MapProvider = ({ children }) => {
   const { user } = useAuth();
   const [places, setPlaces] = useState([]);
+  const MaxCoords = { latitude: 46.779, longitude: -71.2755 };
 
   const getPlaces = async () => {
     const placesRealm = await user.callFunction("getPlaces");
@@ -26,13 +28,21 @@ const MapProvider = ({ children }) => {
     return temp;
   };
 
+  /*for (let i = 0; i < places.length; i++) {
+    let coords = {
+      latitude: places[i].coordinate.latitude,
+      longitude: places[i].coordinate.longitude,
+    };
+    console.log(haversine(MaxCoords, coords, { threshold: 7, unit: "mile" }));
+    console.log(i);
+  }*/
+
   // Charge les données sur les places
   useEffect(() => {
     getPlaces().then((result) => setPlaces(result));
 
     const placesUpdate = setInterval(() => {
       getPlaces().then((result) => setPlaces(result));
-      console.log("from provider");
     }, 1800000);
     return () => {
       clearInterval(placesUpdate);

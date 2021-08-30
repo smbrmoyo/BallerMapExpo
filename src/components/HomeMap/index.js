@@ -38,8 +38,8 @@ import { useMap } from "../navigation/Providers/MapProvider";
 
 const { width, height } = Dimensions.get("window");
 const CARD_HEIGHT = hsize(100);
-const CARD_WIDTH = width * 0.8;
-const SPACING_FOR_CARD_INSET = width * 0.1 - wsize(10);
+const CARD_WIDTH = wsize(width) * 0.8;
+const SPACING_FOR_CARD_INSET = wsize(width) * 0.1 - wsize(10);
 
 const HomeMap = ({ props }) => {
   bsMap = useRef(null);
@@ -114,7 +114,7 @@ const HomeMap = ({ props }) => {
       const regionTimeout = setTimeout(() => {
         if (mapIndex !== index) {
           mapIndex = index;
-          const { coordinate } = state.places[index]; //  Try people and see if the map is initialized on a marker
+          const { coordinate } = state.places[mapIndex]; //  Try people and see if the map is initialized on a marker
 
           _map.current.animateCamera({
             center: { ...coordinate },
@@ -299,7 +299,7 @@ const HomeMap = ({ props }) => {
               top: 0,
               left: SPACING_FOR_CARD_INSET,
               bottom: 0,
-              right: SPACING_FOR_CARD_INSET,
+              //right: SPACING_FOR_CARD_INSET,
             }}
             contentContainerStyle={{
               paddingHorizontal:

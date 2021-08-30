@@ -59,7 +59,9 @@ const AuthProvider = ({ children, navigation }) => {
             setProfilePartition(uProfilePartition);
             if (profilePartition !== undefined) {
               setLoadingUser(false);
-              setProfileDoc(getUprofile(uProfilePartition));
+              let temp = getUprofile(uProfilePartition).then((res) =>
+                setProfileDoc(res)
+              );
               console.log(" AUTHPROVIDER!!!: profile partition trouvée");
             }
           }

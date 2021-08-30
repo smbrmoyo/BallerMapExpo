@@ -219,7 +219,7 @@ const ProfileScreen = ({ navigation, route }) => {
         renderContent={renderInner}
         renderHeader={renderHeader}
         initialSnap={1}
-        //callbackNode={bsProf}
+        callbackNode={fall}
         enabledGestureInteraction={true}
         enabledHeaderGestureInteraction={true}
         enabledContentGestureInteraction={true}
@@ -230,8 +230,10 @@ const ProfileScreen = ({ navigation, route }) => {
         <Animated.View
           // eslint-disable-next-line react-native/no-inline-styles
           style={{
-            flex: 1,
-            opacity: Animated.add(0.05, Animated.multiply(fall, 1.0)),
+            flex: 2,
+            height: "100%",
+            width: "100%",
+            //opacity: Animated.add(0.05, Animated.multiply(fall, 1.0)),
           }}
         >
           <View style={styles.container}>
@@ -287,23 +289,9 @@ const ProfileScreen = ({ navigation, route }) => {
                 }}
               >
                 <View
-                  /*{
-              userExtraInfo: {
-                fullName: userExtraInfo.fullName,
-                photoURL: userExtraInfo.photoURL,
-                userName: userExtraInfo.userName,
-                status: userExtraInfo.status,
-                city: userExtraInfo.city,
-                link: userExtraInfo.link,
-                description: userExtraInfo.description,
-                email: userExtraInfo.email,
-                phone: userExtraInfo.phone,
-                gender: userExtraInfo.gender,
-              },
-            }*/
                   style={{
                     //backgroundColor: "#D8D8D8",
-                    marginBottom: 10,
+                    marginVertical: hsize(5),
                     borderWidth: 2,
                     borderColor: "#E9E8E8",
                     borderRadius: 5,
@@ -325,6 +313,39 @@ const ProfileScreen = ({ navigation, route }) => {
             </View>
             <TabContainer />
           </View>
+
+          <FlatList
+            data={people}
+            keyExtractor={(item) => item.id}
+            style={{
+              flex: 1,
+              backgroundColor: "white",
+            }}
+            renderItem={({ item }) => (
+              <TouchableOpacity
+                style={{
+                  flexDirection: "column",
+                  backgroundColor: "white",
+                  shadowColor: "#000000",
+                  shadowOffset: { width: 0, height: 0 },
+                  shadowRadius: 5,
+                  shadowOpacity: 0.3,
+                  elevation: 2.5,
+                  borderRadius: 10,
+                  height: hsize(80),
+                  width: "95%",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: hsize(10),
+                }}
+                onPress={() => navigation.navigate("Attendance")}
+              >
+                <View>
+                  <Text>{item.name}</Text>
+                </View>
+              </TouchableOpacity>
+            )}
+          />
         </Animated.View>
       </TouchableWithoutFeedback>
     </>
@@ -335,6 +356,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "white",
+    justifyContent: "center",
     //paddingTop: hsize(44),
   },
   iconContainer: {
@@ -350,7 +372,7 @@ const styles = StyleSheet.create({
   profileInitialContainer: {
     flexDirection: "row",
     paddingHorizontal: wsize(10),
-    paddingVertical: hsize(10),
+    paddingVertical: hsize(5),
   },
   profilePhoto: {
     width: wsize(80),
@@ -392,12 +414,12 @@ const styles = StyleSheet.create({
     color: "#003569",
   },
   followersContainer: {
-    marginTop: hsize(14),
+    marginTop: hsize(7),
     flexDirection: "row",
     justifyContent: "space-between",
   },
   followersContainerLeft: {
-    marginTop: hsize(14),
+    marginTop: hsize(7),
     flexDirection: "row",
   },
   followersContainerRight: {
@@ -421,7 +443,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-around",
     //width: "100%",
-    marginVertical: 10,
+    //marginVertical: 10,
   },
   userInfoItem: {
     justifyContent: "center",
@@ -454,6 +476,7 @@ const styles = StyleSheet.create({
   tabContainer: {
     borderWidth: 1,
     height: hsize(50),
+    width: "100%",
     alignItems: "center",
     borderColor: "#DADBDA",
     flexDirection: "row",
@@ -512,14 +535,14 @@ const styles = StyleSheet.create({
   panelSubtitle: {
     fontSize: 14,
     color: "gray",
-    height: 30,
-    marginBottom: 10,
+    height: hsize(30),
+    marginBottom: hsize(10),
   },
   row: {
     alignItems: "center",
     flexDirection: "row",
-    marginVertical: 20,
-    marginHorizontal: 10,
+    marginVertical: hsize(20),
+    marginHorizontal: wsize(10),
     borderBottomColor: "grey",
     borderBottomWidth: 0.5,
   },

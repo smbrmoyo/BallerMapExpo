@@ -15,7 +15,7 @@ import StoryScreen4 from "../../screens/StoryScreen4/App";
 
 import { createStackNavigator } from "@react-navigation/stack";
 import UserSearchScreen from "../../screens/UserSearchScreen";
-import { ProfileProvider } from "./Providers/profileProvider";
+import { ProfileProvider } from "./Providers/ProfileProvider";
 
 const Stack = createStackNavigator();
 

@@ -1,6 +1,6 @@
-const Realm = require('realm');
+const Realm = require("realm");
 
-const {useState} = require('react/cjs/react.production.min');
+const { useState } = require("react/cjs/react.production.min");
 
 let app;
 let realm;
@@ -13,13 +13,13 @@ let userRealm;
 function getRealmApp() {
   if (app === undefined) {
     // TODO: Create a Realm App instance with your Realm app ID.
-    const appId = 'application-0-qqfhe'; // Set Realm app ID here.
+    const appId = "application-0-qqfhe"; // Set Realm app ID here.
     const appConfig = {
       id: appId,
       timeout: 10000,
       app: {
-        name: 'default',
-        version: '0',
+        name: "default",
+        version: "0",
       },
     };
     app = new Realm.App(appConfig);
@@ -49,14 +49,14 @@ async function signIn(cred) {
   // TODO: Pass the email and password to Realm's email password provider to log in.
   // Use the setUser() function to set the logged-in user.
   //const creds = Realm.Credentials.emailPassword(email, password);
-  console.log('ok');
+  console.log("ok");
   app = getRealmApp();
-  Realm.App.Sync.setLogLevel(app, 'debug');
-  const usere = await app.logIn(cred).catch(error => console.log(2));
+  Realm.App.Sync.setLogLevel(app, "debug");
+  const usere = await app.logIn(cred).catch((error) => console.log(2));
   console.log(app);
 
   if (usere) {
-    console.log('ca marche');
+    console.log("ca marche");
     console.log(usere.id);
     const syncConfig = {
       sync: {
@@ -68,10 +68,10 @@ async function signIn(cred) {
     };
     let userRealm;
     Realm.open(syncConfig)
-      .then(urealm => {
+      .then((urealm) => {
         userRealm = urealm;
-        const userDoc = userRealm.objects('UserData');
-        let {partition} = userDoc[0];
+        const userDoc = userRealm.objects("UserData");
+        let { partition } = userDoc[0];
         console.log(`result = ${userDoc[0].email}`);
         //console.log(uProfilePartition);
         urealm.close();
@@ -80,13 +80,13 @@ async function signIn(cred) {
       /*.then(result => {
         console.log(result);
       })*/
-      .catch(error => console.log(error.errorCode));
+      .catch((error) => console.log(error.errorCode));
     //userRealm.close().catch(error => console.log(error));
     while (userRealm) {
       return userRealm[0];
     }
   } else {
-    console.log('pas de user');
+    console.log("pas de user");
   }
 }
 
@@ -94,14 +94,41 @@ async function signIn(cred) {
 
 app = getRealmApp();
 
-const creds = Realm.Credentials.emailPassword('brianmoyou', 'brianmoyou');
+const creds = Realm.Credentials.emailPassword("brianmoyou", "brianmoyou");
 
 let mongodb;
 
-const user = async () => await app.logIn(creds)
-    .then(user => {
-      user.callFunction("gettPlaces").then(result => console.log(result))
-    }).
-    catch(error => console.log(error));
+const sample_event = {
+    "name": "blackOpsBasketball",
+    "date": {
+        "day": 15,
+        "month": 9,
+        "year": 2021
+    },
+    "time": {
+        "hour": 15,
+        "min": 0
+    },
+    "endingTime": {
+        "hour": 15,
+        "min": 0
+    },
+    "placeName": "byFar",
+    "creator": "letch",
+    "tags": ["#Cavachier", "#kingofTheCourt", "#5v5"],
+    "attendants": ["brianmoyou", "sorador"],
+    "description": "Les gars chacun doit ramener 5 euros pour les droits de terre"
+}
 
-user()
+const user = async () =>
+  await app
+    .logIn(creds)
+    .then((user) => {
+    })
+    .catch((error) => console.log(error));
+     mongodb = app.currentUser.mongoClient("mongodb-atlas");
+    const eCollection = mongodb.db("AYTO_Dev").collection("eProfile");
+    eCollection.insertOne(sample_event).then(result => {console.log(result);}).catch(error => console.log(error));
+    //app.currentUser.callFunction("Create_Event", sample_event).then(result => console.log(result)).catch(error => console.log(error));
+
+user();

@@ -23,6 +23,7 @@
     "expo-av": "~9.2.3",
     "expo-blur": "~9.0.3",
     "expo-camera": "~11.2.2",
+    "expo-constants": "^11.0.1",
     "expo-dev-client": "^0.4.5",
     "expo-font": "~9.2.1",
     "expo-haptics": "~10.1.0",

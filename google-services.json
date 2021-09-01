@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "780835076078",
+    "project_id": "ballermap-4a568",
+    "storage_bucket": "ballermap-4a568.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:780835076078:android:665de6bff0a3fcc7e200ff",
+        "android_client_info": {
+          "package_name": "com.smbrmoyo.BallerMapExpo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "780835076078-k47iom3hl4plble6at568m2a72teh27k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCS3Sy93JC0wtyo4b0Wc6S7Yzfb5O8Y8Pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "780835076078-k47iom3hl4plble6at568m2a72teh27k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

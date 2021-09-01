@@ -33,7 +33,7 @@ import LoadingScreen from "../../screens/LoadingScreen";
 import FollowButton from "../../components/FollowButton";
 import { useIsFocused } from "@react-navigation/native";
 import { useAuth } from "../../components/navigation/realmAuthProvider";
-import { useProfile } from "../../components/navigation/Providers/profileProvider";
+import { useProfile } from "../../components/navigation/Providers/ProfileProvider";
 import { wsize, hsize } from "../../utils/Dimensions";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -56,7 +56,7 @@ const ProfileScreen = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const { user, signOut } = useAuth();
   const [userExtraInfo, setUserExstraInfo] = useState(null);
-  const { username } = useProfile();
+  const { profileDoc,username } = useProfile();
   const isFocused = useIsFocused();
 
   function TabContainer(props) {

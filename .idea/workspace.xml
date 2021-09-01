@@ -1,18 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd39e616-5a0b-4bc7-b3be-d1301a756ee1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/lodashTest.js" afterDir="false" />
+    <list default="true" id="fd39e616-5a0b-4bc7-b3be-d1301a756ee1" name="Default Changelist" comment="ProfileListener implement">
+      <change afterPath="$PROJECT_DIR$/google-services.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/connectionTest.js" beforeDir="false" afterPath="$PROJECT_DIR$/connectionTest.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm" beforeDir="false" afterPath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm.lock" beforeDir="false" afterPath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/searchTest.js" beforeDir="false" afterPath="$PROJECT_DIR$/searchTest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/navigation/Providers/profileProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/Providers/profileProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/navigation/AppStack.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/AppStack.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/navigation/ProfileStack.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/ProfileStack.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/navigation/Providers/profileProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/Providers/ProfileProvider.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screens/AddScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/AddScreen/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/EditProfileScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/EditProfileScreen/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screens/FollowersScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/FollowersScreen/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/PlaceSearchScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/PlaceSearchScreen/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/screens/ProfileScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/ProfileScreen/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,8 +47,10 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/screens/ProfileScreen/index.js" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/components/navigation/Providers/ProfileProvider.js" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1wP13zaJtI2IE9WOroRlTAmRRa1" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="autoscrollFromSource" value="true" />
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -60,6 +70,11 @@
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
     <property name="ts.external.directory.path" value="$PROJECT_DIR$/node_modules/typescript/lib" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -74,6 +89,8 @@
       <workItem from="1628609346659" duration="5958000" />
       <workItem from="1629119014334" duration="42974000" />
       <workItem from="1629950002652" duration="14221000" />
+      <workItem from="1630250173897" duration="13837000" />
+      <workItem from="1630431118682" duration="4662000" />
     </task>
     <task id="LOCAL-00001" summary="GetProfilDoc function">
       <created>1629127408529</created>

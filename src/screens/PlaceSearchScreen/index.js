@@ -20,12 +20,14 @@ import people from "../../assets/data/people";
 import places from "../../assets/data/placesJSON";
 import PlaceRow from "./PlaceRow";
 import { hsize, wsize } from "../../utils/Dimensions";
+import {useMap} from "../../components/navigation/Providers/MapProvider"
 
 const PlaceSearchScreen = ({ navigation, route }) => {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState("");
   const [heroes, setHeroes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const places = useMap().places;
   const { colors, dark } = useTheme();
 
   useLayoutEffect(() => {
@@ -73,7 +75,7 @@ const PlaceSearchScreen = ({ navigation, route }) => {
   }, [navigation]);
 
   useEffect(() => {
-    fetchData();
+    //fetchData();
   }, []);
 
   const fetchData = async () => {

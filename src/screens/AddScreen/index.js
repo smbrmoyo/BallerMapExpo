@@ -95,8 +95,8 @@ const AddScreen = ({ props, navigation, route }) => {
       creator: username,
     });*/
     const creation = user
-      .callFunction("Create_Event", event)
-      .then()
+      .functions.Create_Event(event)
+      .then(result => console.log("evénement bien créé"))
       .catch((err) => console.log(err));
   };
 

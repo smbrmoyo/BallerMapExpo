@@ -13,8 +13,8 @@ import Feather from "react-native-vector-icons/Feather";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-//import {Constants} from "expo-constants";
-import * as Constants from "constants";
+import Constants from 'expo-constants';
+
 
 const Tab = createBottomTabNavigator();
 

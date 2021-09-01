@@ -4,23 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fd39e616-5a0b-4bc7-b3be-d1301a756ee1" name="Default Changelist" comment="ProfileListener implement">
-      <change afterPath="$PROJECT_DIR$/google-services.json" afterDir="false" />
+    <list default="true" id="fd39e616-5a0b-4bc7-b3be-d1301a756ee1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/connectionTest.js" beforeDir="false" afterPath="$PROJECT_DIR$/connectionTest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm" beforeDir="false" afterPath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm.lock" beforeDir="false" afterPath="$PROJECT_DIR$/mongodb-realm/application-0-qqfhe/server-utility/metadata/sync_metadata.realm.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/navigation/AppStack.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/AppStack.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/navigation/ProfileStack.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/ProfileStack.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/navigation/Providers/profileProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/Providers/ProfileProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/navigation/Providers/AuthProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/Providers/AuthProvider.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/navigation/Providers/ProfileProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/Providers/ProfileProvider.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/screens/AddScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/AddScreen/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/EditProfileScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/EditProfileScreen/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/FollowersScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/FollowersScreen/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/PlaceSearchScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/PlaceSearchScreen/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/ProfileScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/ProfileScreen/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,7 +25,7 @@
     </option>
   </component>
   <component name="Git.Merge.Settings">
-    <option name="BRANCH" value="origin/Brian" />
+    <option name="BRANCH" value="origin/master" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -90,7 +80,7 @@
       <workItem from="1629119014334" duration="42974000" />
       <workItem from="1629950002652" duration="14221000" />
       <workItem from="1630250173897" duration="13837000" />
-      <workItem from="1630431118682" duration="4662000" />
+      <workItem from="1630431118682" duration="11462000" />
     </task>
     <task id="LOCAL-00001" summary="GetProfilDoc function">
       <created>1629127408529</created>
@@ -113,7 +103,14 @@
       <option name="project" value="LOCAL" />
       <updated>1629778944062</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="ProfileListener implement">
+      <created>1630511154855</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1630511154855</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -134,6 +131,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="GetProfilDoc function" />
     <MESSAGE value="connectionTest implemented" />
-    <option name="LAST_COMMIT_MESSAGE" value="connectionTest implemented" />
+    <MESSAGE value="ProfileListener implement" />
+    <option name="LAST_COMMIT_MESSAGE" value="ProfileListener implement" />
   </component>
 </project>

@@ -48,6 +48,11 @@ const HomeMap = ({ props }) => {
   const route = useRoute();
   const navigation = useNavigation();
   const RADIUS = 20;
+  const [counter, setCounter] = useState(0);
+  const [userLocation, setUserLocation] = useState({
+    prevCoords: { latitude: 0, longitude: 0 },
+    currentCoords: { latitude: 0, longitude: 0 },
+  });
   const [camera, setCamera] = useState({
     latitude: 48.872008,
     longitude: 2.3120161,
@@ -75,14 +80,73 @@ const HomeMap = ({ props }) => {
   }, []);
 
   const _onMapReady = async () => {
-    Geolocation.getCurrentPosition((info) =>
+    Geolocation.getCurrentPosition((info) => {
       setCamera({
         ...camera,
         latitude: info.coords.latitude,
         longitude: info.coords.longitude,
-      })
-    );
+      }),
+        setUserLocation({
+          ...userLocation,
+          currentCoords: {
+            latitude: info.coords.latitude,
+            longitude: info.coords.longitude,
+          },
+        });
+    });
   };
+
+  useEffect(() => {
+    /*
+  Compare a user's currentCoords and a place with prevCoords and the same place
+  If distance < 10 m, user can send notification 
+*/
+
+    const positionUpdate = setInterval(() => {
+      let watchID = Geolocation.watchPosition(
+        (position) => {
+          setUserLocation({
+            ...userLocation,
+            prevCoords: {
+              latitude: userLocation.currentCoords.latitude,
+              longitude: userLocation.currentCoords.longitude,
+            },
+            currentCoords: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            },
+          });
+          if (
+            !haversine(userLocation.currentCoords, userLocation.prevCoords, {
+              threshold: 0.02,
+              unit: "mile",
+            })
+          ) {
+            Alert.alert(
+              "Tu as bougé de " +
+                haversine(userLocation.currentCoords, userLocation.prevCoords, {
+                  unit: "meter",
+                }) +
+                "m"
+            );
+          }
+          console.log(
+            "Tu as bougé de " +
+              haversine(userLocation.currentCoords, userLocation.prevCoords, {
+                unit: "meter",
+              }) +
+              "m"
+          );
+          Geolocation.clearWatch(watchID);
+        },
+        { enableHighAccuracy: true, distanceFilter: 5, maximumAge: 1000 }
+      );
+    }, 60000); // Should adjust maybe to 2 or 3 mins
+
+    return () => {
+      clearInterval(positionUpdate);
+    };
+  });
 
   const [state, setState] = useState(initialMapState);
   const [addPressed, setAddPressed] = useState(false);

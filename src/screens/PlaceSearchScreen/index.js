@@ -25,7 +25,7 @@ import {useMap} from "../../components/navigation/Providers/MapProvider"
 const PlaceSearchScreen = ({ navigation, route }) => {
   const [data, setData] = useState([]);
   const [query, setQuery] = useState("");
-  const [heroes, setHeroes] = useState([]);
+  const [hits, setHits] = useState([]);
   const [loading, setLoading] = useState(false);
   const places = useMap().places;
   const { colors, dark } = useTheme();
@@ -81,30 +81,46 @@ const PlaceSearchScreen = ({ navigation, route }) => {
   const fetchData = async () => {
     const res = places;
     setData(res);
-    setHeroes(res.slice());
+    setHits(res.slice());
   };
 
-  const filterNames = (hero) => {
-    //console.log(hero);
-    let search = query.toLowerCase();
-    let heroName = hero.name.toLowerCase();
-
-    if (heroName.startsWith(search)) {
-      return hero.address;
+  const searchFilter = async (text) => {
+    if (text) {
+      var newData = followers.filter((item) => {
+        var name = item.username.toLowerCase();
+        const filter = text.toLowerCase();
+        return name.search(filter) !== -1;
+      });
+      setData(newData);
+      console.log(newData);
+      setText(text);
     } else {
-      heroes.splice(heroes.indexOf(hero), 1);
+      setData(followers);
+      setText("");
+    }
+  };
+
+  const filterNames = (hit) => {
+    //console.log(hit);
+    let search = query.toLowerCase();
+    let hitName = hit.name.toLowerCase();
+
+    if (hitName.startsWith(search)) {
+      return hit.address;
+    } else {
+      hits.splice(hits.indexOf(hit), 1);
       return null;
     }
   };
 
-  const formatNames = (hero) => {
-    let heroName = hero.name.charAt(14).toUpperCase() + hero.name.slice(15);
-    heroName = heroName.replace(/_/g, " ");
-    return heroName;
+  const formatNames = (hit) => {
+    let hitName = hit.name.charAt(14).toUpperCase() + hit.name.slice(15);
+    hitName = hitName.replace(/_/g, " ");
+    return hitName;
   };
 
   const updateQuery = (input) => {
-    setHeroes(data.slice());
+    setHits(data.slice());
     setQuery(input);
   };
 
@@ -146,7 +162,7 @@ const PlaceSearchScreen = ({ navigation, route }) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={heroes}
+        data={hits}
         keyExtractor={(i) => i.name.toString()}
         refreshing={loading}
         ListHeaderComponent={
@@ -159,12 +175,17 @@ const PlaceSearchScreen = ({ navigation, route }) => {
         }
         extraData={query}
         renderItem={({ item }) => (
-          <View style={styles.row}>
-            <View style={styles.iconContainer}>
-              <Entypo name="location-pin" size={25} color={"#743cff"} />
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate("Add", { item })}
+          >
+            <View style={styles.row}>
+              <View style={styles.iconContainer}>
+                <Entypo name="location-pin" size={25} color={"#743cff"} />
+              </View>
+              <Text style={styles.locationText}>{item.name}</Text>
             </View>
-            <Text style={styles.locationText}>{item.address}</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

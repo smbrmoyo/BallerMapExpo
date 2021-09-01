@@ -21,16 +21,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useAuth } from "../../components/navigation/realmAuthProvider";
+
+import { hsize, wsize } from "../../utils/Dimensions";
+import { useAuth } from "../../components/navigation/Providers/AuthProvider";
 import { useTheme } from "react-native-paper";
 import styles from "./styles";
 
 const SignUpScreenEmail = ({ navigation }) => {
   const { user, setUser, signUp, signUpTrigger } = useAuth();
-  //const [signUp, { data, error, loading }] = useMutation(SIGN_UP_MUTATION);
-  const onSubmit = () => {
-    signUp({ variables: { email, password } });
-  };
+
   const headerHeight = useHeaderHeight();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,7 +39,7 @@ const SignUpScreenEmail = ({ navigation }) => {
 
   const isUserSignedUp = () => {
     if (signUpTrigger) {
-      navigation.navigate("SignInEmail");
+      signUpTrigger ? navigation.navigate("SignInEmail") : null;
     }
   };
 
@@ -63,55 +62,78 @@ const SignUpScreenEmail = ({ navigation }) => {
   }*/
 
   const [dataSignUp, setdataSignUp] = useState({
-    username: "",
+    email: "",
     password: "",
     confirm_password: "",
     check_textInputChange: false,
     secureTextEntry: true,
     confirm_secureTextEntry: true,
+    isValidPassword: true,
+    isValidConfirmPassword: true,
   });
 
   const textInputChange = (val) => {
     if (val.length !== 0) {
       setdataSignUp({
         ...dataSignUp,
-        username: val,
+        email: val,
         check_textInputChange: true,
       });
     } else {
       setdataSignUp({
         ...dataSignUp,
-        username: val,
+        email: val,
         check_textInputChange: false,
       });
     }
   };
 
   const handlePasswordChange = (val) => {
-    setdataSignUp({
-      ...dataSignUp,
-      password: val,
-    });
+    if (val.trim().length >= 8) {
+      setdataSignUp({
+        ...dataSignUp,
+        password: val,
+        isValidPassword: true,
+      });
+    } else {
+      setdataSignUp({
+        ...dataSignUp,
+        password: val,
+        isValidPassword: false,
+      });
+    }
   };
 
   const handleConfirmPasswordChange = (val) => {
-    setdataSignUp({
-      ...dataSignUp,
-      confirm_password: val,
-    });
+    console.log(dataSignUp.password.length + dataSignUp.password);
+    if (
+      val.length === dataSignUp.password.length &&
+      val === dataSignUp.password
+    ) {
+      setdataSignUp({
+        ...dataSignUp,
+        confirm_password: val,
+        isValidConfirmPassword: true,
+      });
+    } else {
+      setdataSignUp({
+        ...dataSignUp,
+        isValidConfirmPassword: false,
+      });
+    }
   };
 
   const updateSecureTextEntry = () => {
     setdataSignUp({
       ...dataSignUp,
-      secureTextEntry: !data.secureTextEntry,
+      secureTextEntry: !dataSignUp.secureTextEntry,
     });
   };
 
   const updateConfirmSecureTextEntry = () => {
     setdataSignUp({
       ...dataSignUp,
-      confirm_secureTextEntry: !data.confirm_secureTextEntry,
+      confirm_secureTextEntry: !dataSignUp.confirm_secureTextEntry,
     });
   };
 
@@ -131,7 +153,16 @@ const SignUpScreenEmail = ({ navigation }) => {
 
         <Animatable.View animation="fadeInUpBig" style={styles.footer}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Text style={styles.text_footer}>Email</Text>
+            <Text
+              style={[
+                styles.text_footer,
+                {
+                  marginTop: hsize(15),
+                },
+              ]}
+            >
+              Email
+            </Text>
             <View style={styles.action}>
               <FontAwesome name="user-o" color="#05375a" size={20} />
               <TextInput
@@ -144,9 +175,13 @@ const SignUpScreenEmail = ({ navigation }) => {
                   },
                 ]}
                 autoCapitalize="none"
-                value={email}
-                onChangeText={(userEmail) => setEmail(userEmail)}
+                onChangeText={(userEmail) => textInputChange(userEmail)}
               />
+              {dataSignUp.check_textInputChange ? (
+                <Animatable.View animation="bounceIn">
+                  <Feather name="check-circle" color="green" size={20} />
+                </Animatable.View>
+              ) : null}
             </View>
             {/* Add verification */}
 
@@ -154,7 +189,7 @@ const SignUpScreenEmail = ({ navigation }) => {
               style={[
                 styles.text_footer,
                 {
-                  marginTop: 35,
+                  marginTop: hsize(35),
                 },
               ]}
             >
@@ -165,11 +200,12 @@ const SignUpScreenEmail = ({ navigation }) => {
               <TextInput
                 placeholder="Your Password"
                 placeholderTextColor="#666666"
-                value={password}
                 secureTextEntry={dataSignUp.secureTextEntry ? true : false}
                 style={styles.textInput}
                 autoCapitalize="none"
-                onChangeText={(userPassword) => setPassword(userPassword)}
+                onChangeText={(userPassword) =>
+                  handlePasswordChange(userPassword)
+                }
               />
               <TouchableOpacity
                 activeOpacity={0.7}
@@ -182,12 +218,19 @@ const SignUpScreenEmail = ({ navigation }) => {
                 )}
               </TouchableOpacity>
             </View>
+            {dataSignUp.isValidPassword ? null : (
+              <Animatable.View animation="fadeInLeft" duration={500}>
+                <Text style={styles.errorMsg}>
+                  Password must be 8 characters long.
+                </Text>
+              </Animatable.View>
+            )}
 
             <Text
               style={[
                 styles.text_footer,
                 {
-                  marginTop: 35,
+                  marginTop: hsize(35),
                 },
               ]}
             >
@@ -203,9 +246,8 @@ const SignUpScreenEmail = ({ navigation }) => {
                 }
                 style={styles.textInput}
                 autoCapitalize="none"
-                value={confirmPassword}
                 onChangeText={(userPassword) =>
-                  setConfirmPassword(userPassword)
+                  handleConfirmPasswordChange(userPassword)
                 }
               />
               <TouchableOpacity
@@ -219,7 +261,12 @@ const SignUpScreenEmail = ({ navigation }) => {
                 )}
               </TouchableOpacity>
             </View>
-            {/*<View style={styles.textPrivate}>
+            {dataSignUp.isValidConfirmPassword ? null : (
+              <Animatable.View animation="fadeInLeft" duration={500}>
+                <Text style={styles.errorMsg}>Not matching password.</Text>
+              </Animatable.View>
+            )}
+            <View style={styles.textPrivate}>
               <Text style={styles.color_textPrivate}>
                 By signing up you agree to our
               </Text>
@@ -232,13 +279,18 @@ const SignUpScreenEmail = ({ navigation }) => {
                 {" "}
                 Privacy policy
               </Text>
-                </View>*/}
+            </View>
             <View style={styles.button}>
               <TouchableOpacity
                 activeOpacity={0.7}
                 style={styles.signIn}
                 onPress={() => {
-                  signUp(email, password);
+                  if (
+                    dataSignUp.password &&
+                    dataSignUp.isValidConfirmPassword
+                  ) {
+                    signUp(dataSignUp.email, dataSignUp.password);
+                  }
                 }}
               >
                 <LinearGradient

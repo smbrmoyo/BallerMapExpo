@@ -23,7 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useMutation, gql } from "@apollo/client";
 import { useTheme } from "react-native-paper";
 
-import { useAuth } from "../../components/navigation/realmAuthProvider";
+import { useAuth } from "../../components/navigation/Providers/AuthProvider";
 
 const SignInScreenSocial = ({ navigation, props }) => {
   const headerHeight = useHeaderHeight();
@@ -245,7 +245,7 @@ const SignInScreenSocial = ({ navigation, props }) => {
               style={[styles.signIn]}
             >
               <View style={styles.textPrivate}>
-                <Text style={styles.color_textPrivate}>New to Around?</Text>
+                <Text style={styles.color_textPrivate}>New to BallerMap?</Text>
                 <Text
                   style={[styles.color_textPrivate, { fontWeight: "bold" }]}
                 >

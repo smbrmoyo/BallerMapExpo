@@ -37,72 +37,26 @@ function SearchBarFollowers(props) {
         onChangeText={props.onChangeTextDebounced}
         value={props.text}
         placeholder="Search"
-        placeholderTextColor={props.colors.text}
-        style={[
-          styles.inputBox,
-          {
-            color: props.colors.text,
-            backgroundColor: props.colors.background,
-            borderColor: props.colors.border,
-            borderWidth: props.dark ? 1 : 0.5,
-          },
-        ]}
+        placeholderTextColor="grey"
+        style={[styles.textInput]}
       />
     </View>
   );
 }
 
-function FollowRow(item, isFollowing, onFollowPress) {
+function FollowRow({ item }, isFollowing, onFollowPress) {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       style={styles.postHeaderFirst}
       onPress={() => {
-        props.navigate("OtherProfile", {
-          user: {
-            id: item.key,
-            //photo: item.photoURL,
-            userName: item.name,
-          },
-        });
-      }}
-    >
-      <View style={styles.postHeaderContainer}>
-        <View
-          style={{
-            flexDirection: "row",
-            //flex: 1,
-            //paddingHorizontal: wsize(5),
-            paddingVertical: hsize(10),
-            justifyContent: "space-around",
-          }}
-        >
-          <ProfilePicture size={50} />
-          <View
-            style={{
-              flexDirection: "column",
-              marginLeft: wsize(15),
-            }}
-          >
-            <Text
-              style={{
-                fontSize: 18,
-              }}
-            >
-              {item.username}
-            </Text>
-            <Text
-              style={{
-                fontSize: 12,
-                color: "grey",
-              }}
-            >
-              {item.username}
-            </Text>
-          </View>
-        </View>
-        <View
-          /*onPress={() => {
+        props.navigate("OtherProfile"); /*, {
+                  user: {
+                    id: item.key,
+                    //photo: item.photoURL,
+                    userName: item.name,
+                  },*/
+        /*onPress={() => {
     navigation.navigate("EditProfile", {
     userExtraInfo: {
     fullName: userExtraInfo.fullName,
@@ -118,29 +72,43 @@ function FollowRow(item, isFollowing, onFollowPress) {
     },
     });
     }}*/
+      }}
+    >
+      <View style={styles.postHeaderContainer}>
+        <View
           style={{
-            backgroundColor: isFollowing === true ? "#D8D8D8" : "#743cff",
-            marginBottom: 10,
-            borderWidth: 1,
-            borderColor: "#E9E8E8",
-            borderRadius: 5,
-            height: hsize(30),
-            width: "25%",
-            alignSelf: "center",
+            flexDirection: "row",
+            //flex: 1,
+            //paddingHorizontal: wsize(5),
+            paddingVertical: hsize(5),
+            justifyContent: "space-around",
             alignItems: "center",
-            justifyContent: "center",
           }}
         >
-          <TouchableOpacity activeOpacity={0.7} onPress={onFollowPress}>
+          <ProfilePicture size={wsize(50)} />
+          <View
+            style={{
+              flexDirection: "column",
+              marginLeft: wsize(20),
+            }}
+          >
             <Text
               style={{
-                fontSize: 16,
-                color: isFollowing ? "black" : "white",
+                fontSize: 20,
+                color: "black",
               }}
             >
-              {isFollowing ? "Remove" : "Follow"}
+              {item.username}
             </Text>
-          </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 14,
+                color: "grey",
+              }}
+            >
+              {item.username}
+            </Text>
+          </View>
         </View>
       </View>
     </TouchableOpacity>
@@ -168,19 +136,18 @@ const FollowersScreen = ({ navigation }) => {
   };
 
   const searchFilter = async (text) => {
-    if(text){
-       var newData = followers.filter(item => {
-           var name = item.username.toLowerCase();
-           const filter = text.toLowerCase();
-           return (name.search(filter) !== -1);
-       });
-       setData(newData);
-       console.log(newData);
-       setText(text);
-    }
-    else{
-        setData(followers);
-        setText("");
+    if (text) {
+      var newData = followers.filter((item) => {
+        var name = item.username.toLowerCase();
+        const filter = text.toLowerCase();
+        return name.search(filter) !== -1;
+      });
+      setData(newData);
+      console.log(newData);
+      setText(text);
+    } else {
+      setData(followers);
+      setText("");
     }
   };
   /*const onChangeTextDebounced = debounce(onChangeText, 1000, {
@@ -247,35 +214,24 @@ const FollowersScreen = ({ navigation }) => {
     return <LoadingScreen />;
   }
 
-  // console.log(JSON.parse(JSON.stringify(followers)));
-
-  //console.log(followers);
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <FlatList
           data={data}
           refreshing={loading}
-          keyExtractor={(item) => {return item.name}}
+          keyExtractor={(item) => item.username}
           ListHeaderComponent={
             <SearchBarFollowers
               colors={colors}
               dark={dark}
               text={text}
-              //onChangeTextDebounced={onChangeTextDebounced}
-              onChangeTextDebounced = {text => searchFilter(text)}
+              onChangeTextDebounced={(text) => searchFilter(text)}
             />
           }
-          renderItem={({ item }) => {
-              console.log("from FlatList" + JSON.stringify(item));
-              return(
-                  <View>
-                      <Text>{item.username}</Text>
-                  </View>
-              )
-             }
-          }
+          renderItem={({ item }) => (
+            <FollowRow item={item} isFollowing onFollowPress />
+          )}
         />
       </View>
     </SafeAreaView>

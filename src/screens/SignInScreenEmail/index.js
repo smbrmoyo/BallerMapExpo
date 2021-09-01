@@ -22,15 +22,11 @@ import styles from "./styles";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useTheme } from "react-native-paper";
 
-import { useAuth } from "../../components/navigation/realmAuthProvider";
+import { useAuth } from "../../components/navigation/Providers/AuthProvider";
 
 const SignInScreenEmail = ({ navigation, props }) => {
   const headerHeight = useHeaderHeight();
   const { signIn, user } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
-  //console.log(headerHeight + " from Sign in");
 
   /*useEffect(() => {
     if (error) {
@@ -49,11 +45,7 @@ const SignInScreenEmail = ({ navigation, props }) => {
     });
   }*/
 
-  /*const onSubmit = () => {
-    signIn({variables: {email, password}});
-  };*/
-
-  const [datalogin, setDataLogin] = useState({
+  const [dataLogin, setDataLogin] = useState({
     username: "",
     email: "",
     password: "",
@@ -68,15 +60,15 @@ const SignInScreenEmail = ({ navigation, props }) => {
   const textInputChange = (val) => {
     if (val.trim().length >= 4) {
       setDataLogin({
-        ...datalogin,
-        username: val,
+        ...dataLogin,
+        email: val,
         check_textInputChange: true,
         isValidUser: true,
       });
     } else {
       setDataLogin({
-        ...datalogin,
-        username: val,
+        ...dataLogin,
+        email: val,
         check_textInputChange: false,
         isValidUser: false,
       });
@@ -84,15 +76,16 @@ const SignInScreenEmail = ({ navigation, props }) => {
   };
 
   const handlePasswordChange = (val) => {
-    if (val.trim().length >= 8) {
+    if (val.length >= 8) {
       setDataLogin({
-        ...datalogin,
+        ...dataLogin,
         password: val,
         isValidPassword: true,
       });
+    } else if (val.length < 8) {
     } else {
       setDataLogin({
-        ...datalogin,
+        ...dataLogin,
         password: val,
         isValidPassword: false,
       });
@@ -101,46 +94,23 @@ const SignInScreenEmail = ({ navigation, props }) => {
 
   const updateSecureTextEntry = () => {
     setDataLogin({
-      ...datalogin,
-      secureTextEntry: !datalogin.secureTextEntry,
+      ...dataLogin,
+      secureTextEntry: !dataLogin.secureTextEntry,
     });
   };
 
   const handleValidUser = (val) => {
     if (val.trim().length >= 4) {
-      setDataLogin({
-        ...datalogin,
+      setData({
+        ...data,
         isValidUser: true,
       });
     } else {
-      setDataLogin({
-        ...datalogin,
+      setData({
+        ...data,
         isValidUser: false,
       });
     }
-  };
-
-  const loginHandle = (userName, password) => {
-    const foundUser = Users.filter((item) => {
-      return userName == item.username && password == item.password;
-    });
-
-    if (datalogin.username.length == 0 || datalogin.password.length == 0) {
-      Alert.alert(
-        "Wrong Input!",
-        "Username or password field cannot be empty.",
-        [{ text: "Okay" }]
-      );
-      return;
-    }
-
-    if (foundUser.length == 0) {
-      Alert.alert("Invalid User!", "Username or password is incorrect.", [
-        { text: "Okay" },
-      ]);
-      return;
-    }
-    login(foundUser);
   };
 
   return (
@@ -192,11 +162,14 @@ const SignInScreenEmail = ({ navigation, props }) => {
                 },
               ]}
               autoCapitalize="none"
-              value={email}
-              onChangeText={(userEmail) => setEmail(userEmail)}
+              onChangeText={(userEmail) => textInputChange(userEmail)}
             />
+            {dataLogin.check_textInputChange ? (
+              <Animatable.View animation="bounceIn">
+                <Feather name="check-circle" color="green" size={20} />
+              </Animatable.View>
+            ) : null}
           </View>
-          {/* Add verification */}
 
           <Text
             style={[
@@ -213,9 +186,8 @@ const SignInScreenEmail = ({ navigation, props }) => {
             <Feather name="lock" color={colors.text} size={20} />
             <TextInput
               placeholder="Your Password"
-              value={password}
               placeholderTextColor="#666666"
-              secureTextEntry={datalogin.secureTextEntry ? true : false}
+              secureTextEntry={dataLogin.secureTextEntry ? true : false}
               style={[
                 styles.textInput,
                 {
@@ -223,20 +195,28 @@ const SignInScreenEmail = ({ navigation, props }) => {
                 },
               ]}
               autoCapitalize="none"
-              onChangeText={(userPassword) => setPassword(userPassword)}
+              onChangeText={(userPassword) =>
+                handlePasswordChange(userPassword)
+              }
             />
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={updateSecureTextEntry}
             >
-              {datalogin.secureTextEntry ? (
+              {dataLogin.secureTextEntry ? (
                 <Feather name="eye-off" color="grey" size={20} />
               ) : (
                 <Feather name="eye" color="grey" size={20} />
               )}
             </TouchableOpacity>
           </View>
-
+          {dataLogin.isValidPassword ? null : (
+            <Animatable.View animation="fadeInLeft" duration={500}>
+              <Text style={styles.errorMsg}>
+                Password must be 8 characters long.
+              </Text>
+            </Animatable.View>
+          )}
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => console.log("pressed forgot")}
@@ -245,13 +225,13 @@ const SignInScreenEmail = ({ navigation, props }) => {
               Forgot password?
             </Text>
           </TouchableOpacity>
+
           <View style={styles.button}>
             <TouchableOpacity
               activeOpacity={0.7}
               style={styles.signIn}
               onPress={() => {
-                //onSubmit();
-                signIn(email, password);
+                signIn(dataLogin.email, dataLogin.password);
               }}
             >
               <LinearGradient
@@ -276,7 +256,7 @@ const SignInScreenEmail = ({ navigation, props }) => {
               style={[styles.signIn]}
             >
               <View style={styles.textPrivate}>
-                <Text style={styles.color_textPrivate}>New to Around?</Text>
+                <Text style={styles.color_textPrivate}>New to BallerMap?</Text>
                 <Text
                   style={[styles.color_textPrivate, { fontWeight: "bold" }]}
                 >

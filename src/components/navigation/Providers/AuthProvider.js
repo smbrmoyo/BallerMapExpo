@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from "react";
 const Realm = require("realm");
-import { getRealmApp } from "../../../realmServer";
+import { getRealmApp } from "../../../../realmServer";
 import { useNavigation } from "@react-navigation/native";
 
 // Access the Realm App.
@@ -39,37 +39,42 @@ const AuthProvider = ({ children, navigation }) => {
 
     // Open a realm with the logged in user's partition value in order
     // to get the custom user data
-    Realm.open(config).then((userRealm) => {
-      realmRef.current = userRealm;
-      const userDoc = userRealm.objects("UserData");
-      if(userDoc.length != 0){
-        const uProfilePartition = userDoc[0].uProfilePartition;
-        setProfileDoc(getUprofile(uProfilePartition))
-      }
-
-      userDoc.addListener(() => {
-        // The user custom data object may not have been loaded on
-        // the server side yet when a user is first registered.
-        if (userDoc.length === 0) {
-          setProfilePartition([null]);
-          alert("pas de user doc");
-        } else {
+    Realm.open(config)
+      .then((userRealm) => {
+        realmRef.current = userRealm;
+        const userDoc = userRealm.objects("UserData");
+        if (userDoc.length != 0) {
           const uProfilePartition = userDoc[0].uProfilePartition;
-          setProfilePartition(uProfilePartition);
-          if (profilePartition !== undefined) {
-            setLoadingUser(false);
-            setProfileDoc(getUprofile(uProfilePartition))
-            console.log(" AUTHPROVIDER!!!: profile partition trouvée");
-          }
+          setProfileDoc(getUprofile(uProfilePartition));
         }
-      });
-    }).catch(error => console.log(error));
+
+        userDoc.addListener(() => {
+          // The user custom data object may not have been loaded on
+          // the server side yet when a user is first registered.
+          if (userDoc.length === 0) {
+            setProfilePartition([null]);
+            alert("pas de user doc");
+          } else {
+            const uProfilePartition = userDoc[0].uProfilePartition;
+            setProfilePartition(uProfilePartition);
+            if (profilePartition !== undefined) {
+              setLoadingUser(false);
+              let temp = getUprofile(uProfilePartition).then((res) =>
+                setProfileDoc(res)
+              );
+              console.log(" AUTHPROVIDER!!!: profile partition trouvée");
+            }
+          }
+        });
+      })
+      .catch((error) => console.log(error));
 
     return () => {
       // cleanup function
       const userRealm = realmRef.current;
       //console.log(userRealm);
       if (userRealm) {
+        userRealm.removeAllListeners();
         userRealm.close();
         realmRef.current = null;
         setProfilePartition([]); // set project data to an empty array (this prevents the array from staying in state on logout)
@@ -141,15 +146,13 @@ const useAuth = () => {
   return auth;
 };
 
-
 const getUprofile = async (profilePartition) => {
   // get le profile Doc
 
   const mongodb = app.currentUser.mongoClient("mongodb-atlas");
   const userData = mongodb.db("AYTO_Dev").collection("uProfile");
-  const uProfileDoc = await userData.findOne({partition: profilePartition});
+  const uProfileDoc = await userData.findOne({ partition: profilePartition });
   return uProfileDoc;
-}
-
+};
 
 export { AuthProvider, useAuth, getUprofile };

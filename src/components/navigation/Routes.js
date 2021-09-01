@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { useAuth } from "./realmAuthProvider";
+import { useAuth } from "./Providers/AuthProvider";
 
 import AppStack from "./AppStack";
 import AuthStack from "./AuthStack";

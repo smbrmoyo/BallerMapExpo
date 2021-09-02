@@ -68,7 +68,7 @@ const AuthProvider = ({ children, navigation }) => {
           }
         });
       })
-      .catch((error) => console.log(`cette erreur ${error}`));
+      .catch((error) => console.log(`cette erreur ${JSON.stringify(error)}`));
 
     return () => {
       // cleanup function
@@ -100,7 +100,9 @@ const AuthProvider = ({ children, navigation }) => {
     // Registering only registers and does not log in.
     await app.emailPasswordAuth
       .registerUser(email, password)
-      .then(() => setSignUpTrigger(true));
+      .then(result  => {
+        console.log(result)
+        setSignUpTrigger(true)});
   };
 
   // The signOut function calls the logOut function on the currently

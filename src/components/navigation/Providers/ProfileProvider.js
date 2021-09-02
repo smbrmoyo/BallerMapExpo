@@ -48,10 +48,12 @@ const ProfileProvider = ({ children }) => {
           });
           setFollowers(followersData);
           console.log(`PROFILEPROVIDER!!!! : 
-         username: ${username}, followers: ${JSON.stringify(syncFollowers)}`);
+         username: ${syncUsername}, followers: ${JSON.stringify(syncFollowers)}`);
 
           profileRealm.addListener("change", () => {
             console.log("listener triggered");
+            var newProfileDoc = profileRealm.objects("uProfile")[0];
+            setUsername(newProfileDoc.username);
           });
         } else {
           console.log("PROFILEPROVIDER!!!! : No profile found");

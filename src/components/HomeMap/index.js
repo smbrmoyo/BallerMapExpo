@@ -37,9 +37,9 @@ import { wsize, hsize } from "../../utils/Dimensions";
 import { useMap } from "../navigation/Providers/MapProvider";
 
 const { width, height } = Dimensions.get("window");
-const CARD_HEIGHT = hsize(100);
-const CARD_WIDTH = wsize(width) * 0.8;
-const SPACING_FOR_CARD_INSET = wsize(width) * 0.1 - wsize(10);
+const CARD_HEIGHT = 100;
+const CARD_WIDTH = width * 0.8;
+const SPACING_FOR_CARD_INSET = width * 0.1 - 10;
 
 const HomeMap = ({ props }) => {
   bsMap = useRef(null);
@@ -116,7 +116,7 @@ const HomeMap = ({ props }) => {
               longitude: position.coords.longitude,
             },
           });
-          if (
+          /*if (
             !haversine(userLocation.currentCoords, userLocation.prevCoords, {
               threshold: 0.02,
               unit: "mile",
@@ -129,7 +129,7 @@ const HomeMap = ({ props }) => {
                 }) +
                 "m"
             );
-          }
+          }*/
           console.log(
             "Tu as bougé de " +
               haversine(userLocation.currentCoords, userLocation.prevCoords, {
@@ -258,7 +258,7 @@ const HomeMap = ({ props }) => {
       x = x - SPACING_FOR_CARD_INSET;
     }
 
-    _scrollView.current.scrollToOffset({ offset: x, animated: true });
+    _scrollView.current.scrollToOffset({ x: x, y: 0, animated: true });
   };
 
   const _map = useRef(null);
@@ -346,10 +346,9 @@ const HomeMap = ({ props }) => {
             ))}
           </MapView>
 
-          <Animated.FlatList
+          <Animated.ScrollView
             ref={_scrollView}
-            data={state.places}
-            keyExtractor={(item) => JSON.stringify(item._id)}
+            //keyExtractor={(item) => JSON.stringify(item._id)}
             horizontal
             pagingEnabled
             scrollEventThrottle={1}
@@ -363,7 +362,7 @@ const HomeMap = ({ props }) => {
               top: 0,
               left: SPACING_FOR_CARD_INSET,
               bottom: 0,
-              //right: SPACING_FOR_CARD_INSET,
+              right: SPACING_FOR_CARD_INSET,
             }}
             contentContainerStyle={{
               paddingHorizontal:
@@ -381,52 +380,40 @@ const HomeMap = ({ props }) => {
               ],
               { useNativeDriver: true }
             )}
-            renderItem={({ item, index }) => {
-              const inputRange = [
-                (index - 1) * CARD_WIDTH,
-                index * CARD_WIDTH,
-                (index + 1) * CARD_WIDTH,
-              ];
-
-              const opacity = _mapAnimation.interpolate({
-                inputRange,
-                outputRange: [50, 0, 50],
-                extrapolate: "clamp",
-              });
-
-              return (
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={() => {
-                    bsMap.current.snapTo(0);
-                  }}
-                >
-                  <Animated.View style={[styles.card]} /*opacity: opacity */>
-                    <TouchableOpacity activeOpacity={0.7} onPress={goToStory}>
-                      <ProfilePicture />
-                    </TouchableOpacity>
-                    <View style={styles.textContent}>
-                      <Text numberOfLines={1} style={styles.cardDescription}>
-                        {item.name}
+          >
+            {state.places.map((item, index) => (
+              <TouchableOpacity
+                key={index}
+                activeOpacity={0.7}
+                onPress={() => {
+                  bsMap.current.snapTo(0);
+                }}
+              >
+                <Animated.View style={[styles.card]} /*opacity: opacity */>
+                  <TouchableOpacity activeOpacity={0.7} onPress={goToStory}>
+                    <ProfilePicture />
+                  </TouchableOpacity>
+                  <View style={styles.textContent}>
+                    <Text numberOfLines={1} style={styles.cardDescription}>
+                      {item.name}
+                    </Text>
+                    <View style={styles.button}>
+                      <Text
+                        style={[
+                          styles.textSign,
+                          {
+                            color: "#743cff",
+                          },
+                        ]}
+                      >
+                        Info
                       </Text>
-                      <View style={styles.button}>
-                        <Text
-                          style={[
-                            styles.textSign,
-                            {
-                              color: "#743cff",
-                            },
-                          ]}
-                        >
-                          Info
-                        </Text>
-                      </View>
                     </View>
-                  </Animated.View>
-                </TouchableOpacity>
-              );
-            }}
-          />
+                  </View>
+                </Animated.View>
+              </TouchableOpacity>
+            ))}
+          </Animated.ScrollView>
 
           <View style={[styles.buttonContainer, { right: 10, bottom: 140 }]}>
             <TouchableOpacity activeOpacity={0.7} onPress={goToAdd}>

@@ -98,12 +98,37 @@ const creds = Realm.Credentials.emailPassword("brianmoyou", "brianmoyou");
 
 let mongodb;
 
+const sample_event = {
+    "name": "blackOpsBasketball",
+    "date": {
+        "day": 15,
+        "month": 9,
+        "year": 2021
+    },
+    "time": {
+        "hour": 15,
+        "min": 0
+    },
+    "endingTime": {
+        "hour": 15,
+        "min": 0
+    },
+    "placeName": "byFar",
+    "creator": "letch",
+    "tags": ["#Cavachier", "#kingofTheCourt", "#5v5"],
+    "attendants": ["brianmoyou", "sorador"],
+    "description": "Les gars chacun doit ramener 5 euros pour les droits de terre"
+}
+
 const user = async () =>
   await app
     .logIn(creds)
     .then((user) => {
-      user.callFunction("getPlaces").then((result) => console.log(result));
     })
     .catch((error) => console.log(error));
+     mongodb = app.currentUser.mongoClient("mongodb-atlas");
+    const eCollection = mongodb.db("AYTO_Dev").collection("eProfile");
+    eCollection.insertOne(sample_event).then(result => {console.log(result);}).catch(error => console.log(error));
+    //app.currentUser.callFunction("Create_Event", sample_event).then(result => console.log(result)).catch(error => console.log(error));
 
 user();

@@ -47,6 +47,7 @@ const AuthProvider = ({ children, navigation }) => {
           const uProfilePartition = userDoc[0].uProfilePartition;
           setProfileDoc(getUprofile(uProfilePartition));
         }
+        //userRealm.close();
 
         userDoc.addListener(() => {
           // The user custom data object may not have been loaded on
@@ -67,7 +68,7 @@ const AuthProvider = ({ children, navigation }) => {
           }
         });
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(`cette erreur ${error}`));
 
     return () => {
       // cleanup function
@@ -80,7 +81,7 @@ const AuthProvider = ({ children, navigation }) => {
         setProfilePartition([]); // set project data to an empty array (this prevents the array from staying in state on logout)
       }
     };
-  }, [user]);
+  }, []);
 
   // The signIn function takes an email and password and uses the
   // emailPassword authentication provider to log in.

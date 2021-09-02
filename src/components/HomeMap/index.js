@@ -365,8 +365,7 @@ const HomeMap = ({ props }) => {
               right: SPACING_FOR_CARD_INSET,
             }}
             contentContainerStyle={{
-              paddingHorizontal:
-                Platform.OS === "android" ? SPACING_FOR_CARD_INSET : 0,
+              paddingLeft: triche == 0 ? SPACING_FOR_CARD_INSET : 0,
             }}
             onScroll={Animated.event(
               [
@@ -381,38 +380,43 @@ const HomeMap = ({ props }) => {
               { useNativeDriver: true }
             )}
           >
-            {state.places.map((item, index) => (
-              <TouchableOpacity
-                key={index}
-                activeOpacity={0.7}
-                onPress={() => {
-                  bsMap.current.snapTo(0);
-                }}
-              >
-                <Animated.View style={[styles.card]} /*opacity: opacity */>
-                  <TouchableOpacity activeOpacity={0.7} onPress={goToStory}>
-                    <ProfilePicture />
+            {state.places.map(
+              (item, index) => (
+                (triche = triche + 1),
+                (
+                  <TouchableOpacity
+                    key={index}
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      bsMap.current.snapTo(0);
+                    }}
+                  >
+                    <Animated.View style={[styles.card]} /*opacity: opacity */>
+                      <TouchableOpacity activeOpacity={0.7} onPress={goToStory}>
+                        <ProfilePicture />
+                      </TouchableOpacity>
+                      <View style={styles.textContent}>
+                        <Text numberOfLines={1} style={styles.cardDescription}>
+                          {item.name}
+                        </Text>
+                        <View style={styles.button}>
+                          <Text
+                            style={[
+                              styles.textSign,
+                              {
+                                color: "#743cff",
+                              },
+                            ]}
+                          >
+                            Info
+                          </Text>
+                        </View>
+                      </View>
+                    </Animated.View>
                   </TouchableOpacity>
-                  <View style={styles.textContent}>
-                    <Text numberOfLines={1} style={styles.cardDescription}>
-                      {item.name}
-                    </Text>
-                    <View style={styles.button}>
-                      <Text
-                        style={[
-                          styles.textSign,
-                          {
-                            color: "#743cff",
-                          },
-                        ]}
-                      >
-                        Info
-                      </Text>
-                    </View>
-                  </View>
-                </Animated.View>
-              </TouchableOpacity>
-            ))}
+                )
+              )
+            )}
           </Animated.ScrollView>
 
           <View style={[styles.buttonContainer, { right: 10, bottom: 140 }]}>

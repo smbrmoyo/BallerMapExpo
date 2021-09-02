@@ -341,7 +341,7 @@ const ProfileScreen = ({ navigation, route }) => {
                 onPress={() => navigation.navigate("Attendance")}
               >
                 <View>
-                  <Text>{item.name}</Text>
+                  <Text></Text>
                 </View>
               </TouchableOpacity>
             )}

@@ -19,7 +19,6 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Keyboard,
-  StyleSheet,
 } from "react-native";
 import { Button, Overlay } from "react-native-elements";
 import * as Animatable from "react-native-animatable";
@@ -35,6 +34,11 @@ import PlaceRow from "./PlaceRow";
 import ProfilePicture from "../../components/ProfilePicture";
 import Bitmoji from "../../components/Bitmoji";
 import styles from "./styles";
+import {
+  useAuth,
+  getUprofile,
+} from "../../components/navigation/Providers/AuthProvider";
+import { useMap } from "../../components/navigation/Providers/MapProvider";
 import { wsize, hsize } from "../../utils/Dimensions";
 import places from "../../assets/data/places";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -43,25 +47,73 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Fontisto from "react-native-vector-icons/Fontisto";
 import Feather from "react-native-vector-icons/Feather";
 
-const KeyboardAvoidingComponent = ({ props, navigation, route }) => {
-  const [address, setAddress] = useState(null); // Put all this in one state and use ... operator
-  const [description, setDescription] = useState("");
-  const [name, setName] = useState("");
-  const [tags, setTags] = useState(""); // Should be list of strings. Will see with Max
-  const [dateTime, setDateTime] = useState(new Date());
-  const [visible, setVisible] = useState(false);
+navigator.geolocation = require("@react-native-community/geolocation");
+
+const AddScreen = ({ props, navigation, route }) => {
+  //const { username } = useMap();
+  const { username } = getUprofile(profilePartition);
+  const { user, profilePartition } = useAuth();
+  /*import username from useProfile() */
+  let placeNameParams = "";
+  placeNameParams = route.params?.item.name;
+  const [event, setEvent] = useState({
+    name: "",
+    placeName: "",
+    creator: "",
+    tags: [],
+    description: "",
+    attendants: [],
+    date: {
+      day: new Date().getDay(),
+      month: new Date().getMonth(),
+      year: new Date().getFullYear(),
+    },
+    time: {
+      hour: new Date().getHours(),
+      min: new Date().getMinutes(),
+    },
+    endingTime: {
+      hour: new Date().getHours(),
+      min: new Date().getMinutes(),
+    },
+  });
+
+  //console.log(event);
+
+  useEffect(() => {
+    if (route.params !== undefined) {
+      setEvent({
+        ...event,
+        placeName: placeNameParams,
+      });
+    }
+  }, [route]);
+
+  const createEvent = async () => {
+    /*setEvent({
+      ...event,
+      creator: username,
+    });*/
+    const creation = user.functions
+      .Create_Event(event)
+      .then((result) => console.log("evénement bien créé"))
+      .catch((err) => console.log(err));
+  };
+
+  const [visibleStart, setVisibleStart] = useState(false);
+  const [visibleEnd, setVisibleEnd] = useState(false);
   const [color, setColor] = useState("#CDCDCD");
 
   const headerHeight = useHeaderHeight();
 
   const checkNavigation = () => {
-    if (address && description && tags) {
+    /*if (address && description && tags) {
       navigation.navigate("Map", {
         address,
         description,
         tags,
       });
-    }
+    }*/
   };
 
   useLayoutEffect(() => {
@@ -69,6 +121,7 @@ const KeyboardAvoidingComponent = ({ props, navigation, route }) => {
       title: "",
       headerStyle: {
         backgroundColor: "white",
+        height: 80,
         //shadowColor: "black",
         //elevation: 5,
       },
@@ -134,254 +187,392 @@ const KeyboardAvoidingComponent = ({ props, navigation, route }) => {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.container}
-      keyboardVerticalOffset={headerHeight}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Animatable.View
-          animation="fadeInUpBig"
+    <>
+      <StatusBar
+        translucent
+        backgroundColor="rgba(0,0,0,0.0)" /*transparent*/
+        barStyle="dark-content"
+      />
+
+      <DateTimePickerModal
+        isVisible={visibleStart} /*Should have second component for end date */
+        mode="datetime"
+        display="spinner"
+        onConfirm={(datum) => (
+          setEvent({
+            ...event,
+            date: {
+              day: datum.getDay(),
+              month: datum.getMonth(),
+              year: datum.getFullYear(),
+            },
+            time: {
+              hour: datum.getHours(),
+              min: datum.getMinutes(),
+            },
+          }),
+          setVisibleStart(false),
+          setColor("#743cff")
+        )}
+        onCancel={() => setVisibleStart(false)}
+      />
+
+      <DateTimePickerModal
+        isVisible={visibleEnd} /*Should have second component for end date */
+        mode="datetime"
+        display="spinner"
+        onConfirm={(datum) => (
+          setEvent({
+            ...event,
+            endingTime: {
+              hour: datum.getHours(),
+              min: datum.getMinutes(),
+            },
+          }),
+          setVisibleEnd(false),
+          setColor("#743cff")
+        )}
+        onCancel={() => setVisibleEnd(false)}
+      />
+
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : null}
+        style={{
+          flex: 1,
+          backgroundColor: "white",
+        }}
+        keyboardVerticalOffset={80}
+      >
+        <SafeAreaView
           style={{
-            padding: 10,
             flex: 1,
-            justifyContent: "space-around",
           }}
         >
-          <View style={styles.descriptionContainer}>
-            <View style={styles.title}>
-              <Text style={styles.titleText}>Name</Text>
-            </View>
-
-            <TextInput
-              style={{
-                padding: hsize(10),
-                backgroundColor: "#eee",
-                marginVertical: hsize(5),
-                borderRadius: hsize(5),
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.2,
-                shadowRadius: 1.41,
-                elevation: 2,
-              }}
-              placeholder="Give your run a name"
-              placeholderTextColor="#CDCDCD"
-              value={name}
-              onChangeText={(text) => setName(text)}
-            />
-          </View>
-
-          <View style={styles.locationContainer}>
-            <View style={styles.title}>
-              <Text style={styles.titleText}>Address</Text>
-            </View>
-            <View style={styles.adressContainer}>
-              <GooglePlacesAutocomplete
-                placeholder="Address"
-                placeholderTextColor="#CDCDCD"
-                onPress={(data, details = null) => {
-                  setAddress(details.geometry.location);
-                  //console.log(details);
-                }}
-                enablePoweredByContainer={false}
-                suppressDefaultStyles
-                currentLocation={true}
-                currentLocationLabel="Current location"
-                styles={{
-                  textInput: styles.textInput,
-                  container: styles.autocompleteContainer,
-                  listView: styles.listView,
-                  separator: styles.separator,
-                }}
-                fetchDetails
-                query={{
-                  key: "AIzaSyCL4evs3-ff9p7pd_KhW9fO-lcAybk6Lhk",
-                  language: "en",
-                }}
-                renderRow={(data) => <PlaceRow data={data} />}
-                renderDescription={(data) => data.description || data.vicinity}
-              />
-            </View>
-          </View>
-
-          <View style={styles.descriptionContainer}>
-            <View style={styles.title}>
-              <Text style={styles.titleText}>Description</Text>
-            </View>
-
-            <TextInput
-              style={{
-                padding: hsize(10),
-                backgroundColor: "#eee",
-                marginVertical: hsize(5),
-                borderRadius: hsize(5),
-                shadowColor: "#000",
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                shadowOpacity: 0.2,
-                shadowRadius: 1.41,
-                elevation: 2,
-              }}
-              placeholder="In a few words"
-              multiline
-              placeholderTextColor="#CDCDCD"
-              value={description}
-              //OnSubmitEditing={(text) => setDescription(text)}
-              //onEndEditing={(text) => setDescription(text)}
-              onChangeText={(text) => setDescription(text)}
-            />
-          </View>
-
-          <View style={styles.TagsContainer}>
-            <View style={styles.title}>
-              <Text style={styles.titleText}>Hashtags</Text>
-            </View>
-
-            <TextInput
-              style={styles.textInput}
-              placeholder="#"
-              placeholderTextColor="#CDCDCD"
-              value={tags}
-              //OnSubmitEditing={(textTag) => setTags(textTag)}
-              //onEndEditing={(textTag) => setTags(textTag)}
-              onChangeText={(textTag) => setTags(textTag)}
-            />
-          </View>
-
-          <View style={styles.dateContainer}>
-            <View style={styles.title}>
-              <Text style={styles.titleText}>Date & Time</Text>
-            </View>
-
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => setVisible(true)}
-            >
-              <View style={styles.textInput}>
-                <Text style={{ color: color, fontSize: 16 }}>
-                  {readableDate(dateTime)}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-              //width: "100%",
-              marginVertical: hsize(40),
-            }}
+          <ScrollView
+          //animation="fadeInUpBig"
+          /*contentContainerStyle={{
+              padding: 10,
+              flex: 1,
+              justifyContent: "center",
+            }}*/
+          // style={{ flex: 1, padding: 10 }}
           >
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => navigation.goBack()}
-            >
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View
                 style={{
-                  backgroundColor: "white",
-                  borderWidth: 1,
-                  borderColor: "#E9E8E8",
-                  borderRadius: 5,
-                  height: hsize(40),
-                  width: wsize(100),
-                  alignItems: "center",
-                  justifyContent: "center",
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.2,
-                  shadowRadius: 1.41,
-                  elevation: 2,
+                  padding: 24,
+                  flex: 1,
+                  justifyContent: "flex-end",
+                  paddingBottom: 100,
                 }}
               >
-                <Text
+                <View style={styles.descriptionContainer}>
+                  <View style={styles.title}>
+                    <Text style={styles.titleText}>{username}</Text>
+                  </View>
+
+                  <TextInput
+                    style={{
+                      padding: hsize(10),
+                      backgroundColor: "#eee",
+                      marginVertical: hsize(5),
+                      borderRadius: hsize(5),
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 0.2,
+                      shadowRadius: 1.41,
+                      elevation: 2,
+                    }}
+                    placeholder="Give your run a name"
+                    placeholderTextColor="#CDCDCD"
+                    onChangeText={(text) =>
+                      setEvent({
+                        ...event,
+                        name: text,
+                      })
+                    }
+                  />
+                </View>
+
+                <View style={styles.locationContainer}>
+                  <View style={styles.title}>
+                    <Text style={styles.titleText}>Address</Text>
+                  </View>
+                  <View style={styles.adressContainer}>
+                    <TouchableOpacity
+                      onPress={() => navigation.navigate("PlaceSearch")}
+                      /*if (route.params) {
+    setEvent({
+      ...event,
+      placeName: route.params.placeName,
+    })
+  }*/
+                    >
+                      <View
+                        style={{
+                          padding: hsize(10),
+                          backgroundColor: "#eee",
+                          marginVertical: hsize(5),
+                          borderRadius: hsize(5),
+                          shadowColor: "#000",
+                          shadowOffset: {
+                            width: 0,
+                            height: 1,
+                          },
+                          shadowOpacity: 0.2,
+                          shadowRadius: 1.41,
+                          elevation: 2,
+                        }}
+                      >
+                        {event.placeName === "" ? (
+                          <Text style={{ color: "#CDCDCD" }}>
+                            Find an Address
+                          </Text>
+                        ) : (
+                          <Text style={{ color: "black" }}>
+                            {event.placeName}
+                          </Text>
+                        )}
+                      </View>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+
+                <View style={styles.descriptionContainer}>
+                  <View style={styles.title}>
+                    <Text style={styles.titleText}>Description</Text>
+                  </View>
+
+                  <TextInput
+                    style={{
+                      padding: hsize(10),
+                      backgroundColor: "#eee",
+                      marginVertical: hsize(5),
+                      borderRadius: hsize(5),
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 0,
+                        height: 1,
+                      },
+                      shadowOpacity: 0.2,
+                      shadowRadius: 1.41,
+                      elevation: 2,
+                    }}
+                    placeholder="In a few words"
+                    multiline
+                    placeholderTextColor="#CDCDCD"
+                    //OnSubmitEditing={(text) => setDescription(text)}
+                    //onEndEditing={(text) => setDescription(text)}
+                    onChangeText={(text) =>
+                      setEvent({
+                        ...event,
+                        description: text,
+                      })
+                    }
+                  />
+                </View>
+
+                <View style={styles.TagsContainer}>
+                  <View style={styles.title}>
+                    <Text style={styles.titleText}>Hashtags</Text>
+                  </View>
+
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="#"
+                    placeholderTextColor="#CDCDCD"
+                    //OnSubmitEditing={(textTag) => setTags(textTag)}
+                    //onEndEditing={(textTag) => setTags(textTag)}
+                    onChangeText={(textTag) =>
+                      setEvent({
+                        ...event,
+                        //name: text,
+                      })
+                    }
+                  />
+                </View>
+                <View style={styles.TagsContainer}>
+                  <View style={styles.title}>
+                    <Text style={styles.titleText}>Hashtags</Text>
+                  </View>
+
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="#"
+                    placeholderTextColor="#CDCDCD"
+                    //OnSubmitEditing={(textTag) => setTags(textTag)}
+                    //onEndEditing={(textTag) => setTags(textTag)}
+                    onChangeText={(textTag) =>
+                      setEvent({
+                        ...event,
+                        //name: text,
+                      })
+                    }
+                  />
+                </View>
+                <View style={styles.TagsContainer}>
+                  <View style={styles.title}>
+                    <Text style={styles.titleText}>Hashtags</Text>
+                  </View>
+
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="#"
+                    placeholderTextColor="#CDCDCD"
+                    //OnSubmitEditing={(textTag) => setTags(textTag)}
+                    //onEndEditing={(textTag) => setTags(textTag)}
+                    onChangeText={(textTag) =>
+                      setEvent({
+                        ...event,
+                        //name: text,
+                      })
+                    }
+                  />
+                </View>
+                <View style={styles.TagsContainer}>
+                  <View style={styles.title}>
+                    <Text style={styles.titleText}>Hashtags</Text>
+                  </View>
+
+                  <TextInput
+                    style={styles.textInput}
+                    placeholder="#"
+                    placeholderTextColor="#CDCDCD"
+                    //OnSubmitEditing={(textTag) => setTags(textTag)}
+                    //onEndEditing={(textTag) => setTags(textTag)}
+                    onChangeText={(textTag) =>
+                      setEvent({
+                        ...event,
+                        //name: text,
+                      })
+                    }
+                  />
+                </View>
+
+                <View style={styles.dateContainer}>
+                  <View style={styles.title}>
+                    <Text style={styles.titleText}>Start</Text>
+                  </View>
+
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => setVisibleStart(true)}
+                  >
+                    <View style={styles.textInput}>
+                      <Text style={{ color: color, fontSize: 16 }}>
+                        {readableDate(event.startDateTime)}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.dateContainer}>
+                  <View style={styles.title}>
+                    <Text style={styles.titleText}>End</Text>
+                  </View>
+
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => setVisibleEnd(true)}
+                  >
+                    <View style={styles.textInput}>
+                      <Text style={{ color: color, fontSize: 16 }}>
+                        {readableDate(event.endDateTime)}
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+                <View
                   style={{
-                    fontSize: 20,
-                    color: "red", // On cancel alert
+                    flexDirection: "row",
+                    justifyContent: "space-around",
+                    //width: "100%",
+                    marginVertical: hsize(40),
                   }}
                 >
-                  Cancel
-                </Text>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => navigation.goBack()}
+                  >
+                    <View
+                      style={{
+                        backgroundColor: "white",
+                        borderWidth: 1,
+                        borderColor: "#E9E8E8",
+                        borderRadius: 5,
+                        height: hsize(40),
+                        width: wsize(100),
+                        alignItems: "center",
+                        justifyContent: "center",
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 1,
+                        },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 1.41,
+                        elevation: 2,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          color: "red", // On cancel alert
+                        }}
+                      >
+                        Cancel
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    activeOpacity={0.7}
+                    onPress={() => {
+                      createEvent(); /*.then(
+                    Haptics.notificationAsync(
+                      Haptics.NotificationFeedbackType.Success
+                    ) */
+                    }}
+                  >
+                    <View
+                      style={{
+                        backgroundColor: "white",
+                        borderWidth: 1,
+                        borderColor: "#E9E8E8",
+                        borderRadius: 5,
+                        height: hsize(40),
+                        width: wsize(100),
+                        alignItems: "center",
+                        justifyContent: "center",
+                        shadowColor: "#000",
+                        shadowOffset: {
+                          width: 0,
+                          height: 1,
+                        },
+                        shadowOpacity: 0.2,
+                        shadowRadius: 1.41,
+                        elevation: 2,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          color: "#743cff",
+                        }}
+                      >
+                        Confirm
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                </View>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity
-              activeOpacity={0.7}
-              onPress={() => (
-                checkNavigation(),
-                Haptics.notificationAsync(
-                  Haptics.NotificationFeedbackType.Success
-                )
-              )}
-            >
-              <View
-                style={{
-                  backgroundColor: "white",
-                  borderWidth: 1,
-                  borderColor: "#E9E8E8",
-                  borderRadius: 5,
-                  height: hsize(40),
-                  width: wsize(100),
-                  alignItems: "center",
-                  justifyContent: "center",
-                  shadowColor: "#000",
-                  shadowOffset: {
-                    width: 0,
-                    height: 1,
-                  },
-                  shadowOpacity: 0.2,
-                  shadowRadius: 1.41,
-                  elevation: 2,
-                }}
-              >
-                <Text
-                  style={{
-                    fontSize: 20,
-                    color: "#743cff",
-                  }}
-                >
-                  Confirm
-                </Text>
-              </View>
-            </TouchableOpacity>
-          </View>
-        </Animatable.View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+            </TouchableWithoutFeedback>
+          </ScrollView>
+        </SafeAreaView>
+      </KeyboardAvoidingView>
+    </>
   );
 };
 
-/*const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "white",
-  },
-  inner: {
-    padding: 24,
-    flex: 1,
-    justifyContent: "space-around",
-  },
-  header: {
-    fontSize: 36,
-    marginBottom: 48,
-  },
-  textInput: {
-    height: 40,
-    borderColor: "#000000",
-    borderBottomWidth: 1,
-    marginBottom: 36,
-  },
-  btnContainer: {
-    backgroundColor: "white",
-    marginTop: 12,
-  },
-});*/
-
-export default KeyboardAvoidingComponent;
+export default AddScreen;

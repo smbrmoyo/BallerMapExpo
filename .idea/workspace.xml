@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="fd39e616-5a0b-4bc7-b3be-d1301a756ee1" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/navigation/AppStack.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/AppStack.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/serviceTest.js" beforeDir="false" afterPath="$PROJECT_DIR$/serviceTest.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/navigation/Providers/AuthProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/Providers/AuthProvider.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/navigation/Providers/ProfileProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/navigation/Providers/ProfileProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/screens/AddScreen/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/screens/AddScreen/index.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +78,7 @@
       <workItem from="1629119014334" duration="42974000" />
       <workItem from="1629950002652" duration="14221000" />
       <workItem from="1630250173897" duration="13837000" />
-      <workItem from="1630431118682" duration="11462000" />
+      <workItem from="1630431118682" duration="15644000" />
     </task>
     <task id="LOCAL-00001" summary="GetProfilDoc function">
       <created>1629127408529</created>
@@ -110,7 +108,14 @@
       <option name="project" value="LOCAL" />
       <updated>1630511154855</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Event creation implemented">
+      <created>1630535146050</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1630535146050</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -132,6 +137,7 @@
     <MESSAGE value="GetProfilDoc function" />
     <MESSAGE value="connectionTest implemented" />
     <MESSAGE value="ProfileListener implement" />
-    <option name="LAST_COMMIT_MESSAGE" value="ProfileListener implement" />
+    <MESSAGE value="Event creation implemented" />
+    <option name="LAST_COMMIT_MESSAGE" value="Event creation implemented" />
   </component>
 </project>

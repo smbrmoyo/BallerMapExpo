@@ -118,6 +118,8 @@ const getUprofile = async (profilePartition) => {
   return userDoc
 }
 
+//const get
+
 //const result = getUprofile().then(result => {console.log(result.partition) });
 
 /*const places = user.callFunction("gettPlaces").then(result => {
